@@ -1,0 +1,15 @@
+---
+title: "Visualizing Effect of Data Transformations on Errors"
+author: "Robert M Flight"
+date: "`r Sys.time()`"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(fakeDataWithError)
+library(visualizationQualityControl)
+```
+
+## Introduction
+
