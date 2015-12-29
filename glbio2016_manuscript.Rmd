@@ -9,6 +9,7 @@ output: html_document
 knitr::opts_chunk$set(echo = FALSE)
 library(fakeDataWithError)
 library(visualizationQualityControl)
+library(cowplot)
 ```
 
 # Introduction
@@ -28,13 +29,22 @@ which are more easily handled by most statistical methods.
 
 Simulated data was generated from an initial set of 10000 points drawn from 
 a log-normal distribution with a mean in log-space of 1 and a standard deviation
-of 1.
+of 1 (see histogram in Figure X). These data points are the **pure** initial 
+data to which different types of error are added. From this set, 100 replicates are 
+generated with either *additive*, *proportional* or *mixed* (both additive and
+proportional) error.
 
 ```{r setup_data}
 set.seed(1234)
 n_point <- 10000
 n_rep <- 100
 simulated_data <- rlnorm(n_point, meanlog = 1, sdlog = 1)
+```
+
+```{r pure_histogram}
+simulated_frame <- data.frame(abundance = simulated_data)
+ggplot(simulated_frame, aes(x = abundance)) + geom_histogram(binwidth = 1) + 
+  ggtitle("Pure Data")
 ```
 
 
