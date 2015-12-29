@@ -13,3 +13,10 @@ library(visualizationQualityControl)
 
 ## Introduction
 
+
+
+# Create Markdown
+
+```{r runit}
+rmarkdown::render("glbio2016_manuscript.Rmd", clean = FALSE)
+```
