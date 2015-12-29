@@ -26,6 +26,17 @@ which are more easily handled by most statistical methods.
 
 ## Data
 
+Simulated data was generated from an initial set of 10000 points drawn from 
+a log-normal distribution with a mean in log-space of 1 and a standard deviation
+of 1.
+
+```{r setup_data}
+set.seed(1234)
+n_point <- 10000
+n_rep <- 100
+simulated_data <- rlnorm(n_point, meanlog = 1, sdlog = 1)
+```
+
 
 
 ## Transformations
