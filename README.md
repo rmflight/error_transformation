@@ -5,7 +5,7 @@ My paper submission for [great lakes bioinformatics conference 2016]
 
 ## Manuscript
 
-Actual manuscript is in [glbio2016_manuscript.md](glbio2016_manuscript.md), 
+Actual manuscript is in [glbio2016_manuscript.knit.md](glbio2016_manuscript.knit.md), 
 with the source being in [glbio2016_manuscript.Rmd](glbio2016_manuscript.Rmd).
 
 ## Other Requirements
