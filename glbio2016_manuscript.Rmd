@@ -105,6 +105,15 @@ of `r add_sd` and `r prop_sd` respectively.
 # Conclusion
 
 
+# Session Information
+
+```{r session_info}
+ses_info <- devtools::session_info()
+ses_info$platform
+knitr::kable(ses_info$packages)
+```
+
+
 # Create Markdown
 
 ```{r runit, eval=FALSE}

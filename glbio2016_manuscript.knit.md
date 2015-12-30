@@ -1,7 +1,7 @@
 ---
 title: "Visualizing Effect of Data Transformations on Errors"
 author: "Robert M Flight"
-date: "2015-12-29 21:45:45"
+date: "2015-12-29 21:54:13"
 output: html_document
 ---
 
@@ -69,6 +69,69 @@ of 2 and 0.1 respectively.
 
 
 # Conclusion
+
+
+# Session Information
+
+
+```
+##  setting  value                       
+##  version  R version 3.2.2 (2015-08-14)
+##  system   x86_64, linux-gnu           
+##  ui       RStudio (0.99.825)          
+##  language (EN)                        
+##  collate  en_US.UTF-8                 
+##  tz       America/New_York            
+##  date     2015-12-29
+```
+
+
+
+package                       *    version      date         source                                   
+----------------------------  ---  -----------  -----------  -----------------------------------------
+assertthat                         0.1          2013-12-06   CRAN (R 3.2.2)                           
+circlize                           0.3.2        2015-10-21   CRAN (R 3.2.2)                           
+colorspace                         1.2-6        2015-03-11   CRAN (R 3.2.2)                           
+ComplexHeatmap                     1.7.1        2015-10-10   Github (jokergoo/ComplexHeatmap@e502955) 
+cowplot                       *    0.5.0        2015-07-01   CRAN (R 3.2.2)                           
+DBI                                0.3.1        2014-09-24   CRAN (R 3.2.2)                           
+dendextend                         1.1.2        2015-10-31   CRAN (R 3.2.2)                           
+dendsort                           0.3.2        2014-09-29   CRAN (R 3.2.2)                           
+devtools                           1.9.1.9000   2015-11-18   Github (hadley/devtools@b4edf3e)         
+digest                             0.6.8        2014-12-31   CRAN (R 3.2.2)                           
+dplyr                              0.4.3        2015-09-01   CRAN (R 3.2.2)                           
+evaluate                           0.8          2015-09-18   CRAN (R 3.2.2)                           
+fakeDataWithError             *    0.0.1        2015-10-19   local                                    
+formatR                            1.2.1        2015-09-18   CRAN (R 3.2.2)                           
+GetoptLong                         0.1.0        2015-03-09   CRAN (R 3.2.2)                           
+ggbiplot                           0.55         2015-10-19   Github (rmflight/ggbiplot@7325e88)       
+ggplot2                       *    1.0.1        2015-03-17   CRAN (R 3.2.2)                           
+GlobalOptions                      0.0.8        2015-08-18   CRAN (R 3.2.2)                           
+gtable                             0.1.2        2012-12-05   CRAN (R 3.2.2)                           
+highr                              0.5.1        2015-09-18   CRAN (R 3.2.2)                           
+htmltools                          0.2.6        2014-09-08   CRAN (R 3.2.2)                           
+knitr                              1.11         2015-08-14   CRAN (R 3.2.2)                           
+labeling                           0.3          2014-08-23   CRAN (R 3.2.2)                           
+magrittr                           1.5          2014-11-22   CRAN (R 3.2.2)                           
+MASS                               7.3-44       2015-08-30   CRAN (R 3.2.2)                           
+memoise                            0.2.1        2014-04-22   CRAN (R 3.2.2)                           
+munsell                            0.4.2        2013-07-11   CRAN (R 3.2.2)                           
+plyr                               1.8.3        2015-06-12   CRAN (R 3.2.2)                           
+proto                              0.3-10       2012-12-22   CRAN (R 3.2.2)                           
+R6                                 2.1.1        2015-08-19   CRAN (R 3.2.2)                           
+RColorBrewer                       1.1-2        2014-12-07   CRAN (R 3.2.2)                           
+Rcpp                               0.12.2       2015-11-15   CRAN (R 3.2.2)                           
+reshape2                           1.4.1        2014-12-06   CRAN (R 3.2.2)                           
+rjson                              0.2.15       2014-11-03   CRAN (R 3.2.2)                           
+rmarkdown                          0.8.1        2015-10-10   CRAN (R 3.2.2)                           
+rstudioapi                         0.3.1        2015-04-07   CRAN (R 3.2.2)                           
+scales                             0.3.0        2015-08-25   CRAN (R 3.2.2)                           
+shape                              1.4.2        2014-11-05   CRAN (R 3.2.2)                           
+stringi                            1.0-1        2015-10-22   CRAN (R 3.2.2)                           
+stringr                            1.0.0        2015-04-30   CRAN (R 3.2.2)                           
+visualizationQualityControl   *    0.0.20       2015-12-16   local                                    
+whisker                            0.3-2        2013-04-28   CRAN (R 3.2.2)                           
+yaml                               2.1.13       2014-06-12   CRAN (R 3.2.2)                           
 
 
 # Create Markdown
