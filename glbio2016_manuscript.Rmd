@@ -107,6 +107,6 @@ of `r add_sd` and `r prop_sd` respectively.
 
 # Create Markdown
 
-```{r runit}
+```{r runit, eval=FALSE}
 rmarkdown::render("glbio2016_manuscript.Rmd", clean = FALSE)
 ```
