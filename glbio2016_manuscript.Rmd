@@ -110,7 +110,7 @@ of `r add_sd` and `r prop_sd` respectively.
 ```{r session_info}
 ses_info <- devtools::session_info()
 ses_info$platform
-knitr::kable(ses_info$packages)
+knitr::kable(ses_info$packages, format = "markdown")
 ```
 
 
