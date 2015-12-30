@@ -63,7 +63,22 @@ add_plot
 Additive error was added where the standard deviation was `r add_sd`. A plot
 of two replicates is shown in Figure X.
 
-### Multiplicative Error
+### Proportional Error
+
+```{r prop_error}
+prop_sd <- 0.1
+prop_error <- add_prop_noise(n_rep, simulated_data, prop_sd)
+```
+
+```{r prop_plot}
+prop_rep <- data.frame(rep1 = prop_error[, 1], rep2 = prop_error[, 2])
+prop_plot <- ggplot(prop_rep, aes(x = rep1, y = rep2)) + geom_point()
+prop_plot
+```
+
+Proportional error was added where the standard deviation was `r prop_sd`. A plot
+of two replicates is shown in Figure X.
+
 
 ## Transformations
 
