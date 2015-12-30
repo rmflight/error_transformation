@@ -47,7 +47,23 @@ ggplot(simulated_frame, aes(x = abundance)) + geom_histogram(binwidth = 1) +
   ggtitle("Pure Data")
 ```
 
+### Additive Error
 
+```{r add_error}
+add_sd <- 2
+add_error <- add_uniform_noise(n_rep, simulated_data, add_sd)
+```
+
+```{r add_plot}
+add_rep <- data.frame(rep1 = add_error[,1], rep2 = add_error[,2])
+add_plot <- ggplot(add_rep, aes(x = rep1, y = rep2)) + geom_point()
+add_plot
+```
+
+Additive error was added where the standard deviation was `r add_sd`. A plot
+of two replicates is shown in Figure X.
+
+### Multiplicative Error
 
 ## Transformations
 
