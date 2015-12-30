@@ -79,6 +79,20 @@ prop_plot
 Proportional error was added where the standard deviation was `r prop_sd`. A plot
 of two replicates is shown in Figure X.
 
+### Mixed Error
+
+```{r mix_error}
+mix_error <- add_prop_uniform(n_rep, simulated_data, add_sd, prop_sd)
+```
+
+```{r mix_plot}
+mix_rep <- data.frame(rep1 = mix_error[, 1], rep2 = mix_error[, 2])
+mix_plot <- ggplot(mix_rep, aes(x = rep1, y = rep2)) + geom_point()
+mix_plot
+```
+
+Mixture of additive and proportional error was added with standard deviations
+of `r add_sd` and `r prop_sd` respectively.
 
 ## Transformations
 
