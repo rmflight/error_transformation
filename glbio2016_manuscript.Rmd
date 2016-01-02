@@ -91,7 +91,9 @@ a log-normal distribution with a mean in log-space of 1 and a standard deviation
 of 1 (see histogram in Figure X). These data points are the **pure** initial 
 data to which different types of error are added. From this set, 100 replicates are 
 generated with either *additive*, *proportional* or *mixed* (both additive and
-proportional) error.
+proportional) error. Negative values are truncated to zero, because there cannot
+be negative values when measuring the abundance of physical entities, and because
+it makes applying log-transforms even more difficult than usual.
 
 ```{r setup_data}
 set.seed(1234)
@@ -111,6 +113,7 @@ ggplot(simulated_frame, aes(x = abundance)) + geom_histogram(binwidth = 1) +
 ```{r add_error}
 add_sd <- 2
 add_error <- add_uniform_noise(n_rep, simulated_data, add_sd)
+add_error[(add_error < 0)] <- 0
 ```
 
 ```{r add_plot}
@@ -125,6 +128,7 @@ of two replicates is shown in Figure X.
 ```{r prop_error}
 prop_sd <- 0.1
 prop_error <- add_prop_noise(n_rep, simulated_data, prop_sd)
+prop_error[(prop_error < 0)] <- 0
 ```
 
 ```{r prop_plot}
@@ -138,6 +142,7 @@ of two replicates is shown in Figure X.
 
 ```{r mix_error}
 mix_error <- add_prop_uniform(n_rep, simulated_data, add_sd, prop_sd)
+mix_error[(mix_error < 0)] <- 0
 ```
 
 ```{r mix_plot}
@@ -153,6 +158,9 @@ of `r add_sd` and `r prop_sd` respectively.
 
 # Results
 
+## Log Transformation
+
+Applying the 
 
 
 # Conclusion
