@@ -55,6 +55,11 @@ add_small <- function(error_data, diff_value = 1e-2){
   added_data <- error_data + add_min
   added_data
 }
+
+plot_hist <- function(in_data, bins = 100){
+  plot_frame <- data.frame(abundance = as.vector(in_data))
+  ggplot(plot_frame, aes(x = abundance)) + geom_histogram(bins = bins)
+}
 ```
 
 
@@ -186,7 +191,8 @@ plot_function(mix_error)
 Applying the **log-transform** to the data results in:
 
 ```{r log_histogram}
-log_add <- log10()
+log_add <- log10(add_small(add_error))
+
 ```
 
 
