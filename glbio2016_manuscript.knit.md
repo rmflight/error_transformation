@@ -1,7 +1,7 @@
 ---
 title: "Visualizing Effect of Data Transformations on Errors"
 author: "Robert M Flight"
-date: "2016-01-01 22:01:51"
+date: "2016-01-01 22:59:29"
 output: html_document
 ---
 
@@ -121,6 +121,27 @@ Applying the **log-transform** to the data results in:
 ### Mixed Error
 
 <img src="glbio2016_manuscript_files/figure-html/log_mix_error-1.png" title="" alt="" width="672" />
+
+## Root Transform
+
+A square root transform was applied to the data. The choice of using 2 as the
+root is arbitrary, however depending on the size of the **tails** of the data
+a higher root may be useful. 
+
+<img src="glbio2016_manuscript_files/figure-html/root_histogram-1.png" title="" alt="" width="672" />
+
+### Additive Error
+
+<img src="glbio2016_manuscript_files/figure-html/root_add_plot-1.png" title="" alt="" width="672" />
+
+### Proportional Error
+
+<img src="glbio2016_manuscript_files/figure-html/root_prop_plot-1.png" title="" alt="" width="672" />
+
+### Mixed Error
+
+<img src="glbio2016_manuscript_files/figure-html/root_mixed_plot-1.png" title="" alt="" width="672" />
+
 
 
 # Conclusion
