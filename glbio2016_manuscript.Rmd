@@ -60,6 +60,11 @@ plot_hist <- function(in_data, bins = 100){
   plot_frame <- data.frame(abundance = as.vector(in_data))
   ggplot(plot_frame, aes(x = abundance)) + geom_histogram(bins = bins)
 }
+
+root_transform <- function(in_data, root = 2){
+  root_data <- in_data ^ (1/root)
+  root_data
+}
 ```
 
 
@@ -213,6 +218,9 @@ plot_function(log_prop, log_mean = FALSE)
 log_mix <- log10(add_small(mix_error))
 plot_function(log_mix, log_mean = FALSE)
 ```
+
+## Root Transform
+
 
 
 # Conclusion
