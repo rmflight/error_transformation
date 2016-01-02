@@ -177,6 +177,6 @@ knitr::kable(ses_info$packages, format = "markdown")
 
 # Create Markdown
 
-```{r runit, eval=FALSE}
+```{r runit, eval=FALSE, include = TRUE}
 rmarkdown::render("glbio2016_manuscript.Rmd", clean = FALSE)
 ```
