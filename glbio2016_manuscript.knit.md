@@ -1,9 +1,12 @@
 ---
 title: "Visualizing Effect of Data Transformations on Errors"
 author: "Robert M Flight"
-date: "2015-12-29 22:15:12"
+date: "2016-01-01 21:00:58"
 output: html_document
 ---
+
+
+
 
 
 
@@ -82,7 +85,7 @@ of 2 and 0.1 respectively.
 ##  language (EN)                        
 ##  collate  en_US.UTF-8                 
 ##  tz       America/New_York            
-##  date     2015-12-29
+##  date     2016-01-01
 ```
 
 
@@ -99,7 +102,7 @@ of 2 and 0.1 respectively.
 |dendsort                    |   |0.3.2      |2014-09-29 |CRAN (R 3.2.2)                           |
 |devtools                    |   |1.9.1.9000 |2015-11-18 |Github (hadley/devtools@b4edf3e)         |
 |digest                      |   |0.6.8      |2014-12-31 |CRAN (R 3.2.2)                           |
-|dplyr                       |   |0.4.3      |2015-09-01 |CRAN (R 3.2.2)                           |
+|dplyr                       |*  |0.4.3      |2015-09-01 |CRAN (R 3.2.2)                           |
 |evaluate                    |   |0.8        |2015-09-18 |CRAN (R 3.2.2)                           |
 |fakeDataWithError           |*  |0.0.1      |2015-10-19 |local                                    |
 |formatR                     |   |1.2.1      |2015-09-18 |CRAN (R 3.2.2)                           |
@@ -111,6 +114,7 @@ of 2 and 0.1 respectively.
 |htmltools                   |   |0.2.6      |2014-09-08 |CRAN (R 3.2.2)                           |
 |knitr                       |   |1.11       |2015-08-14 |CRAN (R 3.2.2)                           |
 |labeling                    |   |0.3        |2014-08-23 |CRAN (R 3.2.2)                           |
+|lazyeval                    |   |0.1.10     |2015-01-02 |CRAN (R 3.2.2)                           |
 |magrittr                    |   |1.5        |2014-11-22 |CRAN (R 3.2.2)                           |
 |memoise                     |   |0.2.1      |2014-04-22 |CRAN (R 3.2.2)                           |
 |munsell                     |   |0.4.2      |2013-07-11 |CRAN (R 3.2.2)                           |
@@ -118,6 +122,7 @@ of 2 and 0.1 respectively.
 |R6                          |   |2.1.1      |2015-08-19 |CRAN (R 3.2.2)                           |
 |RColorBrewer                |   |1.1-2      |2014-12-07 |CRAN (R 3.2.2)                           |
 |Rcpp                        |   |0.12.2     |2015-11-15 |CRAN (R 3.2.2)                           |
+|reshape2                    |   |1.4.1      |2014-12-06 |CRAN (R 3.2.2)                           |
 |rjson                       |   |0.2.15     |2014-11-03 |CRAN (R 3.2.2)                           |
 |rmarkdown                   |   |0.8.1      |2015-10-10 |CRAN (R 3.2.2)                           |
 |scales                      |   |0.3.0      |2015-08-25 |CRAN (R 3.2.2)                           |
