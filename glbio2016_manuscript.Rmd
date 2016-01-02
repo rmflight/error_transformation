@@ -151,7 +151,8 @@ of `r add_sd` and `r prop_sd` respectively.
 With no transformation, **all** of the data have a **log-normal** distribution.
 
 ```{r plot_dist_add}
-add_frame <- 
+add_frame <- data.frame(abundance = as.vector(add_error))
+ggplot(add_frame, aes(x = abundance)) + geom_histogram(bins = 100)
 ```
 
 
