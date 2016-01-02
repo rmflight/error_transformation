@@ -1,7 +1,7 @@
 ---
 title: "Visualizing Effect of Data Transformations on Errors"
 author: "Robert M Flight"
-date: "2016-01-01 21:29:09"
+date: "2016-01-01 22:01:51"
 output: html_document
 ---
 
@@ -62,8 +62,6 @@ it makes applying log-transforms even more difficult than usual.
 
 
 
-<img src="glbio2016_manuscript_files/figure-html/add_plot-1.png" title="" alt="" width="672" />
-
 Additive error was added where the standard deviation was 2. A plot
 of two replicates is shown in Figure X.
 
@@ -71,16 +69,12 @@ of two replicates is shown in Figure X.
 
 
 
-<img src="glbio2016_manuscript_files/figure-html/prop_plot-1.png" title="" alt="" width="672" />
-
 Proportional error was added where the standard deviation was 0.1. A plot
 of two replicates is shown in Figure X.
 
 ### Mixed Error
 
 
-
-<img src="glbio2016_manuscript_files/figure-html/mix_plot-1.png" title="" alt="" width="672" />
 
 Mixture of additive and proportional error was added with standard deviations
 of 2 and 0.1 respectively.
@@ -91,9 +85,42 @@ of 2 and 0.1 respectively.
 
 # Results
 
+## No Transformation
+
+With no transformation, **all** of the data have a **log-normal** distribution.
+
+<img src="glbio2016_manuscript_files/figure-html/plot_dist_add-1.png" title="" alt="" width="672" />
+
+
+### Additive Error
+
+<img src="glbio2016_manuscript_files/figure-html/add_plot-1.png" title="" alt="" width="672" />
+
+### Proportional Error
+
+<img src="glbio2016_manuscript_files/figure-html/prop_plot-1.png" title="" alt="" width="672" />
+
+### Mixed Error
+
+<img src="glbio2016_manuscript_files/figure-html/mix_plot-1.png" title="" alt="" width="672" />
+
 ## Log Transformation
 
-Applying the 
+Applying the **log-transform** to the data results in:
+
+<img src="glbio2016_manuscript_files/figure-html/log_histogram-1.png" title="" alt="" width="672" />
+
+### Additive Error
+
+<img src="glbio2016_manuscript_files/figure-html/log_add_error-1.png" title="" alt="" width="672" />
+
+### Proportional Error
+
+<img src="glbio2016_manuscript_files/figure-html/log_prop_error-1.png" title="" alt="" width="672" />
+
+### Mixed Error
+
+<img src="glbio2016_manuscript_files/figure-html/log_mix_error-1.png" title="" alt="" width="672" />
 
 
 # Conclusion
