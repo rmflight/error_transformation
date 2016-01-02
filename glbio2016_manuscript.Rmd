@@ -74,7 +74,7 @@ controlled, although they were likely similar to those simulated in this work.
 Most of the discussion in previous work also concentrated on the shape of the
 spectra after scaling and transformation. However, in many other -omics data
 types outside of NMR, there is no real spectra, but simply an aggregation of
-values measured on independent entities, and therefore changes in shape of the
+values measured on independent features, and therefore changes in shape of the
 overall spectra are largely irrelevant. More importantly are whether relative
 changes are preserved, and **how** the error structure changes.
 
