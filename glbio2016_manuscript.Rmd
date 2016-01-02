@@ -26,7 +26,7 @@ plot_function <- function(org_data, include_orgrep = TRUE, log_mean = TRUE){
   use_mean <- "mean"
   x_title <- use_mean
   if (log_mean) {
-    summ_data[(summ_data$mean < 0), "mean"] <- 0
+    #summ_data[(summ_data$mean < 0), "mean"] <- 0
     summ_data <- mutate(summ_data, log_mean = log1p(mean))
     
     use_mean <- "log_mean"
