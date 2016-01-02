@@ -221,6 +221,35 @@ plot_function(log_mix, log_mean = FALSE)
 
 ## Root Transform
 
+A square root transform was applied to the data. The choice of using 2 as the
+root is arbitrary, however depending on the size of the **tails** of the data
+a higher root may be useful. 
+
+```{r root_histogram}
+root_add <- root_transform(add_error)
+plot_hist(root_add)
+```
+
+### Additive Error
+
+```{r root_add_plot}
+plot_function(root_add)
+```
+
+### Proportional Error
+
+```{r root_prop_plot}
+root_prop <- root_transform(prop_error)
+plot_function(root_prop)
+```
+
+### Mixed Error
+
+```{r root_mixed_plot}
+root_mixed <- root_transform(mix_error)
+plot_function(root_mixed)
+```
+
 
 
 # Conclusion
