@@ -51,7 +51,7 @@ plot_function <- function(org_data, include_orgrep = TRUE, log_mean = TRUE){
 
 add_small <- function(error_data, diff_value = 1e-2){
   min_notzero <- min(error_data[(error_data != 0)])
-  add_min <- min_notzero / diff_value
+  add_min <- min_notzero * diff_value
   added_data <- error_data + add_min
   added_data
 }
