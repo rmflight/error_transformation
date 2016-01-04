@@ -116,10 +116,15 @@ Simulated data was generated from an initial set of 10000 points drawn from
 a log-normal distribution with a mean in log-space of 1 and a standard deviation
 of 1 (see histogram in Figure X). These data points are the **pure** initial 
 data to which different types of error are added. From this set, 100 replicates are 
-generated with either *additive*, *proportional* or *mixed* (both additive and
-proportional) error. Negative values are truncated to zero, because there cannot
+generated with either *additive* (`add`), *proportional* (`prop`) or *mixed* 
+(both additive and proportional, `mixed`) error. Negative values are truncated 
+to zero, because there cannot
 be negative values when measuring the abundance of physical entities, and because
 it makes applying log-transforms even more difficult than usual.
+
+Alternatively, transformations and plots were applied to data where none of the
+replicates have a zero value (`nozero`), or where none of the replicates were 
+below **1** (`minone`). 
 
 ```{r setup_data}
 set.seed(1234)
@@ -140,6 +145,9 @@ ggplot(simulated_frame, aes(x = abundance)) + geom_histogram(binwidth = 1) +
 add_sd <- 2
 add_error <- add_uniform_noise(n_rep, simulated_data, add_sd)
 add_error[(add_error < 0)] <- 0
+
+add_nozero <- filter_features(add_error, 1e-16)
+add_minone <- filter_features(add_error, 1)
 ```
 
 Additive error was added where the standard deviation was `r add_sd`. A plot
@@ -151,6 +159,9 @@ of two replicates is shown in Figure X.
 prop_sd <- 0.1
 prop_error <- add_prop_noise(n_rep, simulated_data, prop_sd)
 prop_error[(prop_error < 0)] <- 0
+
+prop_nozero <- filter_features(prop_error, 1e-16)
+prop_minone <- filter_features(prop_error, 1)
 ```
 
 Proportional error was added where the standard deviation was `r prop_sd`. A plot
@@ -161,6 +172,9 @@ of two replicates is shown in Figure X.
 ```{r mix_error}
 mix_error <- add_prop_uniform(n_rep, simulated_data, add_sd, prop_sd)
 mix_error[(mix_error < 0)] <- 0
+
+mix_nozero <- filter_features(mix_error, 1e-16)
+mix_minone <- filter_features(mix_error, 1)
 ```
 
 Mixture of additive and proportional error was added with standard deviations
