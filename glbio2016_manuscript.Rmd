@@ -191,26 +191,26 @@ of `r add_sd` and `r prop_sd` respectively.
 With no transformation, **all** of the data have a **log-normal** distribution.
 
 ```{r plot_dist_add}
-plot_hist(add_error)
+plot_hist(add_nozero)
 ```
 
 
 ### Additive Error
 
 ```{r add_plot}
-plot_function(add_error)
+plot_function(add_nozero)
 ```
 
 ### Proportional Error
 
 ```{r prop_plot}
-plot_function(prop_error)
+plot_function(prop_nozero)
 ```
 
 ### Mixed Error
 
 ```{r mix_plot}
-plot_function(mix_error)
+plot_function(mix_nozero)
 ```
 
 ## Log Transformation
@@ -218,7 +218,7 @@ plot_function(mix_error)
 Applying the **log-transform** to the data results in:
 
 ```{r log_histogram}
-log_add <- log10(add_small(add_error))
+log_add <- log10(add_nozero)
 plot_hist(log_add)
 ```
 
@@ -231,14 +231,14 @@ plot_function(log_add, log_mean = FALSE)
 ### Proportional Error
 
 ```{r log_prop_error}
-log_prop <- log10(add_small(prop_error))
+log_prop <- log10(prop_nozero)
 plot_function(log_prop, log_mean = FALSE)
 ```
 
 ### Mixed Error
 
 ```{r log_mix_error}
-log_mix <- log10(add_small(mix_error))
+log_mix <- log10(mix_nozero)
 plot_function(log_mix, log_mean = FALSE)
 ```
 
