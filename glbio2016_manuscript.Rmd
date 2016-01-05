@@ -249,7 +249,7 @@ root is arbitrary, however depending on the size of the **tails** of the data
 a higher root may be useful. 
 
 ```{r root_histogram}
-root_add <- root_transform(add_error)
+root_add <- root_transform(add_nozero)
 plot_hist(root_add)
 ```
 
@@ -262,14 +262,14 @@ plot_function(root_add)
 ### Proportional Error
 
 ```{r root_prop_plot}
-root_prop <- root_transform(prop_error)
+root_prop <- root_transform(prop_nozero)
 plot_function(root_prop)
 ```
 
 ### Mixed Error
 
 ```{r root_mixed_plot}
-root_mixed <- root_transform(mix_error)
+root_mixed <- root_transform(mix_nozero)
 plot_function(root_mixed)
 ```
 

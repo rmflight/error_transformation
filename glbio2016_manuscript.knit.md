@@ -1,7 +1,7 @@
 ---
 title: "Visualizing Effect of Data Transformations on Errors"
 author: "Robert M Flight"
-date: "2016-01-01 22:59:29"
+date: "2016-01-05 14:13:02"
 output: html_document
 ---
 
@@ -49,10 +49,15 @@ Simulated data was generated from an initial set of 10000 points drawn from
 a log-normal distribution with a mean in log-space of 1 and a standard deviation
 of 1 (see histogram in Figure X). These data points are the **pure** initial 
 data to which different types of error are added. From this set, 100 replicates are 
-generated with either *additive*, *proportional* or *mixed* (both additive and
-proportional) error. Negative values are truncated to zero, because there cannot
+generated with either *additive* (`add`), *proportional* (`prop`) or *mixed* 
+(both additive and proportional, `mixed`) error. Negative values are truncated 
+to zero, because there cannot
 be negative values when measuring the abundance of physical entities, and because
 it makes applying log-transforms even more difficult than usual.
+
+Alternatively, transformations and plots were applied to data where none of the
+replicates have a zero value (`nozero`), or where none of the replicates were 
+below **1** (`minone`). 
 
 
 
@@ -158,7 +163,7 @@ a higher root may be useful.
 ##  language (EN)                        
 ##  collate  en_US.UTF-8                 
 ##  tz       America/New_York            
-##  date     2016-01-01
+##  date     2016-01-05
 ```
 
 
@@ -184,7 +189,6 @@ a higher root may be useful.
 |ggplot2                     |*  |2.0.0      |2015-12-18 |CRAN (R 3.2.2)                           |
 |GlobalOptions               |   |0.0.8      |2015-08-18 |CRAN (R 3.2.2)                           |
 |gtable                      |   |0.1.2      |2012-12-05 |CRAN (R 3.2.2)                           |
-|highr                       |   |0.5.1      |2015-09-18 |CRAN (R 3.2.2)                           |
 |htmltools                   |   |0.2.6      |2014-09-08 |CRAN (R 3.2.2)                           |
 |knitr                       |   |1.11       |2015-08-14 |CRAN (R 3.2.2)                           |
 |labeling                    |   |0.3        |2014-08-23 |CRAN (R 3.2.2)                           |
@@ -196,10 +200,8 @@ a higher root may be useful.
 |R6                          |   |2.1.1      |2015-08-19 |CRAN (R 3.2.2)                           |
 |RColorBrewer                |   |1.1-2      |2014-12-07 |CRAN (R 3.2.2)                           |
 |Rcpp                        |   |0.12.2     |2015-11-15 |CRAN (R 3.2.2)                           |
-|reshape2                    |   |1.4.1      |2014-12-06 |CRAN (R 3.2.2)                           |
 |rjson                       |   |0.2.15     |2014-11-03 |CRAN (R 3.2.2)                           |
 |rmarkdown                   |   |0.8.1      |2015-10-10 |CRAN (R 3.2.2)                           |
-|rstudioapi                  |   |0.3.1      |2015-04-07 |CRAN (R 3.2.2)                           |
 |scales                      |   |0.3.0      |2015-08-25 |CRAN (R 3.2.2)                           |
 |shape                       |   |1.4.2      |2014-11-05 |CRAN (R 3.2.2)                           |
 |stringi                     |   |1.0-1      |2015-10-22 |CRAN (R 3.2.2)                           |
