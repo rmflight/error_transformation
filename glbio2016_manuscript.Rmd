@@ -182,7 +182,8 @@ of `r add_sd` and `r prop_sd` respectively.
 
 ## Transformations
 
-
+The transformations applied to the data include variance scaling, the log-transform
+(log10), and power transform (root 2 and 5).
 
 # Results
 
