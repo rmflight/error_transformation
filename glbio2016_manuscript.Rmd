@@ -206,6 +206,32 @@ standard deviation* (RSD, SD / mean) *vs the mean* as well as *sd vs mean*  make
 it possible to discern the presence of additive, proportional, or mixed error (
 see Figures X-Y for examples).
 
+```{r buildup_plots}
+pair_frame <- data.frame(rep1 = add_nozero[,1], rep2 = add_nozero[,2])
+pair_plot <- ggplot(pair_frame, aes(x = rep1, y = rep2)) + geom_point()
+
+ma_frame <- data.frame(M = add_nozero[,1] - add_nozero[,2],
+                      A = rowMeans(add_nozero[, 1:2]))
+ma_plot <- ggplot(ma_frame, aes(x = A, y = M)) + geom_point()
+
+diff_nozero <- apply(add_nozero, 1, function(x){
+  max(x) - min(x)
+})
+range_frame <- data.frame(difference = diff_nozero,
+                          mean = rowMeans(add_nozero))
+diff_plot <- ggplot(range_frame, aes(x = mean, y = difference)) + geom_point()
+
+add_nozero_summ <- summarize_data(t(add_nozero))
+sd_plot <- filter(add_nozero_summ, type == "sd") %>% 
+  ggplot(., aes(x = mean, y = var)) + geom_point() + ylab("sd")
+rsd_plot <- filter(add_nozero_summ, type == "rsd") %>%
+  ggplot(., aes(x = mean, y = var)) + geom_point() + ylab("rsd")
+
+plot_grid(pair_plot, ma_plot, diff_plot, sd_plot, rsd_plot, nrow = 1,
+          labels = LETTERS[1:5])
+```
+
+
 ## No Transformation
 
 With no transformation, **all** of the data have a **log-normal** distribution.
