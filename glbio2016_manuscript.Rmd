@@ -15,7 +15,9 @@ library(dplyr)
 
 ```{r function_defs, include=FALSE}
 plot_diff <- function(org_data, log_mean = log1p){
-  summ_data <- summarize_data(t(org_data), log_transform = log_mean)
+
+  diff_values <- apply(org_data, 1, function(x){max(x) - min(x)})
+  diff_frame <- data.frame(diff = diff_values, mean = rowMeans(org_data))
   
   use_mean <- "mean"
   x_title <- use_mean
@@ -23,11 +25,9 @@ plot_diff <- function(org_data, log_mean = log1p){
   if (is.function(log_mean)) {
     use_mean <- "log_mean"
     x_title <- "log(mean)"
+    diff_frame <- mutate(diff_frame, log_mean = log1p(mean))
   }
   
-  diff_values <- apply(org_data, 1, function(x){max(x) - min(x)})
-  diff_frame <- data.frame(diff = diff_values, mean = rowMeans(org_data))
-  diff_frame <- mutate(diff_frame, log_mean = log1p(mean))
   diff_plot <- ggplot(diff_frame, aes_string(x = use_mean, y = "diff")) + 
     geom_point() + ggtitle("Difference vs Mean") + xlab(x_title)
   return(diff_plot)
