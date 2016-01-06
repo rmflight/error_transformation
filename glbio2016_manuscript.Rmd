@@ -31,7 +31,7 @@ plot_function <- function(org_data, include_diffrange = TRUE, log_mean = TRUE){
   if (include_diffrange) {
     diff_values <- apply(org_data, 1, function(x){max(x) - min(x)})
     diff_frame <- data.frame(diff = diff_values, mean = rowMeans(org_data))
-    diff_frame$log_mean <- log1p(mean)
+    diff_frame <- mutate(diff_frame, log_mean = log1p(mean))
     diff_plot <- ggplot(diff_frame, aes_string(x = use_mean, y = "diff")) + 
       geom_point() + ggtitle("Difference vs Mean")
   }
