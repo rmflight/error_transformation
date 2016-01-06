@@ -1,7 +1,7 @@
 ---
 title: "Visualizing Effect of Data Transformations on Errors"
 author: "Robert M Flight"
-date: "2016-01-05 14:13:02"
+date: "2016-01-06 10:45:09"
 output: html_document
 ---
 
@@ -86,9 +86,32 @@ of 2 and 0.1 respectively.
 
 ## Transformations
 
-
+The transformations applied to the data include variance scaling, the log-transform
+(log10), and power transform (root 2 and 5).
 
 # Results
+
+Very often, high-throughput -omics replicates are visualized in a pairwise manner,
+by plotting the replicates directly against each other, or rotating them by 45 degrees
+as a Bland-Altman or MA plot (see Figure Xa and b). Overviews of many replicate /
+samples can be provided by summarizing each pair by the correlation or root mean
+squared error (RMSE), however neither of these provide a way to view how or if
+errors are related to the value of a feature across all replicates. The pairwise
+MA plot allows this for pairs, but examining a large number of pairwise plots is
+tedious. 
+
+One simple extension is for each feature, to plot the difference between the minimum
+and maximum value across replicates, vs the mean value, as shown in Figure Xc.
+A more robust metric with much of the same meaning is to use the standard deviation,
+plotted against the mean. This actually shows if there is any relationship between
+the error (standard deviation) and the mean, which can provide an indication of
+whether there is additive, or proportional errors present. Plotting the *relative
+standard deviation* (RSD, SD / mean) *vs the mean* as well as *sd vs mean*  makes
+it possible to discern the presence of additive, proportional, or mixed error (
+see Figures X-Y for examples).
+
+<img src="glbio2016_manuscript_files/figure-html/buildup_plots-1.png" title="" alt="" width="672" />
+
 
 ## No Transformation
 
@@ -163,7 +186,7 @@ a higher root may be useful.
 ##  language (EN)                        
 ##  collate  en_US.UTF-8                 
 ##  tz       America/New_York            
-##  date     2016-01-05
+##  date     2016-01-06
 ```
 
 
