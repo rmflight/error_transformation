@@ -43,7 +43,7 @@ plot_function <- function(org_data, include_diffrange = TRUE, log_mean = TRUE){
     ggplot(., aes_string(x = use_mean, y = "var")) + geom_point() +
     ggtitle("Mean vs RSD") + xlab(x_title) + ylab("rsd")
   
-  if (include_orgrep) {
+  if (include_diffrange) {
     out_plot <- plot_grid(diff_plot, sd_plot, rsd_plot, ncol = 3, nrow = 1,
               labels = c("A", "B", "C"))
   } else {
