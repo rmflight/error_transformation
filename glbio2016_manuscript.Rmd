@@ -277,7 +277,7 @@ plot_grid(me_nt_diff, me_nt_sd, me_nt_rsd, nrow = 1, labels = LETTERS[1:3])
 Applying the **log-transform** to the data results in:
 
 ```{r log_histogram}
-log_add <- log1p(add_nozero)
+log_add <- log(add_nozero)
 plot_hist(log_add)
 ```
 
@@ -297,16 +297,19 @@ log_prop <- log(prop_nozero)
 
 pe_lt_diff <- plot_diff(log_prop, log_mean = FALSE)
 pe_lt_sd <- plot_sd(log_prop, log_mean = FALSE)
-pe_lt_rsd <- plot_sd(log_prop, log_mean = FALSE, sd_type = "rsd")
+pe_lt_rsd <- plot_sd(log_prop, log_mean = FALSE, sd_type = "rsd") + ylim(-1, 1)
+plot_grid(pe_lt_diff, pe_lt_sd, pe_lt_rsd, nrow = 1, labels = LETTERS[1:3])
 ```
 
 ### Mixed Error
 
 ```{r log_mix_error}
-log_mix <- log1p(mix_nozero)
+log_mix <- log(mix_nozero)
 
 me_lt_diff <- plot_diff(log_mix, log_mean = FALSE)
 me_lt_sd <- plot_sd(log_mix, log_mean = FALSE)
+me_lt_rsd <- plot_sd(log_mix, log_mean = FALSE, sd_type = "rsd")
+plot_grid(me_lt_diff, me_lt_sd, me_lt_rsd, nrow = 1, labels = LETTERS[1:3])
 ```
 
 ## Root Transform
@@ -316,28 +319,64 @@ root is arbitrary, however depending on the size of the **tails** of the data
 a higher root may be useful. 
 
 ```{r root_histogram}
-root_add <- root_transform(add_nozero)
-plot_hist(root_add)
+
 ```
 
 ### Additive Error
 
 ```{r root_add_plot}
-plot_function(root_add)
+root_add <- root_transform(add_nozero)
+root_add2 <- root_transform(add_nozero, 5)
+
+root_add_comb <- cbind(root_add, root_add2)
+root_class <- rep(c("2", "5"), each = 100)
+root_summary <- summarize_data(t(root_add_comb), root_class)
+
+ae_rt_diff <- filter(root_summary, type == "diff") %>%
+  ggplot(., aes(x = mean, y = var, color = class)) + geom_point()
+ae_rt_sd <- filter(root_summary, type == "sd") %>%
+  ggplot(., aes(x = mean, y = var, color = class)) + geom_point()
+ae_rt_rsd <- filter(root_summary, type == "rsd") %>%
+  ggplot(., aes(x = mean, y = var, color = class)) + geom_point()
+plot_grid(ae_rt_diff, ae_rt_sd, ae_rt_rsd, nrow = 1, labels = LETTERS[1:3])
 ```
 
 ### Proportional Error
 
 ```{r root_prop_plot}
-root_prop <- root_transform(prop_nozero)
-plot_function(root_prop)
+root_prop1 <- root_transform(prop_nozero)
+root_prop2 <- root_transform(prop_nozero, root = 5)
+root_prop_comb <- cbind(root_prop1, root_prop2)
+
+root_pe_summary <- summarize_data(t(root_prop_comb), root_class)
+
+root_pe_diff <- filter(root_pe_summary, type == "diff") %>%
+  ggplot(., aes(x = mean, y = var, color = class)) + geom_point()
+root_pe_sd <- filter(root_pe_summary, type == "sd") %>%
+  ggplot(., aes(x = mean, y = var, color = class)) + geom_point()
+root_pe_rsd <- filter(root_pe_summary, type == "rsd") %>%
+  ggplot(., aes(x = mean, y = var, color = class)) + geom_point()
+
+plot_grid(root_pe_diff, root_pe_sd, root_pe_rsd, nrow = 1, labels = LETTERS[1:3])
 ```
 
 ### Mixed Error
 
 ```{r root_mixed_plot}
 root_mixed <- root_transform(mix_nozero)
-plot_function(root_mixed)
+root_mixed2 <- root_transform(mix_nozero, 5)
+
+me_rt_comb <- cbind(root_mixed, root_mixed2)
+
+me_rt_summary <- summarize_data(t(me_rt_comb), root_class)
+me_rt_diff <- filter(me_rt_summary, type == "diff") %>%
+  ggplot(., aes(x = mean, y = var, color = class)) + geom_point()
+me_rt_sd <- filter(me_rt_summary, type == "sd") %>%
+  ggplot(., aes(x = mean, y = var, color = class)) + geom_point()
+me_rt_rsd <- filter(me_rt_summary, type == "rsd") %>%
+  ggplot(., aes(x = mean, y = var, color = class)) + geom_point()
+
+plot_grid(me_rt_diff, me_rt_sd, me_rt_rsd, nrow = 1, labels = LETTERS[1:3])
 ```
 
 
