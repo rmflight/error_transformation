@@ -2,7 +2,10 @@
 title: "Visualizing Effect of Data Transformations on Errors"
 author: "Robert M Flight"
 date: "`r Sys.time()`"
-output: html_document
+commit: "`r if (library(git2r, logical.return = TRUE)) {repo <- init('.'); substr(commits(repo)[[1]]@sha, 1, 10)}`"
+output: 
+  html_document:
+    keep_md: TRUE
 ---
 
 ```{r setup, include=FALSE}
@@ -395,6 +398,6 @@ knitr::kable(ses_info$packages, format = "markdown")
 
 # Create Markdown
 
-```{r runit, eval=FALSE, include = TRUE}
+```{r runit, eval=FALSE, echo = TRUE}
 rmarkdown::render("glbio2016_manuscript.Rmd", clean = FALSE)
 ```
