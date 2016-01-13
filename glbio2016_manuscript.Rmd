@@ -2,10 +2,8 @@
 title: "Visualizing Effect of Data Transformations on Errors"
 author: "Robert M Flight"
 date: "`r Sys.time()`"
-commit: "`r if (library(git2r, logical.return = TRUE)) {repo <- init('.'); substr(commits(repo)[[1]]@sha, 1, 10)}`"
-output: 
-  html_document:
-    keep_md: TRUE
+commit: "`r if (library(git2r, logical.return = TRUE)) {repo <- init('.'); substr(commits(repo)[[1]]@sha, 1, 10)} else {'NA'}`"
+output: html_document
 ---
 
 ```{r setup, include=FALSE}
