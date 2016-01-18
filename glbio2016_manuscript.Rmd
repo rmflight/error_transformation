@@ -283,20 +283,40 @@ plot_grid(me_nt_diff, me_nt_sd, me_nt_rsd, nrow = 1, labels = LETTERS[1:3])
 
 Applying a variance or auto scaling to the data results in:
 
-```{r var_scale}
+### Additive
+
+```{r auto_additive}
 ae_as <- auto_scale(add_nozero)
 ae_as_summary <- summarize_data(t(ae_as))
-ae_as_diff <- filter(ae_as_summary, type == "diff") %>%
-  ggplot(., aes(x = mean, y = var)) + geom_point()
-ae_as_sd <- filter(ae_as_summary, type == "sd") %>% 
-  ggplot(., aes(x = mean, y = var)) + geom_point()
-ae_as_rsd <- filter(ae_as_summary, type == "rsd") %>%
-  ggplot(., aes(x = mean, y = var)) + geom_point()
+ae_as_diff <- plot_diff(ae_as, log_mean = FALSE)
+ae_as_sd <- plot_sd(ae_as, log_mean = FALSE)
+ae_as_rsd <- plot_sd(ae_as, sd_type = "rsd", log_mean = FALSE)
 plot_grid(ae_as_diff, ae_as_sd, ae_as_rsd, nrow = 1, labels = LETTERS[1:3])
+```
+
+### Proportional
+
+```{r auto_proportional}
+pe_as <- auto_scale(prop_nozero)
+pe_as_diff <- plot_diff(pe_as, log_mean = FALSE)
+pe_as_sd <- plot_sd(pe_as, log_mean = FALSE)
+pe_as_rsd <- plot_sd(pe_as, sd_type = "rsd", log_mean = FALSE)
+plot_grid(pe_as_diff, pe_as_sd, pe_as_rsd, nrow = 1, labels = LETTERS[1:3])
+```
+
+### Mixed
+
+```{r auto_mixed}
+me_as <- auto_scale(mix_nozero)
+me_as_diff <- plot_diff(me_as, log_mean = FALSE)
+me_as_sd <- plot_sd(me_as, log_mean = FALSE)
+me_as_rsd <- plot_sd(me_as, sd_type = "rsd", log_mean = FALSE)
 ```
 
 
 ## Pareto Scaling
+
+
 
 ## Log Transformation
 
