@@ -321,6 +321,35 @@ me_as_rsd <- plot_sd(me_as, sd_type = "rsd", log_mean = FALSE)
 
 ## Pareto Scaling
 
+### Additive
+
+```{r pareto_add}
+ae_ps <- pareto_scale(add_nozero)
+ae_ps_diff <- plot_diff(ae_ps, log_mean = FALSE)
+ae_ps_sd <- plot_sd(ae_ps, log_mean = FALSE)
+ae_ps_rsd <- plot_sd(ae_ps, sd_type = "rsd", log_mean = FALSE)
+plot_grid(ae_ps_diff, ae_ps_sd, ae_ps_rsd, nrow = 1, labels = LETTERS[1:3])
+```
+
+### Proportional
+
+```{r pareto_prop}
+pe_ps <- pareto_scale(prop_nozero)
+pe_ps_diff <- plot_diff(pe_ps, log_mean = FALSE)
+pe_ps_sd <- plot_sd(pe_ps, log_mean = FALSE)
+pe_ps_rsd <- plot_sd(pe_ps, sd_type = "rsd", log_mean = FALSE)
+plot_grid(pe_ps_diff, pe_ps_sd, pe_ps_rsd, nrow = 1, labels = LETTERS[1:3])
+```
+
+### Mixed
+
+```{r pareto_mixed}
+me_ps <- pareto_scale(mix_nozero)
+me_ps_diff <- plot_diff(me_ps, log_mean = FALSE)
+me_ps_sd <- plot_sd(me_ps, log_mean = FALSE)
+me_ps_rsd <- plot_sd(me_ps, sd_type = "rsd", log_mean = FALSE)
+plot_grid(me_ps_diff, me_ps_sd, me_ps_rsd, nrow = 1, labels = LETTERS[1:3])
+```
 
 
 ## Log Transformation
