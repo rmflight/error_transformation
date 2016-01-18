@@ -74,6 +74,11 @@ auto_scale <- function(in_data){
   sd_val <- t(apply(in_data, 1, function(x){(x - mean(x)) / sd(x)}))
   sd_val
 }
+
+pareto_scale <- function(in_data){
+  sd_val <- t(apply(in_data, 1, function(x){(x - mean(x)) / sqrt(sd(x))}))
+  sd_val
+}
 ```
 
 
