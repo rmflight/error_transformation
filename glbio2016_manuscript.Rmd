@@ -69,6 +69,11 @@ filter_features <- function(in_data, min_value){
   out_data <- in_data[pass_filter, ]
   out_data
 }
+
+auto_scale <- function(in_data){
+  sd_val <- t(apply(in_data, 1, function(x){x / sd(x)}))
+  sd_val
+}
 ```
 
 
@@ -178,9 +183,10 @@ mix_minone <- filter_features(mix_error, 1)
 Mixture of additive and proportional error was added with standard deviations
 of `r add_sd` and `r prop_sd` respectively.
 
+
 ## Transformations
 
-The transformations applied to the data include variance scaling, the
+The transformations applied to the data include variance and pareto scaling, the
 log-transform (log10), and power transform (root 2 and 5).
 
 # Results
@@ -273,12 +279,23 @@ me_nt_rsd <- plot_sd(mix_nozero, sd_type = "rsd") +
 plot_grid(me_nt_diff, me_nt_sd, me_nt_rsd, nrow = 1, labels = LETTERS[1:3])
 ```
 
+## Variance Scaling
+
+Applying a variance scaling to the data results in:
+
+```{r var_scale}
+
+```
+
+
+## Pareto Scaling
+
 ## Log Transformation
 
 Applying the **log-transform** to the data results in:
 
 ```{r log_histogram}
-log_add <- log(add_nozero)
+log_add <- log(add_minone)
 plot_hist(log_add)
 ```
 
@@ -294,7 +311,7 @@ plot_grid(ae_lt_diff, ae_lt_sd, ae_lt_rsd, nrow = 1, labels = LETTERS[1:3])
 ### Proportional Error
 
 ```{r log_prop_error}
-log_prop <- log(prop_nozero)
+log_prop <- log(prop_minone)
 
 pe_lt_diff <- plot_diff(log_prop, log_mean = FALSE)
 pe_lt_sd <- plot_sd(log_prop, log_mean = FALSE)
@@ -305,7 +322,7 @@ plot_grid(pe_lt_diff, pe_lt_sd, pe_lt_rsd, nrow = 1, labels = LETTERS[1:3])
 ### Mixed Error
 
 ```{r log_mix_error}
-log_mix <- log(mix_nozero)
+log_mix <- log(mix_minone)
 
 me_lt_diff <- plot_diff(log_mix, log_mean = FALSE)
 me_lt_sd <- plot_sd(log_mix, log_mean = FALSE)
@@ -326,8 +343,8 @@ a higher root may be useful.
 ### Additive Error
 
 ```{r root_add_plot}
-root_add <- root_transform(add_nozero)
-root_add2 <- root_transform(add_nozero, 5)
+root_add <- root_transform(add_minone)
+root_add2 <- root_transform(add_minone, 5)
 
 root_add_comb <- cbind(root_add, root_add2)
 root_class <- rep(c("2", "5"), each = 100)
@@ -345,8 +362,8 @@ plot_grid(ae_rt_diff, ae_rt_sd, ae_rt_rsd, nrow = 1, labels = LETTERS[1:3])
 ### Proportional Error
 
 ```{r root_prop_plot}
-root_prop1 <- root_transform(prop_nozero)
-root_prop2 <- root_transform(prop_nozero, root = 5)
+root_prop1 <- root_transform(prop_minone)
+root_prop2 <- root_transform(prop_minone, root = 5)
 root_prop_comb <- cbind(root_prop1, root_prop2)
 
 root_pe_summary <- summarize_data(t(root_prop_comb), root_class)
@@ -364,8 +381,8 @@ plot_grid(root_pe_diff, root_pe_sd, root_pe_rsd, nrow = 1, labels = LETTERS[1:3]
 ### Mixed Error
 
 ```{r root_mixed_plot}
-root_mixed <- root_transform(mix_nozero)
-root_mixed2 <- root_transform(mix_nozero, 5)
+root_mixed <- root_transform(mix_minone)
+root_mixed2 <- root_transform(mix_minone, 5)
 
 me_rt_comb <- cbind(root_mixed, root_mixed2)
 
