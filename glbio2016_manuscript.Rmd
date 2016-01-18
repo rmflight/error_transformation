@@ -71,7 +71,7 @@ filter_features <- function(in_data, min_value){
 }
 
 auto_scale <- function(in_data){
-  sd_val <- t(apply(in_data, 1, function(x){x / sd(x)}))
+  sd_val <- t(apply(in_data, 1, function(x){(x - mean(x)) / sd(x)}))
   sd_val
 }
 ```
