@@ -279,12 +279,20 @@ me_nt_rsd <- plot_sd(mix_nozero, sd_type = "rsd") +
 plot_grid(me_nt_diff, me_nt_sd, me_nt_rsd, nrow = 1, labels = LETTERS[1:3])
 ```
 
-## Variance Scaling
+## Variance (Auto) Scaling
 
-Applying a variance scaling to the data results in:
+Applying a variance or auto scaling to the data results in:
 
 ```{r var_scale}
-
+ae_as <- auto_scale(add_nozero)
+ae_as_summary <- summarize_data(t(ae_as))
+ae_as_diff <- filter(ae_as_summary, type == "diff") %>%
+  ggplot(., aes(x = mean, y = var)) + geom_point()
+ae_as_sd <- filter(ae_as_summary, type == "sd") %>% 
+  ggplot(., aes(x = mean, y = var)) + geom_point()
+ae_as_rsd <- filter(ae_as_summary, type == "rsd") %>%
+  ggplot(., aes(x = mean, y = var)) + geom_point()
+plot_grid(ae_as_diff, ae_as_sd, ae_as_rsd, nrow = 1, labels = LETTERS[1:3])
 ```
 
 
