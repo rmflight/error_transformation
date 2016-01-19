@@ -230,7 +230,7 @@ prop_nozero <- filter_features(prop_error, 1e-16)
 prop_minone <- filter_features(prop_error, 1)
 ```
 
-Proportional error was added where the standard deviation was `r prop_sd`. A
+Proportional error was added with a relative standard deviation of `r prop_sd`. A
 plot of two replicates is shown in Figure X.
 
 ### Mixed Error
@@ -243,14 +243,14 @@ mix_nozero <- filter_features(mix_error, 1e-16)
 mix_minone <- filter_features(mix_error, 1)
 ```
 
-Mixture of additive and proportional error was added with standard deviations
-of `r add_sd` and `r prop_sd` respectively.
+Mixture of additive and proportional error was added using standard deviations
+and relative standard deviations of `r add_sd` and `r prop_sd` respectively.
 
 
 ## Transformations
 
-The transformations applied to the data include variance and pareto scaling, the
-log-transform (log10), and power transform (root 2 and 5).
+The transformations applied to the data include autoscaling, pareto scaling, 
+log-transform (natural log), and power transform (using roots of 2 and 5).
 
 # Results
 
