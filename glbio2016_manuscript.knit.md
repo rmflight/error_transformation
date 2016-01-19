@@ -1,8 +1,8 @@
 ---
 title: "Visualizing Effect of Data Transformations on Errors"
 author: "Robert M Flight"
-date: "2016-01-18 21:49:31"
-commit: "dba40017"
+date: "2016-01-19 13:01:47"
+commit: "505fb1e0"
 output: html_document
 ---
 
@@ -222,7 +222,7 @@ a higher root may be useful.
 ##  language (EN)                        
 ##  collate  en_US.UTF-8                 
 ##  tz       America/New_York            
-##  date     2016-01-18
+##  date     2016-01-19
 ```
 
 
