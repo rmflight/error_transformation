@@ -108,6 +108,8 @@ filter_features <- function(in_data, min_value){
 auto_scale <- function(in_data, sub_mean = FALSE){
   if (sub_mean) {
     out_val <- t(apply(in_data, 1, function(x){x - mean(x)}))
+  } else {
+    out_val <- in_data
   }
   
   out_val <- t(apply(out_val, 1, function(x){x / sd(x)}))
@@ -122,8 +124,11 @@ auto_scale <- function(in_data, sub_mean = FALSE){
 #' @param in_data the matrix of original data 
 #' @param sub_mean should mean subtraction be performed
 pareto_scale <- function(in_data, sub_mean = FALSE){
+  
   if (sub_mean) {
     out_val <- t(apply(in_data, 1, function(x){x - mean(x)}))
+  } else {
+    out_val <- in_data
   }
   
   out_val <- t(apply(out_val, 1, function(x){x / sqrt(sd(x))}))
