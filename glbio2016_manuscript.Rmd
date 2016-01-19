@@ -138,7 +138,8 @@ set.seed(1234)
 n_point <- 10000
 n_rep <- 100
 simulated_data <- c(rlnorm(n_point / 2, meanlog = 1, sdlog = 1),
-                    runif(n_point / 2, 1, 100))
+                    runif(n_point / 2, 5, 100))
+simulated_data <- simulated_data + 4
 ```
 
 ```{r pure_histogram}
@@ -150,7 +151,7 @@ ggplot(simulated_frame, aes(x = abundance)) + geom_histogram(binwidth = 1) +
 ### Additive Error
 
 ```{r add_error}
-add_sd <- 2
+add_sd <- 0.5
 add_error <- add_uniform_noise(n_rep, simulated_data, add_sd)
 add_error[(add_error < 0)] <- 0
 
@@ -316,6 +317,7 @@ me_as <- auto_scale(mix_nozero)
 me_as_diff <- plot_diff(me_as, log_mean = FALSE)
 me_as_sd <- plot_sd(me_as, log_mean = FALSE)
 me_as_rsd <- plot_sd(me_as, sd_type = "rsd", log_mean = FALSE)
+plot_grid(me_as_diff, me_as_sd, me_as_rsd, nrow = 1, labels = LETTERS[1:3])
 ```
 
 
