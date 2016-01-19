@@ -359,7 +359,7 @@ plot_grid(me_ps_diff, me_ps_sd, me_ps_rsd, nrow = 1, labels = LETTERS[1:3])
 Applying the **log-transform** to the data results in:
 
 ```{r log_histogram}
-log_add <- log(add_minone)
+log_add <- log(add_nozero)
 plot_hist(log_add)
 ```
 
@@ -375,7 +375,7 @@ plot_grid(ae_lt_diff, ae_lt_sd, ae_lt_rsd, nrow = 1, labels = LETTERS[1:3])
 ### Proportional Error
 
 ```{r log_prop_error}
-log_prop <- log(prop_minone)
+log_prop <- log(prop_nozero)
 
 pe_lt_diff <- plot_diff(log_prop, log_mean = FALSE)
 pe_lt_sd <- plot_sd(log_prop, log_mean = FALSE)
@@ -386,7 +386,7 @@ plot_grid(pe_lt_diff, pe_lt_sd, pe_lt_rsd, nrow = 1, labels = LETTERS[1:3])
 ### Mixed Error
 
 ```{r log_mix_error}
-log_mix <- log(mix_minone)
+log_mix <- log(mix_nozero)
 
 me_lt_diff <- plot_diff(log_mix, log_mean = FALSE)
 me_lt_sd <- plot_sd(log_mix, log_mean = FALSE)
