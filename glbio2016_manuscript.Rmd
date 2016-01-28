@@ -344,7 +344,11 @@ plot_grid(me_nt_diff, me_nt_sd, me_nt_rsd, nrow = 1, labels = LETTERS[1:3])
 
 ## Variance (Auto) Scaling
 
-Applying a variance or auto scaling to the data results in:
+Applying a variance or autoscaling to the data results in the removal of the 
+additive error to a completely identical standard deviation of **1** across
+all samples at all values. This applies across all of the different error types.
+Although the standard deviation becomes identical and constant, it is also 
+increased over the original value of `r add_sd`.
 
 ### Additive
 
