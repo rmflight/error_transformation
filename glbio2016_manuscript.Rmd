@@ -355,11 +355,11 @@ identical(max_me_nt, max_me_as)
 
 
 Applying a variance or autoscaling to the data results in the removal of the 
-additive error to a completely identical standard deviation of **1** across
-all samples at all values. This applies across all of the different error types.
-Although the standard deviation becomes identical and constant, relatively it
-does not change, as the maximum *rsd* for the autoscaled and the non-transformed
-data are idential, at `r max_me_nt`.
+additive error to a completely identical standard deviation of **1** across all
+samples at all abundances (Figure X - Y). This applies across all of the
+different error types. Although the standard deviation becomes identical and
+constant, relatively it does not change, as the maximum *rsd* for the autoscaled
+and the non-transformed data are idential, at `r max_me_nt`.
 
 ### Additive
 
@@ -396,16 +396,17 @@ plot_grid(me_as_diff, me_as_sd, me_as_rsd, nrow = 1, labels = LETTERS[1:3])
 ## Pareto Scaling
 
 ```{r pareto_check_rsd_ranges}
-
 me_ps_summ <- summarize_data(t(me_ps))
 max_me_ps <- filter(me_ps_summ, type == "rsd") %>% select(., var) %>% max()
+identical(max_me_nt, max_me_ps)
 ```
 
-In contrast to autoscaling, pareto scaling modifies the values by the square root
-of the variance. As shown in Figure X, this does not affect the additive or
-proportional errors, as the maximum *rsd* value in the mixed case is `r max_me_ps`,
-which is the same as the maximum *rsd* value in the non-transformed data of
-`r max_me_nt`.
+In contrast to autoscaling, pareto scaling modifies the values by the square
+root of the variance. As shown in Figure X, this changes the absolute values of
+the standard deviations, but does not change the distribution, or the dependence
+of variance on the average abundance. In addition, the relative error remains
+the same, as the maximum values of the rsd in the mixed error case for the
+pareto scaled and non-transformed data are the same at `r max_me_nt`.
 
 
 
