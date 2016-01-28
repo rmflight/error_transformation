@@ -243,7 +243,7 @@ mix_nozero <- filter_features(mix_error, 1e-16)
 mix_minone <- filter_features(mix_error, 1)
 ```
 
-Mixture of additive and proportional error was added using standard deviations
+A mixture of additive and proportional errors was added using standard deviations
 and relative standard deviations of `r add_sd` and `r prop_sd` respectively.
 
 
@@ -265,11 +265,11 @@ number of pairwise plots is tedious.
 
 One simple extension is for each feature, to plot the difference between the
 minimum and maximum value across replicates, vs the mean value, as shown in
-Figure Xc. A more robust metric with much of the same meaning is to use the
-standard deviation, plotted against the mean. This actually shows if there is
+Figure Xc. A more robust metric with essentially the same information is to plot the
+standard deviation against the mean. This actually shows if there is
 any relationship between the error (standard deviation) and the mean, which can
 provide an indication of whether there is additive, or proportional errors
-present. Plotting the *relative standard deviation* (RSD, SD / mean) *vs the
+present. Adding a plot of the *relative standard deviation* (RSD, SD / mean) *vs the
 mean* as well as *sd vs mean*  makes it possible to discern the presence of
 additive, proportional, or mixed error ( see Figures X-Y for examples).
 
