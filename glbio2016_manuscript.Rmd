@@ -344,11 +344,22 @@ plot_grid(me_nt_diff, me_nt_sd, me_nt_rsd, nrow = 1, labels = LETTERS[1:3])
 
 ## Variance (Auto) Scaling
 
+```{r autoscale_check}
+me_nt_summ <- summarize_data(t(mix_nozero))
+max_me_nt <- filter(me_nt_summ, type == "rsd") %>% select(., var) %>% max()
+
+me_as_summ <- summarize_data(t(me_as))
+max_me_as <- filter(me_as_summ, type == "rsd") %>% select(., var) %>% max()
+identical(max_me_nt, max_me_as)
+```
+
+
 Applying a variance or autoscaling to the data results in the removal of the 
 additive error to a completely identical standard deviation of **1** across
 all samples at all values. This applies across all of the different error types.
-Although the standard deviation becomes identical and constant, it is also 
-increased over the original value of `r add_sd`.
+Although the standard deviation becomes identical and constant, relatively it
+does not change, as the maximum *rsd* for the autoscaled and the non-transformed
+data are idential, at `r max_me_nt`.
 
 ### Additive
 
@@ -385,8 +396,6 @@ plot_grid(me_as_diff, me_as_sd, me_as_rsd, nrow = 1, labels = LETTERS[1:3])
 ## Pareto Scaling
 
 ```{r pareto_check_rsd_ranges}
-me_nt_summ <- summarize_data(t(mix_nozero))
-max_me_nt <- filter(me_nt_summ, type == "rsd") %>% select(., var) %>% max()
 
 me_ps_summ <- summarize_data(t(me_ps))
 max_me_ps <- filter(me_ps_summ, type == "rsd") %>% select(., var) %>% max()
