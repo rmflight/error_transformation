@@ -301,13 +301,6 @@ plot_grid(pair_plot, ma_plot, diff_plot, sd_plot, rsd_plot, nrow = 1,
 
 ## No Transformation
 
-With no transformation, **all** of the data have a **log-normal** distribution.
-
-```{r plot_dist_add}
-plot_hist(add_nozero)
-```
-
-
 ### Additive Error
 
 ```{r add_plot}
