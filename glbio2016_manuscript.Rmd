@@ -337,23 +337,6 @@ plot_grid(me_nt_diff, me_nt_sd, me_nt_rsd, nrow = 1, labels = LETTERS[1:3])
 
 ## Variance (Auto) Scaling
 
-```{r autoscale_check}
-me_nt_summ <- summarize_data(t(mix_nozero))
-max_me_nt <- filter(me_nt_summ, type == "rsd") %>% select(., var) %>% max()
-
-me_as_summ <- summarize_data(t(me_as))
-max_me_as <- filter(me_as_summ, type == "rsd") %>% select(., var) %>% max()
-identical(max_me_nt, max_me_as)
-```
-
-
-Applying a variance or autoscaling to the data results in the removal of the 
-additive error to a completely identical standard deviation of **1** across all
-samples at all abundances (Figure X - Y). This applies across all of the
-different error types. Although the standard deviation becomes identical and
-constant, relatively it does not change, as the maximum *rsd* for the autoscaled
-and the non-transformed data are idential, at `r max_me_nt`.
-
 ### Additive
 
 ```{r auto_additive}
@@ -385,23 +368,27 @@ me_as_rsd <- plot_sd(me_as, sd_type = "rsd", log_mean = log)
 plot_grid(me_as_diff, me_as_sd, me_as_rsd, nrow = 1, labels = LETTERS[1:3])
 ```
 
+```{r autoscale_check}
+me_nt_summ <- summarize_data(t(mix_nozero))
+max_me_nt <- filter(me_nt_summ, type == "rsd") %>% select(., var) %>% max()
 
-## Pareto Scaling
-
-```{r pareto_check_rsd_ranges}
-me_ps_summ <- summarize_data(t(me_ps))
-max_me_ps <- filter(me_ps_summ, type == "rsd") %>% select(., var) %>% max()
-identical(max_me_nt, max_me_ps)
+me_as_summ <- summarize_data(t(me_as))
+max_me_as <- filter(me_as_summ, type == "rsd") %>% select(., var) %>% max()
+identical(max_me_nt, max_me_as)
 ```
 
-In contrast to autoscaling, pareto scaling modifies the values by the square
-root of the variance. As shown in Figure X, this changes the absolute values of
-the standard deviations, but does not change the distribution, or the dependence
-of variance on the average abundance. In addition, the relative error remains
-the same, as the maximum values of the rsd in the mixed error case for the
-pareto scaled and non-transformed data are the same at `r max_me_nt`.
+
+Applying a variance or autoscaling to the data results in the removal of the 
+additive error to a completely identical standard deviation of **1** across all
+samples at all abundances (Figure X - Y). This applies across all of the
+different error types. Although the standard deviation becomes identical and
+constant, relatively it does not change, as the maximum *rsd* for the autoscaled
+and the non-transformed data are idential, at `r max_me_nt`, and the distribution
 
 
+
+
+## Pareto Scaling
 
 ### Additive
 
@@ -433,32 +420,30 @@ me_ps_rsd <- plot_sd(me_ps, sd_type = "rsd", log_mean = log)
 plot_grid(me_ps_diff, me_ps_sd, me_ps_rsd, nrow = 1, labels = LETTERS[1:3])
 ```
 
+```{r pareto_check_rsd_ranges}
+me_ps_summ <- summarize_data(t(me_ps))
+max_me_ps <- filter(me_ps_summ, type == "rsd") %>% select(., var) %>% max()
+identical(max_me_nt, max_me_ps)
+```
+
+In contrast to autoscaling, pareto scaling modifies the values by the square
+root of the variance. As shown in Figure X, this changes the absolute values of
+the standard deviations, but does not change the distribution, or the dependence
+of variance on the average abundance. In addition, the relative error remains
+the same, as the maximum values of the rsd in the mixed error case for the
+pareto scaled and non-transformed data are the same at `r max_me_nt`.
+
+
+
+
+
 
 ## Log Transformation
-
-```{r check_log_transforms, dependson="log_histogram"}
-max_ae_lt <- summarize_data(t(log_add)) %>% filter(., type == "sd") %>% 
-  select(., var) %>% max()
-
-```
-
-
-Log-transformations completely change the structure of the data. Figure X shows
-that for the additive error only case, the SD vs mean looks more like the RSD vs
-mean in the non-transformed case.
-
-**NOTE HERE**: need to try generating all of of the SD and RSD histograms and
-overlaying them with ggplot2 to see how well they match, because an initial comp
-of `log_add` sd and `add_nozero` rsd looks really similar.
-
-```{r log_histogram}
-log_add <- log(add_nozero)
-plot_hist(log_add)
-```
 
 ### Additive Error
 
 ```{r log_add_error}
+log_add <- log(add_nozero)
 ae_lt_diff <- plot_diff(log_add)
 ae_lt_sd <- plot_sd(log_add)
 ae_lt_rsd <- plot_sd(log_add, sd_type = "rsd")
@@ -486,6 +471,23 @@ me_lt_sd <- plot_sd(log_mix, log_mean = FALSE)
 me_lt_rsd <- plot_sd(log_mix, log_mean = FALSE, sd_type = "rsd")
 plot_grid(me_lt_diff, me_lt_sd, me_lt_rsd, nrow = 1, labels = LETTERS[1:3])
 ```
+
+```{r check_log_transforms, dependson="log_histogram"}
+max_ae_lt <- summarize_data(t(log_add)) %>% filter(., type == "sd") %>% 
+  select(., var) %>% max()
+
+```
+
+
+Log-transformations completely change the structure of the data. Figure X shows
+that for the additive error only case, the SD vs mean looks more like the RSD vs
+mean in the non-transformed case.
+
+**NOTE HERE**: need to try generating all of of the SD and RSD histograms and
+overlaying them with ggplot2 to see how well they match, because an initial comp
+of `log_add` sd and `add_nozero` rsd looks really similar.
+
+
 
 ## Root Transform
 
