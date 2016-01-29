@@ -443,7 +443,20 @@ plot_grid(me_ps_diff, me_ps_sd, me_ps_rsd, nrow = 1, labels = LETTERS[1:3])
 
 ## Log Transformation
 
-Applying the **log-transform** to the data results in:
+```{r check_log_transforms, dependson="log_histogram"}
+max_ae_lt <- summarize_data(t(log_add)) %>% filter(., type == "sd") %>% 
+  select(., var) %>% max()
+
+```
+
+
+Log-transformations completely change the structure of the data. Figure X shows
+that for the additive error only case, the SD vs mean looks more like the RSD vs
+mean in the non-transformed case.
+
+**NOTE HERE**: need to try generating all of of the SD and RSD histograms and
+overlaying them with ggplot2 to see how well they match, because an initial comp
+of `log_add` sd and `add_nozero` rsd looks really similar.
 
 ```{r log_histogram}
 log_add <- log(add_nozero)
@@ -466,7 +479,7 @@ log_prop <- log(prop_nozero)
 
 pe_lt_diff <- plot_diff(log_prop, log_mean = FALSE)
 pe_lt_sd <- plot_sd(log_prop, log_mean = FALSE)
-pe_lt_rsd <- plot_sd(log_prop, log_mean = FALSE, sd_type = "rsd") + ylim(-1, 1)
+pe_lt_rsd <- plot_sd(log_prop, log_mean = FALSE, sd_type = "rsd")
 plot_grid(pe_lt_diff, pe_lt_sd, pe_lt_rsd, nrow = 1, labels = LETTERS[1:3])
 ```
 
