@@ -1,4 +1,4 @@
-# Visualizing Effect of Data Transformations on Errors
+# Visualizing the Effects of Data Transformations on Errors
 
 Robert M Flight and Hunter NB Moseley
 
