@@ -1,20 +1,28 @@
-# GLBIO 2016
+# Error Transformations
 
-My paper submission for [great lakes bioinformatics conference 2016] 
-(https://www.iscb.org/glbioccbc2016).
+Package with functions and scripts for generating outputs used in a series
+of outputs related to the effect of data transformations on error.
 
 ## Manuscript
 
-Actual manuscript is in
-[glbio2016_manuscript.knit.md](glbio2016_manuscript.knit.md), with the source
-being in [glbio2016_manuscript.Rmd](glbio2016_manuscript.Rmd).
+There is a manuscript.
+
+## Slide Deck
+
+There is a slide deck
+
+## Poster
+
+There is a variety of figures that are used in the posters that were displayed
+at the KBRIN Bioinformatics Summit, and (hopefully) the Great Lakes Bioinformatics
+Conference in 2016.
 
 ## Other Requirements
 
-To regenerate this manuscript, you will also need to install the repos at `X` 
-and `Y` for the fake data and visualizations, respectively.
+To regenerate this manuscript, you will also need to install `visualizationQualityControl`
+and `fakeDataWithError` for the data summaries and the fake data generation:
 
 ```r 
-devtools::install("X") 
-devtools::install("Y") 
+devtools::install_github("rmflight/visualizationQualityControl") 
+devtools::install_github("rmflight/fakeDataWithError") 
 ```
