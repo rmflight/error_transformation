@@ -2,13 +2,14 @@
 #'
 #' @param org_data the original data
 #' @param log_mean should plot with log-transformed mean on x-axis?
+#' @param use_title what title to add to the plot?
 #'
 #' @export
 #'
 #' @return plot
 #' @import dplyr
 #' @import ggplot2
-plot_diff <- function(org_data, log_mean = log1p){
+plot_diff <- function(org_data, log_mean = log1p, use_title = "Difference vs Mean"){
 
   # calculate the range between lowest and highest value of each feature
   diff_values <- apply(org_data, 1, function(x){max(x) - min(x)})
@@ -27,7 +28,10 @@ plot_diff <- function(org_data, log_mean = log1p){
 
   # generate and return the plot
   diff_plot <- ggplot(diff_frame, aes_string(x = use_mean, y = "diff")) +
-    geom_point() + ggtitle("Difference vs Mean") + xlab(x_title)
+    geom_point() + xlab(x_title)
+  if (!is.null(use_title)) {
+    diff_plot <- diff_plot + ggtitle(use_title)
+  }
   return(diff_plot)
 }
 
@@ -36,11 +40,12 @@ plot_diff <- function(org_data, log_mean = log1p){
 #' @param org_data the original data as matrix
 #' @param log_mean should the mean on x-axis be log-transformed
 #' @param sd_type plot the SD or RSD?
+#' @param use_title what title to put on the plot?
 #'
 #' @export
 #' @return plot
 #' @importFrom visualizationQualityControl summarize_data
-plot_sd <- function(org_data, log_mean = log1p, sd_type = "sd"){
+plot_sd <- function(org_data, log_mean = log1p, sd_type = "sd", use_title = "SD vs Mean"){
   # summarize the data
   summ_data <- summarize_data(t(org_data), log_transform = log_mean)
 
@@ -56,7 +61,11 @@ plot_sd <- function(org_data, log_mean = log1p, sd_type = "sd"){
   # filter based on type of SD and plot
   sd_plot <- filter(summ_data, type == sd_type) %>%
     ggplot(., aes_string(x = use_mean, y = "var")) + geom_point() +
-    ggtitle("Mean vs SD") + xlab(x_title) + ylab(sd_type)
+    xlab(x_title) + ylab(sd_type)
+
+  if (!is.null(use_title)) {
+    sd_plot <- sd_plot + ggtitle(use_title)
+  }
   return(sd_plot)
 }
 
