@@ -1,0 +1,84 @@
+# Visualizing the Effects of Data Transformations on Errors
+
+Robert M Flight and Hunter NB Moseley*
+
+Department of Molecular and Cellular Biochemistry, Markey Cancer Center, 
+Resource Center for Stable Isotope-Resolved Metabolomics, University of Kentucky, 
+Lexington, KY, 40536, USA
+
+*hunter.moseley@uky.edu
+
+**Background**
+
+In many omics analyses, a primary step in the data analysis is the application 
+of a transformation to the data.  Transformations are generally employed to 
+convert proportional error (variance) to additive error, which most statistical 
+methods appropriately handle. However, omics data frequently contain error 
+sources that result in both additive and proportional errors. To our knowledge, 
+there has not been a systematic study on detecting the presence of proportional 
+error in omics data, or the effect of transformations on the error structure. 
+
+**Results**
+
+In this work, we demonstrate a set of three simple graphs which facilitate the 
+detection of proportional and mixed error in omics data when multiple replicates
+are available. The three graphs illustrate proportional and mixed error in a 
+visually compelling manner that is both straight-forward to recognize and to 
+communicate. The graphs plot the 1) absolute difference in the range, 2)
+standard deviation and 3) relative standard deviation against the mean signal
+across replicates (Figure 1). In addition to showing the presence of different types of
+error, these graphs readily demonstrate the effect of various transformations on
+the error structure as well.
+
+**Conclusions**
+
+We have developed a straight-forward set of graphs that effectively summarize 
+major types of error present in high replicate datasets.Using these graphical 
+summaries we find that the log-transform is the most effective method of the
+common methods employed for removing proportional error.
+
+**Keywords**
+
+error analysis, error visualization, omics error
+
+```{r insert_figure, echo=FALSE, fig.width = 7, fig.height = 2.75}
+library(fakeDataWithError)
+library(visualizationQualityControl)
+library(cowplot)
+library(dplyr)
+library(errorTransformation)
+
+set.seed(1234)
+n_point <- 1000
+n_rep <- 100
+offset <- 4
+simulated_data <- c(rlnorm(n_point / 2, meanlog = 1, sdlog = 1),
+                    runif(n_point / 2, 5, 100))
+simulated_data <- simulated_data + offset
+
+prop_sd <- 0.1
+add_sd <- 0.5
+mix_error <- add_prop_uniform(n_rep, simulated_data, add_sd, prop_sd)
+
+me_nt_diff <- plot_diff(mix_error, use_title = NULL)
+me_nt_sd <- plot_sd(mix_error, use_title = NULL) + geom_hline(yintercept = add_sd, color = "red")
+me_nt_rsd <- plot_sd(mix_error, use_title = NULL, sd_type = "rsd") + 
+  geom_hline(yintercept = prop_sd, color = "red")
+
+plot_grid(me_nt_diff, me_nt_sd, me_nt_rsd, nrow = 1, labels = LETTERS[1:3])
+```
+
+**Figure 1**: Three plots summarizing the error in simulated data of 10000
+features across 100 replicates, with an additive error of 0.5 and proportional
+error of 0.1. The *log(mean)* is the *log* of the mean value across the 100
+replicates for a feature. Red lines indicate the level of additive (A) and 
+proportional (B) error added. **A**) The absolute difference between the highest and
+lowest valued replicates vs the mean; **B**) the standard deviation (sd) vs the
+mean; **C**) the relative standard deviation (rsd) vs the mean.
+
+```{r runit, include=FALSE, eval=FALSE}
+rmarkdown::render("vignettes/kbrin_poster_abstract.Rmd", 
+                  output_format = c("word_document", "pdf_document"),
+                  output_dir = "outputs")
+```
+
