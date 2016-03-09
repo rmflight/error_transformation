@@ -2,7 +2,7 @@
 title: "Visualizing Effect of Data Transformations on Errors"
 author: "Robert M Flight"
 date: "`r Sys.time()`"
-commit: "`r substr(git2r::branch_target(git2r::head(git2r::repository(getwd()))), 1, 8)`"
+commit: "`r substr(git2r::branch_target(git2r::head(git2r::repository())), 1, 8)`"
 output: html_document
 ---
 
@@ -12,10 +12,7 @@ library(fakeDataWithError)
 library(visualizationQualityControl)
 library(cowplot)
 library(dplyr)
-```
-
-```{r function_defs, include=FALSE}
-
+library(errorTransformation)
 ```
 
 
@@ -366,8 +363,8 @@ compare_lt_ae_sr <- rbind(
   summarize_data(t(add_nozero)) %>% filter(., type == "rsd") %>% mutate(., data = "add") %>% transform(., mean = log(mean)),
   summarize_data(t(log_add)) %>% filter(., type == "sd") %>% mutate(., data = "log"))
 
-hist_compare_lt_ae_sr <- ggplot(log_compare_ae, aes(x = var, fill = data)) + geom_density(alpha = 0.5)
-point_compare_lt_ae_sr <- ggplot(log_compare_ae, aes(x = mean, y = var, color = data)) + 
+hist_compare_lt_ae_sr <- ggplot(compare_lt_ae_sr, aes(x = var, fill = data)) + geom_density(alpha = 0.5)
+point_compare_lt_ae_sr <- ggplot(compare_lt_ae_sr, aes(x = mean, y = var, color = data)) + 
   geom_point(alpha = 0.5)
 
 plot_grid(hist_compare_lt_ae_sr, point_compare_lt_ae_sr, nrow = 1, labels = LETTERS[1:2])
@@ -534,5 +531,7 @@ knitr::kable(ses_info$packages, format = "markdown")
 # Create Markdown
 
 ```{r runit, eval=FALSE, echo = TRUE}
-rmarkdown::render("glbio2016_manuscript.Rmd", clean = FALSE)
+rmarkdown::render("vignettes/main_manuscript.Rmd", clean = FALSE,
+                  output_dir = "outputs")
+file.copy("vignettes/main_manuscript.utf8.md", "outputs/main_manuscript.utf8.md")
 ```
