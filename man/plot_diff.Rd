@@ -4,12 +4,14 @@
 \alias{plot_diff}
 \title{plot differences in range}
 \usage{
-plot_diff(org_data, log_mean = log1p)
+plot_diff(org_data, log_mean = log1p, use_title = "Difference vs Mean")
 }
 \arguments{
 \item{org_data}{the original data}
 
 \item{log_mean}{should plot with log-transformed mean on x-axis?}
+
+\item{use_title}{what title to add to the plot?}
 }
 \value{
 plot

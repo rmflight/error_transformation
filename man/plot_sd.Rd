@@ -4,7 +4,8 @@
 \alias{plot_sd}
 \title{sd and rsd plot}
 \usage{
-plot_sd(org_data, log_mean = log1p, sd_type = "sd")
+plot_sd(org_data, log_mean = log1p, sd_type = "sd",
+  use_title = "SD vs Mean")
 }
 \arguments{
 \item{org_data}{the original data as matrix}
@@ -12,6 +13,8 @@ plot_sd(org_data, log_mean = log1p, sd_type = "sd")
 \item{log_mean}{should the mean on x-axis be log-transformed}
 
 \item{sd_type}{plot the SD or RSD?}
+
+\item{use_title}{what title to put on the plot?}
 }
 \value{
 plot
