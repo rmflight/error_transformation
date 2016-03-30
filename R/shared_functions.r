@@ -152,6 +152,27 @@ pareto_scale <- function(in_data, sub_mean = FALSE){
   out_val
 }
 
+#' apply arcsinh transform
+#'
+#' arcsinh is similar to log, but handles zeros and negatives
+#'
+#' \code{asinh(a + b * x) + c}
+#'
+#' @param in_data the data to transform
+#' @param a first parameter (default = 1)
+#' @param b second parameter (default = 1)
+#' @param c third parameter (default = 0)
+#'
+#' @export
+#' @return matrix
+arcsinh_transform <- function(in_data, a = 1, b = 1, c = 0){
+  b_data <- b * in_data
+  t_data <- asinh(a + b_data)
+  out_data <- t_data + c
+
+  out_data
+}
+
 #' get sd or rsd from two datasets
 #'
 #' @param data1 the first dataset
