@@ -178,28 +178,3 @@ ggsave(filename = file.path(save_plot_loc, "mix_pair_plot.png"), plot = mix_pair
        width = 11, height = 5, dpi = 300)
 ```
 
-The difference plot is so different from the MA plot. Is this due to using the
-whole data vs a single pair, or taking biggest difference? One way to check
-is to take all pairwise comparisons and get average absolute difference, and
-compare to taking the biggest difference.
-
-```{r check_diff}
-pair_comb <- expand.grid(seq(1, n_rep), seq(1, n_rep))
-pair_comb <- pair_comb[(pair_comb[,2] > pair_comb[,1]), ]
-out_comb <- matrix(0, nrow = n_point, ncol = nrow(pair_comb))
-
-for (irow in seq(1, nrow(pair_comb))) {
-  iloc <- pair_comb[irow, 1]
-  jloc <- pair_comb[irow, 2]
-  out_comb[, irow] <- abs(mix_error[, iloc] - mix_error[, jloc])
-}
-
-out_means <- rowMeans(out_comb)
-
-diff_frame2 <- data.frame(mean = rowMeans(mix_error), diff = out_means)
-
-mix_diff_plot
-
-ggplot(diff_frame2, aes(x = mean, y = diff)) + geom_point()
-```
-
