@@ -197,5 +197,9 @@ for (irow in seq(1, nrow(pair_comb))) {
 out_means <- rowMeans(out_comb)
 
 diff_frame2 <- data.frame(mean = rowMeans(mix_error), diff = out_means)
+
+mix_diff_plot
+
+ggplot(diff_frame2, aes(x = mean, y = diff)) + geom_point()
 ```
 
