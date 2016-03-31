@@ -13,6 +13,7 @@ library(visualizationQualityControl)
 library(cowplot)
 library(dplyr)
 library(errorTransformation)
+save_plot_loc <- "~/Documents/posters/dataTransformationsError/figures/"
 ```
 
 # Problem & Goal
@@ -23,11 +24,13 @@ In this work, we demonstrate a set of three simple graphs which facilitate the d
 
 We have developed a straight-forward set of graphs that effectively summarize major types of error present in high replicate datasets. Using these graphical summaries we find that the log-transform is the most effective method of the common methods employed for removing proportional error.
 
-# Data
+# Data & Transformations
+
+The data for this analysis consists of 1000 points, with 100 replicates. The 100 replicates are generated from the base data with different types of error, either additive (sd = 0.5), proportional (rsd = 0.1), or a mixture. The data transformations investigated include autoscaling, pareto scaling, log, arcsinh and root** (2nd and 5th). 
 
 ```{r setup_data}
 set.seed(1234)
-n_point <- 10000
+n_point <- 1000
 n_rep <- 100
 offset <- 4
 simulated_data <- c(rlnorm(n_point / 2, meanlog = 1, sdlog = 1),
@@ -69,3 +72,130 @@ mix_error[(mix_error < 0)] <- 0
 mix_nozero <- filter_features(mix_error, 1e-16)
 mix_minone <- filter_features(mix_error, 1)
 ```
+
+
+# Pair plots
+
+## Additive
+
+```{r buildup_plots}
+pair_frame <- data.frame(rep1 = add_error[,1], rep2 = add_error[,2])
+add_pair_plot <- ggplot(pair_frame, aes(x = rep1, y = rep2)) + geom_point()
+
+ma_frame <- data.frame(M = add_error[,1] - add_error[,2],
+                      A = rowMeans(add_error[, 1:2]))
+add_ma_plot <- ggplot(ma_frame, aes(x = A, y = M)) + geom_point()
+
+diff_error <- apply(add_error, 1, function(x){
+  max(x) - min(x)
+})
+range_frame <- data.frame(difference = diff_error,
+                          mean = rowMeans(add_error))
+add_diff_plot <- ggplot(range_frame, aes(x = mean, y = difference)) + geom_point()
+
+add_error_summ <- summarize_data(t(add_error))
+add_sd_plot <- filter(add_error_summ, type == "sd") %>% 
+  ggplot(., aes(x = mean, y = var)) + geom_point() + ylab("sd")
+add_rsd_plot <- filter(add_error_summ, type == "rsd") %>%
+  ggplot(., aes(x = mean, y = var)) + geom_point() + ylab("rsd")
+
+add_pair_plot <- plot_grid(add_pair_plot, add_ma_plot, add_diff_plot, add_sd_plot, add_rsd_plot, nrow = 1,
+          labels = LETTERS[1:5])
+add_pair_plot
+```
+
+```{r save_pair_plot}
+ggsave(filename = file.path(save_plot_loc, "add_pair_plot.png"), plot = add_pair_plot, 
+       width = 11, height = 5, dpi = 300)
+```
+
+## Proportional
+
+```{r buildup_plots}
+pair_frame <- data.frame(rep1 = prop_error[,1], rep2 = prop_error[,2])
+prop_pair_plot <- ggplot(pair_frame, aes(x = rep1, y = rep2)) + geom_point()
+
+ma_frame <- data.frame(M = prop_error[,1] - prop_error[,2],
+                      A = rowMeans(prop_error[, 1:2]))
+prop_ma_plot <- ggplot(ma_frame, aes(x = A, y = M)) + geom_point()
+
+diff_error <- apply(prop_error, 1, function(x){
+  max(x) - min(x)
+})
+range_frame <- data.frame(difference = diff_error,
+                          mean = rowMeans(prop_error))
+prop_diff_plot <- ggplot(range_frame, aes(x = mean, y = difference)) + geom_point()
+
+prop_error_summ <- summarize_data(t(prop_error))
+prop_sd_plot <- filter(prop_error_summ, type == "sd") %>% 
+  ggplot(., aes(x = mean, y = var)) + geom_point() + ylab("sd")
+prop_rsd_plot <- filter(prop_error_summ, type == "rsd") %>%
+  ggplot(., aes(x = mean, y = var)) + geom_point() + ylab("rsd")
+
+prop_pair_plot <- plot_grid(prop_pair_plot, prop_ma_plot, prop_diff_plot, prop_sd_plot, prop_rsd_plot, nrow = 1,
+          labels = LETTERS[1:5])
+prop_pair_plot
+```
+
+```{r prop_save_pair_plot}
+ggsave(filename = file.path(save_plot_loc, "prop_pair_plot.png"), plot = prop_pair_plot, 
+       width = 11, height = 5, dpi = 300)
+```
+
+
+## Mixed 
+
+## Proportional
+
+```{r buildup_plots}
+pair_frame <- data.frame(rep1 = mix_error[,1], rep2 = mix_error[,2])
+mix_pair_plot <- ggplot(pair_frame, aes(x = rep1, y = rep2)) + geom_point()
+
+ma_frame <- data.frame(M = abs(mix_error[,1] - mix_error[,2]),
+                      A = rowMeans(mix_error[, 1:2]))
+mix_ma_plot <- ggplot(ma_frame, aes(x = A, y = M)) + geom_point()
+
+diff_error <- apply(mix_error, 1, function(x){
+  abs(max(x) - min(x))
+})
+range_frame <- data.frame(difference = diff_error,
+                          mean = rowMeans(mix_error))
+mix_diff_plot <- ggplot(range_frame, aes(x = mean, y = difference)) + geom_point()
+
+mix_error_summ <- summarize_data(t(mix_error))
+mix_sd_plot <- filter(mix_error_summ, type == "sd") %>% 
+  ggplot(., aes(x = mean, y = var)) + geom_point() + ylab("sd")
+mix_rsd_plot <- filter(mix_error_summ, type == "rsd") %>%
+  ggplot(., aes(x = mean, y = var)) + geom_point() + ylab("rsd")
+
+mix_pair_plot <- plot_grid(mix_pair_plot, mix_ma_plot, mix_diff_plot, mix_sd_plot, mix_rsd_plot, nrow = 1,
+          labels = LETTERS[1:5])
+mix_pair_plot
+```
+
+```{r mix_save_pair_plot}
+ggsave(filename = file.path(save_plot_loc, "mix_pair_plot.png"), plot = mix_pair_plot, 
+       width = 11, height = 5, dpi = 300)
+```
+
+The difference plot is so different from the MA plot. Is this due to using the
+whole data vs a single pair, or taking biggest difference? One way to check
+is to take all pairwise comparisons and get average absolute difference, and
+compare to taking the biggest difference.
+
+```{r check_diff}
+pair_comb <- expand.grid(seq(1, n_rep), seq(1, n_rep))
+pair_comb <- pair_comb[(pair_comb[,2] > pair_comb[,1]), ]
+out_comb <- matrix(0, nrow = n_point, ncol = nrow(pair_comb))
+
+for (irow in seq(1, nrow(pair_comb))) {
+  iloc <- pair_comb[irow, 1]
+  jloc <- pair_comb[irow, 2]
+  out_comb[, irow] <- abs(mix_error[, iloc] - mix_error[, jloc])
+}
+
+out_means <- rowMeans(out_comb)
+
+diff_frame2 <- data.frame(mean = rowMeans(mix_error), diff = out_means)
+```
+
