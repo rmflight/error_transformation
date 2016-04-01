@@ -301,8 +301,9 @@ me_ps_summ <- summarize_data(t(me_ps))
 max_me_ps <- filter(me_ps_summ, type == "rsd") %>% select(., var) %>% max()
 all.equal(max_me_nt, max_me_ps)
 
-pareto_compare <- summarize_two(mix_nozero, me_ps, sd_type = "rsd", name1 = "mix", name2 = "mix_pareto")
+pareto_compare <- summarize_two(mix_nozero, me_ps, sd_type = "rsd", name1 = "mix", name2 = "pareto(mix)")
 
+pareto_compare$data <- factor(pareto_compare$data, levels = c("mix", "pareto(mix)"), ordered = TRUE)
 pareto_compare$mean <- log(pareto_compare$mean)
 ggplot(pareto_compare, aes(x = var, fill = data)) + geom_density(alpha = 0.5)
 ggplot(pareto_compare, aes(x = mean, y = var, color = data)) + geom_point(alpha = 0.5)
@@ -312,7 +313,7 @@ In contrast to autoscaling, pareto scaling modifies the values by the square roo
 
 ```{r pareto_save_plots}
 me_ps_rsd_oomp <- ggplot(pareto_compare, aes(x = mean, y = var, color = data)) + geom_point(alpha = 0.5) + 
-  xlab("log(mean)") + ylab("rsd")
+  xlab("log(mean)") + ylab("rsd") + theme(legend.position = c(0.5, 0.8), legend.title = element_text(size = 0))
 pareto_out_graph <- plot_grid(me_ps_diff, me_ps_sd, me_ps_rsd, me_ps_rsd_oomp, nrow = 1, labels = LETTERS[1:4])
 
 pareto_out_graph
@@ -375,11 +376,11 @@ me_rt_comb <- cbind(root_mixed, root_mixed2)
 
 me_rt_summary <- summarize_data(t(me_rt_comb), root_class)
 me_rt_diff <- filter(me_rt_summary, type == "diff") %>%
-  ggplot(., aes(x = mean, y = var, color = class)) + geom_point()
+  ggplot(., aes(x = mean, y = var)) + geom_point()
 me_rt_sd <- filter(me_rt_summary, type == "sd") %>%
-  ggplot(., aes(x = mean, y = var, color = class)) + geom_point()
+  ggplot(., aes(x = mean, y = var)) + geom_point()
 me_rt_rsd <- filter(me_rt_summary, type == "rsd") %>%
-  ggplot(., aes(x = mean, y = var, color = class)) + geom_point()
+  ggplot(., aes(x = mean, y = var)) + geom_point()
 
 plot_grid(me_rt_diff, me_rt_sd, me_rt_rsd, nrow = 1, labels = LETTERS[1:3])
 ```
@@ -388,14 +389,14 @@ plot_grid(me_rt_diff, me_rt_sd, me_rt_rsd, nrow = 1, labels = LETTERS[1:3])
 ```{r check_rt_me}
 compare_rt_me_rs <- rbind(
   summarize_data(t(mix_error)) %>% filter(., type == "rsd") %>%
-    mutate(., data = "rsd(mix)") %>% transform(., mean = log(mean)),
+    mutate(., data = "mix") %>% transform(., mean = log(mean)),
   me_rt_summary %>% filter(., type == "sd") %>%
-    mutate(., data = "sd(root(mix))")
+    mutate(., data = "root(mix)")
 )
 
 hist_comp_rt_me_rs <- ggplot(compare_rt_me_rs, aes(x = var, fill = data)) + 
   geom_density(alpha = 0.5) + theme(legend.position = "none")
-point_comp_rt_me_rs <- ggplot(compare_rt_me_rs, aes(x = mean, y = var, color = data)) +
+point_comp_rt_me_rs <- ggplot(compare_rt_me_rs, aes(x = mean, y = var)) +
   geom_point(alpha = 0.5) + theme(legend.position = c(0.5, 0.8), legend.title = element_text(size = 0))
 plot_grid(hist_comp_rt_me_rs, point_comp_rt_me_rs, nrow = 1, labels = LETTERS[1:2])
 
@@ -409,16 +410,17 @@ compare_rt_me_rr <- rbind(
 hist_comp_rt_me_rr <- ggplot(compare_rt_me_rr, aes(x = var, fill = data)) + 
   geom_density(alpha = 0.5)
 point_comp_rt_me_rr <- ggplot(compare_rt_me_rr, aes(x = mean, y = var, color = data)) +
-  geom_point(alpha = 0.5) + theme(legend.position = c(0.5, 0.8), legend.title = element_text(size = 0))
+  geom_point(alpha = 0.5) + theme(legend.position = c(0.5, 0.8), legend.title = element_text(size = 0)) +
+  ylab("rsd")
 plot_grid(hist_comp_rt_me_rr, point_comp_rt_me_rr, nrow = 1, labels = LETTERS[1:2])
 ```
 
 
 ```{r save_root_mix}
 out_rt_mix <- plot_grid(me_rt_diff, me_rt_sd, me_rt_rsd, point_comp_rt_me_rr, 
-                         point_comp_rt_me_rs, nrow = 1, labels = LETTERS[1:5])
+                         nrow = 1, labels = LETTERS[1:4])
 ggsave(file.path(save_plot_loc, "mix_root.png"), plot = out_rt_mix, dpi = 300,
-       width = 20, height = 5)
+       width = 16, height = 5)
 ```
 
 
