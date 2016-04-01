@@ -318,6 +318,107 @@ ggsave(file.path(save_plot_loc, "mix_pareto.png"), plot = pareto_out_graph, dpi 
        width = 16, height = 5)
 ```
 
+## Root Transform
+
+A square root transform was applied to the data. The choice of using 2 as the
+root is arbitrary, however depending on the size of the **tails** of the data
+a higher root may be useful. 
+
+### Additive Error
+
+```{r root_add_plot}
+root_add <- root_transform(add_error)
+root_add2 <- root_transform(add_error, 5)
+
+root_add_comb <- cbind(root_add, root_add2)
+root_class <- rep(c("2", "5"), each = 100)
+root_summary <- summarize_data(t(root_add_comb), root_class)
+
+ae_rt_diff <- filter(root_summary, type == "diff") %>%
+  ggplot(., aes(x = mean, y = var, color = class)) + geom_point()
+ae_rt_sd <- filter(root_summary, type == "sd") %>%
+  ggplot(., aes(x = mean, y = var, color = class)) + geom_point()
+ae_rt_rsd <- filter(root_summary, type == "rsd") %>%
+  ggplot(., aes(x = mean, y = var, color = class)) + geom_point()
+plot_grid(ae_rt_diff, ae_rt_sd, ae_rt_rsd, nrow = 1, labels = LETTERS[1:3])
+```
+
+### Proportional Error
+
+```{r root_prop_plot}
+root_prop1 <- root_transform(prop_error)
+root_prop2 <- root_transform(prop_error, root = 5)
+root_prop_comb <- cbind(root_prop1, root_prop2)
+
+root_pe_summary <- summarize_data(t(root_prop_comb), root_class)
+
+root_pe_diff <- filter(root_pe_summary, type == "diff") %>%
+  ggplot(., aes(x = mean, y = var, color = class)) + geom_point()
+root_pe_sd <- filter(root_pe_summary, type == "sd") %>%
+  ggplot(., aes(x = mean, y = var, color = class)) + geom_point()
+root_pe_rsd <- filter(root_pe_summary, type == "rsd") %>%
+  ggplot(., aes(x = mean, y = var, color = class)) + geom_point()
+
+plot_grid(root_pe_diff, root_pe_sd, root_pe_rsd, nrow = 1, labels = LETTERS[1:3])
+```
+
+### Mixed Error
+
+```{r root_mixed_plot}
+root_mixed <- root_transform(mix_error)
+root_mixed2 <- root_transform(mix_error, 5)
+
+me_rt_comb <- cbind(root_mixed, root_mixed2)
+
+me_rt_summary <- summarize_data(t(me_rt_comb), root_class)
+me_rt_diff <- filter(me_rt_summary, type == "diff") %>%
+  ggplot(., aes(x = mean, y = var, color = class)) + geom_point()
+me_rt_sd <- filter(me_rt_summary, type == "sd") %>%
+  ggplot(., aes(x = mean, y = var, color = class)) + geom_point()
+me_rt_rsd <- filter(me_rt_summary, type == "rsd") %>%
+  ggplot(., aes(x = mean, y = var, color = class)) + geom_point()
+
+plot_grid(me_rt_diff, me_rt_sd, me_rt_rsd, nrow = 1, labels = LETTERS[1:3])
+```
+
+
+```{r check_rt_me}
+compare_rt_me_rs <- rbind(
+  summarize_data(t(mix_error)) %>% filter(., type == "rsd") %>%
+    mutate(., data = "rsd(mix)") %>% transform(., mean = log(mean)),
+  me_rt_summary %>% filter(., type == "sd") %>%
+    mutate(., data = "sd(root(mix))")
+)
+
+hist_comp_rt_me_rs <- ggplot(compare_rt_me_rs, aes(x = var, fill = data)) + 
+  geom_density(alpha = 0.5) + theme(legend.position = "none")
+point_comp_rt_me_rs <- ggplot(compare_rt_me_rs, aes(x = mean, y = var, color = data)) +
+  geom_point(alpha = 0.5) + theme(legend.position = c(0.5, 0.8), legend.title = element_text(size = 0))
+plot_grid(hist_comp_rt_me_rs, point_comp_rt_me_rs, nrow = 1, labels = LETTERS[1:2])
+
+compare_rt_me_rr <- rbind(
+  summarize_data(t(mix_nozero)) %>% filter(., type == "rsd") %>%
+    mutate(., data = "rsd(mix)") %>% transform(., mean = log(mean)),
+  me_rt_summary %>% filter(., type == "rsd") %>%
+    mutate(., data = "rsd(root(mix))")
+)
+
+hist_comp_rt_me_rr <- ggplot(compare_rt_me_rr, aes(x = var, fill = data)) + 
+  geom_density(alpha = 0.5)
+point_comp_rt_me_rr <- ggplot(compare_rt_me_rr, aes(x = mean, y = var, color = data)) +
+  geom_point(alpha = 0.5) + theme(legend.position = c(0.5, 0.8), legend.title = element_text(size = 0))
+plot_grid(hist_comp_rt_me_rr, point_comp_rt_me_rr, nrow = 1, labels = LETTERS[1:2])
+```
+
+
+```{r save_root_mix}
+out_rt_mix <- plot_grid(me_rt_diff, me_rt_sd, me_rt_rsd, point_comp_rt_me_rr, 
+                         point_comp_rt_me_rs, nrow = 1, labels = LETTERS[1:5])
+ggsave(file.path(save_plot_loc, "mix_root.png"), plot = out_rt_mix, dpi = 300,
+       width = 20, height = 5)
+```
+
+
 
 ## Log Transformation
 
@@ -580,106 +681,6 @@ plot_grid(hist_comp_ah_me_rr, point_comp_ah_me_rr, nrow = 1, labels = LETTERS[1:
 out_asinh_mix <- plot_grid(me_ah_diff, me_ah_sd, me_ah_rsd, point_comp_ah_me_rr, 
                          point_comp_ah_me_rs, nrow = 1, labels = LETTERS[1:5])
 ggsave(file.path(save_plot_loc, "mix_asinh.png"), plot = out_asinh_mix, dpi = 300,
-       width = 20, height = 5)
-```
-
-## Root Transform
-
-A square root transform was applied to the data. The choice of using 2 as the
-root is arbitrary, however depending on the size of the **tails** of the data
-a higher root may be useful. 
-
-### Additive Error
-
-```{r root_add_plot}
-root_add <- root_transform(add_error)
-root_add2 <- root_transform(add_error, 5)
-
-root_add_comb <- cbind(root_add, root_add2)
-root_class <- rep(c("2", "5"), each = 100)
-root_summary <- summarize_data(t(root_add_comb), root_class)
-
-ae_rt_diff <- filter(root_summary, type == "diff") %>%
-  ggplot(., aes(x = mean, y = var, color = class)) + geom_point()
-ae_rt_sd <- filter(root_summary, type == "sd") %>%
-  ggplot(., aes(x = mean, y = var, color = class)) + geom_point()
-ae_rt_rsd <- filter(root_summary, type == "rsd") %>%
-  ggplot(., aes(x = mean, y = var, color = class)) + geom_point()
-plot_grid(ae_rt_diff, ae_rt_sd, ae_rt_rsd, nrow = 1, labels = LETTERS[1:3])
-```
-
-### Proportional Error
-
-```{r root_prop_plot}
-root_prop1 <- root_transform(prop_error)
-root_prop2 <- root_transform(prop_error, root = 5)
-root_prop_comb <- cbind(root_prop1, root_prop2)
-
-root_pe_summary <- summarize_data(t(root_prop_comb), root_class)
-
-root_pe_diff <- filter(root_pe_summary, type == "diff") %>%
-  ggplot(., aes(x = mean, y = var, color = class)) + geom_point()
-root_pe_sd <- filter(root_pe_summary, type == "sd") %>%
-  ggplot(., aes(x = mean, y = var, color = class)) + geom_point()
-root_pe_rsd <- filter(root_pe_summary, type == "rsd") %>%
-  ggplot(., aes(x = mean, y = var, color = class)) + geom_point()
-
-plot_grid(root_pe_diff, root_pe_sd, root_pe_rsd, nrow = 1, labels = LETTERS[1:3])
-```
-
-### Mixed Error
-
-```{r root_mixed_plot}
-root_mixed <- root_transform(mix_error)
-root_mixed2 <- root_transform(mix_error, 5)
-
-me_rt_comb <- cbind(root_mixed, root_mixed2)
-
-me_rt_summary <- summarize_data(t(me_rt_comb), root_class)
-me_rt_diff <- filter(me_rt_summary, type == "diff") %>%
-  ggplot(., aes(x = mean, y = var, color = class)) + geom_point()
-me_rt_sd <- filter(me_rt_summary, type == "sd") %>%
-  ggplot(., aes(x = mean, y = var, color = class)) + geom_point()
-me_rt_rsd <- filter(me_rt_summary, type == "rsd") %>%
-  ggplot(., aes(x = mean, y = var, color = class)) + geom_point()
-
-plot_grid(me_rt_diff, me_rt_sd, me_rt_rsd, nrow = 1, labels = LETTERS[1:3])
-```
-
-
-```{r check_rt_me}
-compare_rt_me_rs <- rbind(
-  summarize_data(t(mix_error)) %>% filter(., type == "rsd") %>%
-    mutate(., data = "rsd(mix)") %>% transform(., mean = log(mean)),
-  me_rt_summary %>% filter(., type == "sd") %>%
-    mutate(., data = "sd(root(mix))")
-)
-
-hist_comp_rt_me_rs <- ggplot(compare_rt_me_rs, aes(x = var, fill = data)) + 
-  geom_density(alpha = 0.5) + theme(legend.position = "none")
-point_comp_rt_me_rs <- ggplot(compare_rt_me_rs, aes(x = mean, y = var, color = data)) +
-  geom_point(alpha = 0.5) + theme(legend.position = c(0.5, 0.8), legend.title = element_text(size = 0))
-plot_grid(hist_comp_rt_me_rs, point_comp_rt_me_rs, nrow = 1, labels = LETTERS[1:2])
-
-compare_rt_me_rr <- rbind(
-  summarize_data(t(mix_nozero)) %>% filter(., type == "rsd") %>%
-    mutate(., data = "rsd(mix)") %>% transform(., mean = log(mean)),
-  me_rt_summary %>% filter(., type == "rsd") %>%
-    mutate(., data = "rsd(root(mix))")
-)
-
-hist_comp_rt_me_rr <- ggplot(compare_rt_me_rr, aes(x = var, fill = data)) + 
-  geom_density(alpha = 0.5)
-point_comp_rt_me_rr <- ggplot(compare_rt_me_rr, aes(x = mean, y = var, color = data)) +
-  geom_point(alpha = 0.5) + theme(legend.position = c(0.5, 0.8), legend.title = element_text(size = 0))
-plot_grid(hist_comp_rt_me_rr, point_comp_rt_me_rr, nrow = 1, labels = LETTERS[1:2])
-```
-
-
-```{r save_root_mix}
-out_rt_mix <- plot_grid(me_rt_diff, me_rt_sd, me_rt_rsd, point_comp_rt_me_rr, 
-                         point_comp_rt_me_rs, nrow = 1, labels = LETTERS[1:5])
-ggsave(file.path(save_plot_loc, "mix_root.png"), plot = out_rt_mix, dpi = 300,
        width = 20, height = 5)
 ```
 
