@@ -529,6 +529,9 @@ compare_lt_me_rs <- rbind(
     mutate(., data = "sd(log(mix))")
 )
 
+compare_lt_me_rs$data <- factor(compare_lt_me_rs$data, levels = c("rsd(mix)", "sd(log(mix))"),
+                                ordered = TRUE)
+
 hist_comp_lt_me_rs <- ggplot(compare_lt_me_rs, aes(x = var, fill = data)) + 
   geom_density(alpha = 0.5) + theme(legend.position = "none")
 point_comp_lt_me_rs <- ggplot(compare_lt_me_rs, aes(x = mean, y = var, color = data)) +
@@ -539,20 +542,24 @@ compare_lt_me_rr <- rbind(
   summarize_data(t(mix_nozero)) %>% filter(., type == "rsd") %>%
     mutate(., data = "mix") %>% transform(., mean = log(mean)),
   summarize_data(t(log_mix)) %>% filter(., type == "rsd") %>%
-    mutate(., data = "mix_log")
+    mutate(., data = "log(mix)")
 )
+
+compare_lt_me_rr$data <- factor(compare_lt_me_rr$data, levels = c("mix", "log(mix)"),
+                                ordered = TRUE)
 
 hist_comp_lt_me_rr <- ggplot(compare_lt_me_rr, aes(x = var, fill = data)) + 
   geom_density(alpha = 0.5)
 point_comp_lt_me_rr <- ggplot(compare_lt_me_rr, aes(x = mean, y = var, color = data)) +
-  geom_point(alpha = 0.5)
+  geom_point(alpha = 0.5) + theme(legend.position = c(0.5, 0.8), legend.title = element_text(size = 0)) +
+  ylab("rsd")
 plot_grid(hist_comp_lt_me_rr, point_comp_lt_me_rr, nrow = 1, labels = LETTERS[1:2])
 ```
 
 
 ```{r save_log_mix}
-out_log_mix <- plot_grid(me_lt_diff, me_lt_sd, me_lt_rsd, hist_comp_lt_me_rs, 
-                         point_comp_lt_me_rs, nrow = 1, labels = LETTERS[1:5])
+out_log_mix <- plot_grid(me_lt_diff, me_lt_sd, me_lt_rsd, point_comp_lt_me_rs, 
+                         point_comp_lt_me_rr, nrow = 1, labels = LETTERS[1:5])
 ggsave(file.path(save_plot_loc, "mix_log.png"), plot = out_log_mix, dpi = 300,
        width = 20, height = 5)
 ```
