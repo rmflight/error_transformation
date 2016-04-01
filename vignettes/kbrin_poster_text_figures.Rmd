@@ -240,15 +240,18 @@ me_as_summ <- summarize_data(t(me_as))
 max_me_as <- filter(me_as_summ, type == "rsd") %>% select(., var) %>% max()
 identical(max_me_nt, max_me_as)
 
-auto_compare <- summarize_two(mix_error, me_as, sd_type = "diff", name1 = "mix_error", name2 = "mix_as")
+auto_compare <- summarize_two(mix_error, me_as, sd_type = "diff", name1 = "mix", name2 = "autoscale(mix)")
 auto_compare$mean <- log(auto_compare$mean)
+
+# set up the factors properly
+auto_compare$data <- factor(auto_compare$data, levels = c("mix", "autoscale(mix)"), ordered = TRUE)
 ggplot(auto_compare, aes(x = var, fill = data)) + geom_density(alpha = 0.5)
 ggplot(auto_compare, aes(x = mean, y = var, color = data)) + geom_point(alpha = 0.5)
 ```
 
 ```{r save_plot}
 me_as_plot_compare <- ggplot(auto_compare, aes(x = mean, y = var, color = data)) + 
-  geom_point(alpha = 0.5) + xlab("log(mean)") + ylab("diff")
+  geom_point(alpha = 0.5) + xlab("log(mean)") + ylab("diff") + theme(legend.position = c(0.5, 0.8), legend.title = element_text(size = 0))
 
 mix_auto2 <- plot_grid(me_as_diff, me_as_sd, me_as_rsd, me_as_plot_compare, nrow = 1, labels = LETTERS[1:4])
 mix_auto2
