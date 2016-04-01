@@ -260,3 +260,61 @@ ggsave(file.path(save_plot_loc, "mix_auto.png"), plot = mix_auto2, dpi = 300,
 ```
 
 Applying a variance or autoscaling to the data results in the removal of the additive error to a completely identical standard deviation of 1 across all samples at all abundances. This applies across all of the different error types. Although the standard deviation becomes identical and constant, the maximum relative variance is the same, and the distribution of the rsd values is identical, while the range of the mean is completely changed, as well as it's relationship to the differences.
+
+## Pareto Scaling
+
+### Additive
+
+```{r pareto_add}
+ae_ps <- pareto_scale(add_error)
+ae_ps_diff <- plot_diff(ae_ps, log_mean = log, use_title = NULL)
+ae_ps_sd <- plot_sd(ae_ps, log_mean = log, use_title = NULL)
+ae_ps_rsd <- plot_sd(ae_ps, sd_type = "rsd", log_mean = log, use_title = NULL)
+plot_grid(ae_ps_diff, ae_ps_sd, ae_ps_rsd, nrow = 1, labels = LETTERS[1:3])
+```
+
+### Proportional
+
+```{r pareto_prop}
+pe_ps <- pareto_scale(prop_error)
+pe_ps_diff <- plot_diff(pe_ps, log_mean = log, use_title = NULL)
+pe_ps_sd <- plot_sd(pe_ps, log_mean = log, use_title = NULL)
+pe_ps_rsd <- plot_sd(pe_ps, sd_type = "rsd", log_mean = log, use_title = NULL)
+plot_grid(pe_ps_diff, pe_ps_sd, pe_ps_rsd, nrow = 1, labels = LETTERS[1:3])
+```
+
+### Mixed
+
+```{r pareto_mixed}
+me_ps <- pareto_scale(mix_error)
+me_ps_diff <- plot_diff(me_ps, log_mean = log, use_title = NULL)
+me_ps_sd <- plot_sd(me_ps, log_mean = log, use_title = NULL)
+me_ps_rsd <- plot_sd(me_ps, sd_type = "rsd", log_mean = log, use_title = NULL)
+plot_grid(me_ps_diff, me_ps_sd, me_ps_rsd, nrow = 1, labels = LETTERS[1:3])
+```
+
+```{r pareto_check_rsd_ranges}
+me_ps_summ <- summarize_data(t(me_ps))
+max_me_ps <- filter(me_ps_summ, type == "rsd") %>% select(., var) %>% max()
+all.equal(max_me_nt, max_me_ps)
+
+pareto_compare <- summarize_two(mix_nozero, me_ps, sd_type = "rsd", name1 = "mix", name2 = "mix_pareto")
+
+pareto_compare$mean <- log(pareto_compare$mean)
+ggplot(pareto_compare, aes(x = var, fill = data)) + geom_density(alpha = 0.5)
+ggplot(pareto_compare, aes(x = mean, y = var, color = data)) + geom_point(alpha = 0.5)
+```
+
+In contrast to autoscaling, pareto scaling modifies the values by the square root of the variance. As shown in Figure X, this changes the absolute values of the standard deviations, but does not change the distribution, or the dependence of variance on the average abundance. In addition, the relative error remains the same, as the maximum values of the rsd in the mixed error case for the pareto scaled and non-transformed data are the same at `r max_me_nt`.
+
+```{r pareto_save_plots}
+me_ps_rsd_oomp <- ggplot(pareto_compare, aes(x = mean, y = var, color = data)) + geom_point(alpha = 0.5) + 
+  xlab("log(mean)") + ylab("rsd")
+pareto_out_graph <- plot_grid(me_ps_diff, me_ps_sd, me_ps_rsd, me_ps_rsd_oomp, nrow = 1, labels = LETTERS[1:4])
+
+pareto_out_graph
+
+ggsave(file.path(save_plot_loc, "mix_pareto.png"), plot = pareto_out_graph, dpi = 300,
+       width = 16, height = 5)
+```
+
