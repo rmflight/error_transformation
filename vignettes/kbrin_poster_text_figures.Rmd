@@ -668,6 +668,9 @@ compare_ah_me_rs <- rbind(
     mutate(., data = "sd(asinh(mix))")
 )
 
+compare_ah_me_rs$data <- factor(compare_ah_me_rs$data, levels = c("rsd(mix)", "sd(asinh(mix))"),
+                                ordered = TRUE)
+
 hist_comp_ah_me_rs <- ggplot(compare_ah_me_rs, aes(x = var, fill = data)) + 
   geom_density(alpha = 0.5) + theme(legend.position = "none")
 point_comp_ah_me_rs <- ggplot(compare_ah_me_rs, aes(x = mean, y = var, color = data)) +
@@ -676,22 +679,26 @@ plot_grid(hist_comp_ah_me_rs, point_comp_ah_me_rs, nrow = 1, labels = LETTERS[1:
 
 compare_ah_me_rr <- rbind(
   summarize_data(t(mix_nozero)) %>% filter(., type == "rsd") %>%
-    mutate(., data = "rsd(mix)") %>% transform(., mean = log(mean)),
+    mutate(., data = "mix") %>% transform(., mean = log(mean)),
   summarize_data(t(asinh_mix)) %>% filter(., type == "rsd") %>%
-    mutate(., data = "rsd(asinh(mix))")
+    mutate(., data = "asinh(mix)")
 )
+
+compare_ah_me_rr$data <- factor(compare_ah_me_rr$data, levels = c("mix", "asinh(mix)"),
+                                ordered = TRUE)
 
 hist_comp_ah_me_rr <- ggplot(compare_ah_me_rr, aes(x = var, fill = data)) + 
   geom_density(alpha = 0.5)
 point_comp_ah_me_rr <- ggplot(compare_ah_me_rr, aes(x = mean, y = var, color = data)) +
-  geom_point(alpha = 0.5)
+  geom_point(alpha = 0.5) + theme(legend.position = c(0.5, 0.8), legend.title = element_text(size = 0)) +
+  ylab("rsd")
 plot_grid(hist_comp_ah_me_rr, point_comp_ah_me_rr, nrow = 1, labels = LETTERS[1:2])
 ```
 
 
 ```{r save_asinh_mix}
-out_asinh_mix <- plot_grid(me_ah_diff, me_ah_sd, me_ah_rsd, point_comp_ah_me_rr, 
-                         point_comp_ah_me_rs, nrow = 1, labels = LETTERS[1:5])
+out_asinh_mix <- plot_grid(me_ah_diff, me_ah_sd, me_ah_rsd, point_comp_ah_me_rs, 
+                         point_comp_ah_me_rr, nrow = 1, labels = LETTERS[1:5])
 ggsave(file.path(save_plot_loc, "mix_asinh.png"), plot = out_asinh_mix, dpi = 300,
        width = 20, height = 5)
 ```
