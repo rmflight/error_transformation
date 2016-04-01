@@ -455,7 +455,7 @@ ggsave(file.path(save_plot_loc, "mix_log.png"), plot = out_log_mix, dpi = 300,
 
 ### Additive Error
 
-```{r log_add_error}
+```{r ah_add_error}
 asinh_add <- arcsinh_transform(add_error)
 ae_ah_diff <- plot_diff(asinh_add, log_mean = FALSE)
 ae_ah_sd <- plot_sd(asinh_add, log_mean = FALSE)
@@ -465,7 +465,7 @@ plot_grid(ae_ah_diff, ae_ah_sd, ae_ah_rsd, nrow = 1, labels = LETTERS[1:3])
 
 ### Proportional Error
 
-```{r log_prop_error}
+```{r ah_prop_error}
 asinh_prop <- arcsinh_transform(prop_error)
 
 pe_ah_diff <- plot_diff(asinh_prop, log_mean = FALSE, use_title = NULL)
@@ -476,7 +476,7 @@ plot_grid(pe_ah_diff, pe_ah_sd, pe_ah_rsd, nrow = 1, labels = LETTERS[1:3])
 
 ### Mixed Error
 
-```{r log_mix_error}
+```{r ah_mix_error}
 asinh_mix <- arcsinh_transform(mix_error)
 
 me_ah_diff <- plot_diff(asinh_mix, log_mean = FALSE, use_title = NULL)
@@ -488,7 +488,7 @@ plot_grid(me_ah_diff, me_ah_sd, me_ah_rsd, nrow = 1, labels = LETTERS[1:3])
 
 ### Compare Add Error
 
-```{r check_log_transforms_add}
+```{r check_ah_add}
 compare_ah_ae_sr <- rbind(
   summarize_data(t(add_error)) %>% filter(., type == "rsd") %>% mutate(., data = "add") %>% transform(., mean = log(mean)),
   summarize_data(t(asinh_add)) %>% filter(., type == "sd") %>% mutate(., data = "asinh"))
@@ -514,7 +514,7 @@ arcsinh-transformations completely change the structure of the data. Figure X sh
 that for the additive error only case, the SD vs mean looks more like the RSD vs
 mean in the non-transformed case.
 
-```{r check_lt_pe}
+```{r check_ah_pe}
 compare_ah_pe_rs <- rbind(
   summarize_data(t(prop_error)) %>% filter(., type == "rsd") %>% 
     mutate(., data = "rsd(prop)") %>% transform(., mean = log(mean)),
@@ -547,7 +547,7 @@ plot_grid(hist_comp_ah_pe_rr, point_comp_ah_pe_rr, nrow = 1, labels = LETTERS[1:
 For the proportional error case, the proportional error has been almost completely
 transformed into additive error.
 
-```{r check_lt_me}
+```{r check_ah_me}
 compare_ah_me_rs <- rbind(
   summarize_data(t(mix_error)) %>% filter(., type == "rsd") %>%
     mutate(., data = "rsd(mix)") %>% transform(., mean = log(mean)),
@@ -576,21 +576,24 @@ plot_grid(hist_comp_ah_me_rr, point_comp_ah_me_rr, nrow = 1, labels = LETTERS[1:
 ```
 
 
+```{r save_asinh_mix}
+out_asinh_mix <- plot_grid(me_ah_diff, me_ah_sd, me_ah_rsd, point_comp_ah_me_rr, 
+                         point_comp_ah_me_rs, nrow = 1, labels = LETTERS[1:5])
+ggsave(file.path(save_plot_loc, "mix_asinh.png"), plot = out_asinh_mix, dpi = 300,
+       width = 20, height = 5)
+```
+
 ## Root Transform
 
 A square root transform was applied to the data. The choice of using 2 as the
 root is arbitrary, however depending on the size of the **tails** of the data
 a higher root may be useful. 
 
-```{r root_histogram}
-
-```
-
 ### Additive Error
 
 ```{r root_add_plot}
-root_add <- root_transform(add_nozero)
-root_add2 <- root_transform(add_nozero, 5)
+root_add <- root_transform(add_error)
+root_add2 <- root_transform(add_error, 5)
 
 root_add_comb <- cbind(root_add, root_add2)
 root_class <- rep(c("2", "5"), each = 100)
@@ -608,8 +611,8 @@ plot_grid(ae_rt_diff, ae_rt_sd, ae_rt_rsd, nrow = 1, labels = LETTERS[1:3])
 ### Proportional Error
 
 ```{r root_prop_plot}
-root_prop1 <- root_transform(prop_nozero)
-root_prop2 <- root_transform(prop_nozero, root = 5)
+root_prop1 <- root_transform(prop_error)
+root_prop2 <- root_transform(prop_error, root = 5)
 root_prop_comb <- cbind(root_prop1, root_prop2)
 
 root_pe_summary <- summarize_data(t(root_prop_comb), root_class)
@@ -627,8 +630,8 @@ plot_grid(root_pe_diff, root_pe_sd, root_pe_rsd, nrow = 1, labels = LETTERS[1:3]
 ### Mixed Error
 
 ```{r root_mixed_plot}
-root_mixed <- root_transform(mix_nozero)
-root_mixed2 <- root_transform(mix_nozero, 5)
+root_mixed <- root_transform(mix_error)
+root_mixed2 <- root_transform(mix_error, 5)
 
 me_rt_comb <- cbind(root_mixed, root_mixed2)
 
@@ -644,10 +647,39 @@ plot_grid(me_rt_diff, me_rt_sd, me_rt_rsd, nrow = 1, labels = LETTERS[1:3])
 ```
 
 
+```{r check_rt_me}
+compare_rt_me_rs <- rbind(
+  summarize_data(t(mix_error)) %>% filter(., type == "rsd") %>%
+    mutate(., data = "rsd(mix)") %>% transform(., mean = log(mean)),
+  me_rt_summary %>% filter(., type == "sd") %>%
+    mutate(., data = "sd(root(mix))")
+)
 
-```{r save_asinh_mix}
-out_asinh_mix <- plot_grid(me_ah_diff, me_ah_sd, me_ah_rsd, point_comp_ah_me_rr, 
-                         point_comp_ah_me_rs, nrow = 1, labels = LETTERS[1:5])
-ggsave(file.path(save_plot_loc, "mix_asinh.png"), plot = out_asinh_mix, dpi = 300,
+hist_comp_rt_me_rs <- ggplot(compare_rt_me_rs, aes(x = var, fill = data)) + 
+  geom_density(alpha = 0.5) + theme(legend.position = "none")
+point_comp_rt_me_rs <- ggplot(compare_rt_me_rs, aes(x = mean, y = var, color = data)) +
+  geom_point(alpha = 0.5) + theme(legend.position = c(0.5, 0.8), legend.title = element_text(size = 0))
+plot_grid(hist_comp_rt_me_rs, point_comp_rt_me_rs, nrow = 1, labels = LETTERS[1:2])
+
+compare_rt_me_rr <- rbind(
+  summarize_data(t(mix_nozero)) %>% filter(., type == "rsd") %>%
+    mutate(., data = "rsd(mix)") %>% transform(., mean = log(mean)),
+  me_rt_summary %>% filter(., type == "rsd") %>%
+    mutate(., data = "rsd(root(mix))")
+)
+
+hist_comp_rt_me_rr <- ggplot(compare_rt_me_rr, aes(x = var, fill = data)) + 
+  geom_density(alpha = 0.5)
+point_comp_rt_me_rr <- ggplot(compare_rt_me_rr, aes(x = mean, y = var, color = data)) +
+  geom_point(alpha = 0.5) + theme(legend.position = c(0.5, 0.8), legend.title = element_text(size = 0))
+plot_grid(hist_comp_rt_me_rr, point_comp_rt_me_rr, nrow = 1, labels = LETTERS[1:2])
+```
+
+
+```{r save_root_mix}
+out_rt_mix <- plot_grid(me_rt_diff, me_rt_sd, me_rt_rsd, point_comp_rt_me_rr, 
+                         point_comp_rt_me_rs, nrow = 1, labels = LETTERS[1:5])
+ggsave(file.path(save_plot_loc, "mix_root.png"), plot = out_rt_mix, dpi = 300,
        width = 20, height = 5)
 ```
+
