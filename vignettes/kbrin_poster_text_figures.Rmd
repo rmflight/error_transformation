@@ -196,7 +196,6 @@ ggsave(filename = file.path(save_plot_loc, "mix_pair_plot.png"), plot = mix_pair
 
 # Results
 
-For each of the transformations, the data were transformed, the data examined using the difference, SD and RSD plots, and in some cases compared to either the untransformed data or another transformation.
 
 ## Auto-Scaling
 
@@ -262,7 +261,9 @@ ggsave(file.path(save_plot_loc, "mix_auto.png"), plot = mix_auto2, dpi = 300,
        width = 16, height = 5)
 ```
 
-Applying a variance or autoscaling to the data results in the removal of the additive error to a completely identical standard deviation of 1 across all samples at all abundances. This applies across all of the different error types. Although the standard deviation becomes identical and constant, the maximum relative variance is the same, and the distribution of the rsd values is identical, while the range of the mean is completely changed, as well as it's relationship to the differences.
+Fig 4. Autoscaling. A) Maximum difference vs the mean. B) Standard deviation vs the mean. C) Relative standard deviation vs the mean. D) Maximum difference of original and autoscaled data vs the mean.
+
+Applying a variance or autoscaling to the data results in the removal of the additive error to a completely identical standard deviation of 1 across all samples at all abundances. This applies across all of the different error types. Although the standard deviation becomes identical and constant, the maximum relative variance is the same, and the distribution of the rsd values is identical, while the range of the mean is completely changed, as well as it's relationship to the differences and the standard deviations.
 
 ## Pareto Scaling
 
