@@ -87,7 +87,7 @@ mix_minone <- filter_features(mix_error, 1)
 
 # Figures 1 - 3
 
-## Additive Error
+## Figure 1 -  Additive Error
 
 Fig 1. Additive error only. A) Two replicates plotted in "original" space B) Same two replicates rotated using MA plot, where M "minus" (rep1 - rep2) and A is average of rep1 and rep2. C) Difference between largest value and smallest value vs the mean E) Standard deviation (sd) across replicates vs the mean F) Relative standard deviation vs the mean. Red line indicates the amount of additive error added.
 
@@ -122,7 +122,7 @@ ggsave(filename = file.path(save_plot_loc, "add_pair_plot.png"), plot = add_pair
        width = 20, height = 5, dpi = 300)
 ```
 
-## Proportional Error
+## Figure 2: Proportional Error
 
 Fig 2. Proportional error only. A) Two replicates plotted in "original" space B) Same two replicates rotated using MA plot, where M "minus" (rep1 - rep2) and A is average of rep1 and rep2. C) Difference between largest value and smallest value vs the mean E) Standard deviation (sd) across replicates vs the mean F) Relative standard deviation vs the mean. Red line indicates the amount of proportional error added.
 
@@ -158,7 +158,7 @@ ggsave(filename = file.path(save_plot_loc, "prop_pair_plot.png"), plot = prop_pa
 ```
 
 
-## Mixed Error
+## Figure 3 -  Mixed Error
 
 Fig 3. Additive and proportional error. A) Two replicates plotted in "original" space B) Same two replicates rotated using MA plot, where M "minus" (rep1 - rep2) and A is average of rep1 and rep2. C) Difference between largest value and smallest value vs the mean E) Standard deviation (sd) across replicates vs the mean F) Relative standard deviation vs the mean.
 
@@ -261,7 +261,10 @@ ggsave(file.path(save_plot_loc, "mix_auto.png"), plot = mix_auto2, dpi = 300,
        width = 16, height = 5)
 ```
 
+### Figure 4 - Autoscaling
+
 Fig 4. Autoscaling. A) Maximum difference vs the mean. B) Standard deviation vs the mean. C) Relative standard deviation vs the mean. D) Maximum difference of original and autoscaled data vs the mean.
+
 
 Applying a variance or autoscaling to the data results in the removal of the additive error to a completely identical standard deviation of 1 across all samples at all abundances. This applies across all of the different error types. Although the standard deviation becomes identical and constant, the maximum relative variance is the same, and the distribution of the rsd values is identical, while the range of the mean is completely changed, as well as it's relationship to the differences and the standard deviations.
 
@@ -310,7 +313,11 @@ ggplot(pareto_compare, aes(x = var, fill = data)) + geom_density(alpha = 0.5)
 ggplot(pareto_compare, aes(x = mean, y = var, color = data)) + geom_point(alpha = 0.5)
 ```
 
-In contrast to autoscaling, pareto scaling modifies the values by the square root of the variance. As shown in Figure X, this changes the absolute values of the standard deviations, but does not change the distribution, or the dependence of variance on the average abundance. In addition, the relative error remains the same, as the maximum values of the rsd in the mixed error case for the pareto scaled and non-transformed data are the same at `r max_me_nt`.
+#### Figure 5 - Pareto Scaling
+
+Fig. 5 Application of pareto scaling to mixed error model data. All mean values have been log-transformed. A) Largest difference vs the mean. B) Standard deviation vs the mean. C) Relative standard deviation vs the mean. D) Relative standard deviation of mixed error data before (mix) and after (pareto(mix)) pareto scaling.
+
+In contrast to autoscaling, pareto scaling modifies the values by the square root of the variance. As shown in Figure 5, this changes the absolute values of the standard deviations, but does not change the distribution, or the relationship of the variance to the mean. In fact, the maximum of the RSD is virtually unchanged, it is only the range of the mean that changes.
 
 ```{r pareto_save_plots}
 me_ps_rsd_oomp <- ggplot(pareto_compare, aes(x = mean, y = var, color = data)) + geom_point(alpha = 0.5) + 
@@ -424,7 +431,11 @@ ggsave(file.path(save_plot_loc, "mix_root.png"), plot = out_rt_mix, dpi = 300,
        width = 16, height = 5)
 ```
 
+#### Figure 6 - Root Transform
 
+Fig 6. Application of root (2nd and 5th) transform to mixed error model data. A) Largest difference vs the mean. B) Standard deviation vs the mean. C) Relative standard deviation vs the mean. D) Relative standard deviation of mixed error data before (mix) and after (root(mix)) root transformation.
+
+Although the root transform changes the overall amount of variance compared to the mean, as with pareto scaling, the overall relationship of variance to the mean is maintained, as all the plots show. The variance is still dependent on the mean value, and the proportional error is still present in the data.
 
 ## Log Transformation
 
