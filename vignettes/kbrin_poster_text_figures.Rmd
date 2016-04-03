@@ -576,6 +576,12 @@ ggsave(file.path(save_plot_loc, "mix_log.png"), plot = out_log_mix, dpi = 300,
        width = 20, height = 5)
 ```
 
+#### Figure 7 - Log Transform
+
+Fig 7. Application of log transform to mixed error model data. A) Largest difference vs the mean. B) Standard deviation vs the mean. C) Relative standard deviation vs the mean. D) Relative standard deviation of mixed error data (rsd(mix)) and standard deviation of log transformed mixed error data (sd(log(mix))) vs the mean and  E) Relative standard deviation of mixed error data before (mix) and after (log(mix)) log transformation.
+
+The log transform completely changes how the standard deviation depends on the mean. Most notably, the variance becomes constant at higher mean values, much like the standard deviation in the additive error case. As shown in Figure 7D, the standard deviation of the log transform actually looks almost exactly like the relative standard deviation of the un-transformed data. Although it also appears that in the log-transformed data the low values have more error than the high values, Figure 7E shows that overall the relative error has decreased for the data.
+
 ## Arcsinh Transformation
 
 ### Additive Error
