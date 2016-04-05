@@ -112,14 +112,21 @@ add_sd_plot <- filter(add_error_summ, type == "sd") %>%
 add_rsd_plot <- filter(add_error_summ, type == "rsd") %>%
   ggplot(., aes(x = mean, y = var)) + geom_point() + ylab("rsd")
 
-add_pair_plot <- plot_grid(add_pair_plot, add_ma_plot, add_diff_plot, add_sd_plot, add_rsd_plot, nrow = 1,
-          labels = LETTERS[1:5])
-add_pair_plot
+```
+
+```{r add_plot_sets}
+add_rep_ma <- plot_grid(add_pair_plot, add_ma_plot, nrow = 1, labels = LETTERS[1:2])
+add_summary_plot <- plot_grid(add_diff_plot, add_sd_plot, add_rsd_plot, nrow = 1,
+          labels = LETTERS[3:5])
+add_rep_ma
+add_summary_plot
 ```
 
 ```{r save_pair_plot}
-ggsave(filename = file.path(save_plot_loc, "add_pair_plot.png"), plot = add_pair_plot, 
-       width = 20, height = 5, dpi = 300)
+ggsave(filename = file.path(save_plot_loc, "add_rep_ma.png"), plot = add_rep_ma, 
+       width = 8, height = 5, dpi = 300)
+ggsave(filename = file.path(save_plot_loc, "add_summary_plot.png"), plot = add_summary_plot,
+       width = 12, height = 5, dpi = 300)
 ```
 
 ## Figure 2: Proportional Error
@@ -146,15 +153,23 @@ prop_sd_plot <- filter(prop_error_summ, type == "sd") %>%
   ggplot(., aes(x = mean, y = var)) + geom_point() + ylab("sd")
 prop_rsd_plot <- filter(prop_error_summ, type == "rsd") %>%
   ggplot(., aes(x = mean, y = var)) + geom_point() + ylab("rsd") + geom_hline(yintercept = prop_sd, color = "red")
+```
 
-prop_pair_plot <- plot_grid(prop_pair_plot, prop_ma_plot, prop_diff_plot, prop_sd_plot, prop_rsd_plot, nrow = 1,
-          labels = LETTERS[1:5])
-prop_pair_plot
+
+```{r prop_out_plots}
+prop_ma_plot <- plot_grid(prop_pair_plot, prop_ma_plot, nrow = 1,
+          labels = LETTERS[1:2])
+prop_summary_plot <- plot_grid(prop_diff_plot, prop_sd_plot, prop_rsd_plot, nrow = 1,
+                               labels = LETTERS[3:5])
+prop_ma_plot
+prop_summary_plot
 ```
 
 ```{r prop_save_pair_plot}
-ggsave(filename = file.path(save_plot_loc, "prop_pair_plot.png"), plot = prop_pair_plot, 
-       width = 20, height = 5, dpi = 300)
+ggsave(filename = file.path(save_plot_loc, "prop_ma_plot.png"), plot = prop_ma_plot, 
+       width = 8, height = 5, dpi = 300)
+ggsave(filename = file.path(save_plot_loc, "prop_summary_plot.png"), plot = prop_summary_plot,
+       width = 12, height = 5, dpi = 300)
 ```
 
 
@@ -183,15 +198,23 @@ mix_sd_plot <- filter(mix_error_summ, type == "sd") %>%
   ggplot(., aes(x = mean, y = var)) + geom_point() + ylab("sd")
 mix_rsd_plot <- filter(mix_error_summ, type == "rsd") %>%
   ggplot(., aes(x = mean, y = var)) + geom_point() + ylab("rsd")
+```
 
-mix_pair_plot <- plot_grid(mix_pair_plot, mix_ma_plot, mix_diff_plot, mix_sd_plot, mix_rsd_plot, nrow = 1,
-          labels = LETTERS[1:5])
-mix_pair_plot
+
+```{r mix_summary_plots}
+mix_ma_plot <- plot_grid(mix_pair_plot, mix_ma_plot, nrow = 1,
+          labels = LETTERS[1:2])
+mix_summary_plot <- plot_grid(mix_diff_plot, mix_sd_plot, mix_rsd_plot, nrow = 1,
+                              labels = LETTERS[3:5])
+mix_ma_plot
+mix_summary_plot
 ```
 
 ```{r mix_save_pair_plot}
-ggsave(filename = file.path(save_plot_loc, "mix_pair_plot.png"), plot = mix_pair_plot, 
-       width = 20, height = 5, dpi = 300)
+ggsave(filename = file.path(save_plot_loc, "mix_ma_plot.png"), plot = mix_ma_plot, 
+       width = 8, height = 5, dpi = 300)
+ggsave(filename = file.path(save_plot_loc, "mix_summary_plot.png"), plot = mix_summary_plot,
+       width = 12, height = 5, dpi = 300)
 ```
 
 # Results
@@ -253,18 +276,23 @@ ggplot(auto_compare, aes(x = mean, y = var, color = data)) + geom_point(alpha = 
 me_as_plot_compare <- ggplot(auto_compare, aes(x = mean, y = var, color = data)) + 
   geom_point(alpha = 0.5) + xlab("log(mean)") + ylab("diff") + theme(legend.position = c(0.5, 0.8), legend.title = element_text(size = 0))
 
-mix_auto2 <- plot_grid(me_as_diff, me_as_sd, me_as_rsd, me_as_plot_compare, nrow = 1, labels = LETTERS[1:4])
-mix_auto2
+mix_auto_summary <- plot_grid(me_as_diff, me_as_sd, me_as_rsd, nrow = 1,
+                              labels = LETTERS[1:3])
+mix_auto_compare <- plot_grid(me_as_plot_compare, nrow = 1, labels = LETTERS[4])
+mix_auto_summary
+mix_auto_compare
 ```
 
 ```{r}
-ggsave(file.path(save_plot_loc, "mix_auto.png"), plot = mix_auto2, dpi = 300,
-       width = 16, height = 5)
+ggsave(file.path(save_plot_loc, "mix_auto_summary.png"), plot = mix_auto_summary, dpi = 300,
+       width = 12, height = 5)
+ggsave(file.path(save_plot_loc, "mix_auto_compare.png"), plot = mix_auto_compare, dpi = 300,
+       width = 4, height = 5)
 ```
 
 ### Figure 4 - Autoscaling
 
-Fig 4. Autoscaling. A) Maximum difference vs the mean. B) Standard deviation vs the mean. C) Relative standard deviation vs the mean. D) Maximum difference of original and autoscaled data vs the mean.
+Fig 4. Autoscaling. A) Maximum difference vs the log(mean). B) Standard deviation vs the log(mean). C) Relative standard deviation vs the log(mean). D) Maximum difference of original and autoscaled data vs the log(mean).
 
 
 Applying a variance or autoscaling to the data results in the removal of the additive error to a completely identical standard deviation of 1 across all samples at all abundances. This applies across all of the different error types. Although the standard deviation becomes identical and constant, the maximum relative variance is the same, and the distribution of the rsd values is identical, while the range of the mean is completely changed, as well as it's relationship to the differences.
