@@ -333,9 +333,6 @@ ggsave(file.path(save_plot_loc, "mix_pareto.png"), plot = pareto_out_graph, dpi 
 
 ## Root Transform
 
-A square root transform was applied to the data. The choice of using 2 as the
-root is arbitrary, however depending on the size of the **tails** of the data
-a higher root may be useful. 
 
 ### Additive Error
 
@@ -497,9 +494,6 @@ point_compare_lt_ae_rr <- ggplot(compare_lt_ae_rr, aes(x = mean, y = var, color 
 plot_grid(hist_compare_lt_ae_rr, point_compare_lt_ae_rr, nrow = 1, labels = LETTERS[1:2])
 ```
 
-Log-transformations completely change the structure of the data. Figure X shows
-that for the additive error only case, the SD vs mean looks more like the RSD vs
-mean in the non-transformed case.
 
 ```{r check_lt_pe}
 compare_lt_pe_rs <- rbind(
@@ -531,9 +525,7 @@ plot_grid(hist_comp_lt_pe_rr, point_comp_lt_pe_rr, nrow = 1, labels = LETTERS[1:
 ```
 
 
-For the proportional error case, the proportional error has been almost completely
-transformed into additive error.
-
+\
 ```{r check_lt_me}
 compare_lt_me_rs <- rbind(
   summarize_data(t(mix_error)) %>% filter(., type == "rsd") %>%
@@ -642,9 +634,6 @@ point_compare_ah_ae_rr <- ggplot(compare_ah_ae_rr, aes(x = mean, y = var, color 
 plot_grid(hist_compare_ah_ae_rr, point_compare_ah_ae_rr, nrow = 1, labels = LETTERS[1:2])
 ```
 
-arcsinh-transformations completely change the structure of the data. Figure X shows
-that for the additive error only case, the SD vs mean looks more like the RSD vs
-mean in the non-transformed case.
 
 ```{r check_ah_pe}
 compare_ah_pe_rs <- rbind(
@@ -676,8 +665,6 @@ plot_grid(hist_comp_ah_pe_rr, point_comp_ah_pe_rr, nrow = 1, labels = LETTERS[1:
 ```
 
 
-For the proportional error case, the proportional error has been almost completely
-transformed into additive error.
 
 ```{r check_ah_me}
 compare_ah_me_rs <- rbind(
@@ -730,7 +717,8 @@ Fig 8. Application of arcsinh transform to the mixed error model data. A) Larges
 Like the log transform, the arcsinh transform completely changes how the standard deviation depends on the mean. Most notably, the variance becomes constant at higher mean values, much like the standard deviation in the additive error case. As shown in Figure 8D, the standard deviation of the arcsinh transform actually looks very much like the relative standard deviation of the un-transformed data. In contrast to the relative variance in the mixed error data, it is much decreased. In addition, the arcsinh transform is able to handle a wider range of values than the log transform.
 
 
-# Conclusions & Future Work
+# Conclusions
 
 Applying scalings and transformations to simulated replicate data with defined error models allows the investigation of the effects of the scaling and transformation on the error itself. Plotting the maximum difference, standard deviation, and relative standard deviation vs the mean illustrates how the error models differ, as well as how the error changes after applying a given scaling or transformation.
-  Interestingly, only autoscaling, log and arcsinh affect the proportional variance in the mixed error model. Pareto scaling and the root transform do not adjust the proportional variance in any meaningful fashion, but rather seem to only affect the overal scale of the data. Autoscaling, however, modifies the variance in a way that in many cases would be non-optimal, in that all of the variances become equal. The log and arcsinh transforms, in contrast, appear to mostly remove the proportional component of the error, moving it to the additive component. This preserves the error, while making the variance appropriate for use in the most commonly used statistical methods.
+  
+Interestingly, only autoscaling, log and arcsinh affect the proportional variance in the mixed error model. Pareto scaling and the root transform do not adjust the proportional variance in any meaningful fashion, but rather seem to only affect the overal scale of the data. Autoscaling, however, modifies the variance in a way that in many cases would be non-optimal, in that all of the variances become equal. The log and arcsinh transforms, in contrast, appear to mostly remove the proportional component of the error, moving it to the additive component. This preserves the error, while making the variance appropriate for use in the most commonly used statistical methods.
