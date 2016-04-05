@@ -20,9 +20,10 @@ save_plot_loc <- "~/Documents/posters/dataTransformationsError/figures/"
 
 In many omics analyses, a primary step in the data analysis is the application of a transformation to the data.  Transformations are generally employed to convert proportional error (variance) to additive error, which most statistical methods appropriately handle. However, omics data frequently contain error sources that result in both additive and proportional errors. To our knowledge, there has not been a systematic study on detecting the presence of proportional error in omics data, or the effect of transformations on the error structure.
 
-In this work, we demonstrate a set of three simple graphs which facilitate the detection of proportional and mixed error in omics data when multiple replicates are available. The three graphs illustrate proportional and mixed error in a visually compelling manner that is both straight-forward to recognize and to communicate. The graphs plot the 1) absolute difference in the range, 2) standard deviation and 3) relative standard deviation against the mean signal across replicates. In addition to showing the presence of different types of error, these graphs readily demonstrate the effect of various transformations on the error structure as well.
+In this work, we demonstrate a set of three simple graphs which facilitate the detection of proportional and mixed error in omics data when multiple replicates are available. The three graphs illustrate proportional and mixed error in a visually compelling manner that is both straight-forward to recognize and to communicate. The graphs plot the 1) absolute difference in the range, 2) standard deviation and 3) relative standard deviation against the mean signal across replicates (Fig. 1 C-E). In addition to showing the presence of different types of error, these graphs readily demonstrate the effect of various transformations on the error structure as well.
 
-We have developed a straight-forward set of graphs that effectively summarize major types of error present in high replicate datasets. Using these graphical summaries we find that the log-transform is the most effective method of the common methods employed for removing proportional error.
+We have developed a straight-forward set of graphs that effectively summarize major types of error present in high replicate datasets.Using these graphical summaries we find that the log and hyperbolic inverse sin transforms are the most effective method of the common methods employed for removing proportional error.
+
 
 # Data & Transformations
 
@@ -46,8 +47,7 @@ initial data to which different types of error are added. From this set,
 `r n_rep` replicates are generated with either *additive* (`add`), *proportional*
 (`prop`) or *mixed* (both additive and proportional, `mixed`) error.
 
-The transformations applied are autoscaling, pareto scaling, log, arcsinh, and
-root (2nd and 5th).
+The transformations applied are autoscaling, pareto scaling, root (2nd and 5th), log, and hyperbolic inverse sin (arcsinh).
 
 # Create Data
 
@@ -231,6 +231,7 @@ mix_auto <- plot_grid(me_as_diff, me_as_sd, me_as_rsd, nrow = 1, labels = LETTER
 mix_auto
 ```
 
+
 ```{r autoscale_check}
 me_nt_summ <- summarize_data(t(mix_error))
 max_me_nt <- filter(me_nt_summ, type == "rsd") %>% select(., var) %>% max()
@@ -266,7 +267,7 @@ ggsave(file.path(save_plot_loc, "mix_auto.png"), plot = mix_auto2, dpi = 300,
 Fig 4. Autoscaling. A) Maximum difference vs the mean. B) Standard deviation vs the mean. C) Relative standard deviation vs the mean. D) Maximum difference of original and autoscaled data vs the mean.
 
 
-Applying a variance or autoscaling to the data results in the removal of the additive error to a completely identical standard deviation of 1 across all samples at all abundances. This applies across all of the different error types. Although the standard deviation becomes identical and constant, the maximum relative variance is the same, and the distribution of the rsd values is identical, while the range of the mean is completely changed, as well as it's relationship to the differences and the standard deviations.
+Applying a variance or autoscaling to the data results in the removal of the additive error to a completely identical standard deviation of 1 across all samples at all abundances. This applies across all of the different error types. Although the standard deviation becomes identical and constant, the maximum relative variance is the same, and the distribution of the rsd values is identical, while the range of the mean is completely changed, as well as it's relationship to the differences.
 
 ## Pareto Scaling
 
@@ -721,3 +722,15 @@ ggsave(file.path(save_plot_loc, "mix_asinh.png"), plot = out_asinh_mix, dpi = 30
        width = 20, height = 5)
 ```
 
+
+#### Figure 8 - Arcsinh
+
+Fig 8. Application of arcsinh transform to the mixed error model data. A) Largest difference vs the mean. B) Standard deviation vs the mean. C) Relative standard deviation vs the mean. D) Relative standard deviation of mixed error data (rsd(mix)) and standard deviation of arcsinh transformed mixed error data (sd(asinh(mix))) vs the mean and  E) Relative standard deviation of mixed error data before (mix) and after (asinh(mix)) arcsinh transformation. Note that in D and E the log(mean) is calculated on the mixed error data.
+
+Like the log transform, the arcsinh transform completely changes how the standard deviation depends on the mean. Most notably, the variance becomes constant at higher mean values, much like the standard deviation in the additive error case. As shown in Figure 8D, the standard deviation of the arcsinh transform actually looks very much like the relative standard deviation of the un-transformed data. In contrast to the relative variance in the mixed error data, it is much decreased. In addition, the arcsinh transform is able to handle a wider range of values than the log transform.
+
+
+# Conclusions & Future Work
+
+Applying scalings and transformations to simulated replicate data with defined error models allows the investigation of the effects of the scaling and transformation on the error itself. Plotting the maximum difference, standard deviation, and relative standard deviation vs the mean illustrates how the error models differ, as well as how the error changes after applying a given scaling or transformation.
+  Interestingly, only autoscaling, log and arcsinh affect the proportional variance in the mixed error model. Pareto scaling and the root transform do not adjust the proportional variance in any meaningful fashion, but rather seem to only affect the overal scale of the data. Autoscaling, however, modifies the variance in a way that in many cases would be non-optimal, in that all of the variances become equal. The log and arcsinh transforms, in contrast, appear to mostly remove the proportional component of the error, moving it to the additive component. This preserves the error, while making the variance appropriate for use in the most commonly used statistical methods.
