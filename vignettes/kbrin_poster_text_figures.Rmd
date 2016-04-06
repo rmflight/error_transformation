@@ -45,9 +45,9 @@ the data purely to avoid values <= 1 following the addition
 of error, making visualization easier. These data points are the **pure**
 initial data to which different types of error are added. From this set, 
 `r n_rep` replicates are generated with either *additive* (`add`), *proportional*
-(`prop`) or *mixed* (both additive and proportional, `mixed`) error.
+(`prop`) or *mixed* (both additive and proportional, `mixed`) error. 
 
-The transformations applied are autoscaling, pareto scaling, root (2nd and 5th), log, and hyperbolic inverse sin (arcsinh).
+The transformations applied include autoscaling, pareto scaling, root (2nd and 5th), log, and hyperbolic inverse sin (arcsinh).
 
 # Create Data
 
@@ -247,9 +247,9 @@ plot_grid(pe_as_diff, pe_as_sd, pe_as_rsd, nrow = 1, labels = LETTERS[1:3])
 
 ```{r auto_mixed}
 me_as <- auto_scale(mix_error)
-me_as_diff <- plot_diff(me_as, log_mean = log, use_title = NULL)
-me_as_sd <- plot_sd(me_as, log_mean = log, use_title = NULL)
-me_as_rsd <- plot_sd(me_as, sd_type = "rsd", log_mean = log, use_title = NULL)
+me_as_diff <- plot_diff(me_as, log_mean = NULL, use_title = NULL)
+me_as_sd <- plot_sd(me_as, log_mean = NULL, use_title = NULL)
+me_as_rsd <- plot_sd(me_as, sd_type = "rsd", log_mean = NULL, use_title = NULL)
 mix_auto <- plot_grid(me_as_diff, me_as_sd, me_as_rsd, nrow = 1, labels = LETTERS[1:3])
 mix_auto
 ```
@@ -264,7 +264,7 @@ max_me_as <- filter(me_as_summ, type == "rsd") %>% select(., var) %>% max()
 identical(max_me_nt, max_me_as)
 
 auto_compare <- summarize_two(mix_error, me_as, sd_type = "diff", name1 = "mix", name2 = "autoscale(mix)")
-auto_compare$mean <- log(auto_compare$mean)
+#auto_compare$mean <- log(auto_compare$mean)
 
 # set up the factors properly
 auto_compare$data <- factor(auto_compare$data, levels = c("mix", "autoscale(mix)"), ordered = TRUE)
@@ -274,7 +274,7 @@ ggplot(auto_compare, aes(x = mean, y = var, color = data)) + geom_point(alpha = 
 
 ```{r save_plot}
 me_as_plot_compare <- ggplot(auto_compare, aes(x = mean, y = var, color = data)) + 
-  geom_point(alpha = 0.5) + xlab("log(mean)") + ylab("diff") + theme(legend.position = c(0.5, 0.8), legend.title = element_text(size = 0))
+  geom_point(alpha = 0.5) + xlab("mean") + ylab("diff") + theme(legend.position = c(0.5, 0.8), legend.title = element_text(size = 0))
 
 mix_auto_summary <- plot_grid(me_as_diff, me_as_sd, me_as_rsd, nrow = 1,
                               labels = LETTERS[1:3])
@@ -292,7 +292,7 @@ ggsave(file.path(save_plot_loc, "mix_auto_compare.png"), plot = mix_auto_compare
 
 ### Figure 4 - Autoscaling
 
-Fig 4. Autoscaling applied to mixed error model data. A) Maximum difference vs the log(mean). B) Standard deviation (sd) vs the log(mean). C) Relative standard deviation (rsd) vs the log(mean). D) Maximum difference of original and autoscaled data vs the log(mean).
+Fig 4. Autoscaling applied to mixed error model data. A) Maximum difference vs the mean. B) Standard deviation (sd) vs the mean. C) Relative standard deviation (rsd) vs the mean. D) Maximum difference of original and autoscaled data vs the mean.
 
 
 Applying a variance or autoscaling to the data results in the removal of the additive error to a completely identical standard deviation of 1 across all samples at all abundances. This applies across all of the different error types. Although the standard deviation becomes identical and constant, the maximum relative variance is the same, and the distribution of the rsd values is identical, while the range of the mean is completely changed, as well as it's relationship to the differences.
@@ -313,9 +313,9 @@ plot_grid(ae_ps_diff, ae_ps_sd, ae_ps_rsd, nrow = 1, labels = LETTERS[1:3])
 
 ```{r pareto_prop}
 pe_ps <- pareto_scale(prop_error)
-pe_ps_diff <- plot_diff(pe_ps, log_mean = log, use_title = NULL)
-pe_ps_sd <- plot_sd(pe_ps, log_mean = log, use_title = NULL)
-pe_ps_rsd <- plot_sd(pe_ps, sd_type = "rsd", log_mean = log, use_title = NULL)
+pe_ps_diff <- plot_diff(pe_ps, log_mean = NULL, use_title = NULL)
+pe_ps_sd <- plot_sd(pe_ps, log_mean = NULL, use_title = NULL)
+pe_ps_rsd <- plot_sd(pe_ps, sd_type = "rsd", log_mean = NULL, use_title = NULL)
 plot_grid(pe_ps_diff, pe_ps_sd, pe_ps_rsd, nrow = 1, labels = LETTERS[1:3])
 ```
 
@@ -323,9 +323,9 @@ plot_grid(pe_ps_diff, pe_ps_sd, pe_ps_rsd, nrow = 1, labels = LETTERS[1:3])
 
 ```{r pareto_mixed}
 me_ps <- pareto_scale(mix_error)
-me_ps_diff <- plot_diff(me_ps, log_mean = log, use_title = NULL)
-me_ps_sd <- plot_sd(me_ps, log_mean = log, use_title = NULL)
-me_ps_rsd <- plot_sd(me_ps, sd_type = "rsd", log_mean = log, use_title = NULL)
+me_ps_diff <- plot_diff(me_ps, log_mean = NULL, use_title = NULL)
+me_ps_sd <- plot_sd(me_ps, log_mean = NULL, use_title = NULL)
+me_ps_rsd <- plot_sd(me_ps, sd_type = "rsd", log_mean = NULL, use_title = NULL)
 plot_grid(me_ps_diff, me_ps_sd, me_ps_rsd, nrow = 1, labels = LETTERS[1:3])
 ```
 
@@ -337,20 +337,20 @@ all.equal(max_me_nt, max_me_ps)
 pareto_compare <- summarize_two(mix_nozero, me_ps, sd_type = "rsd", name1 = "mix", name2 = "pareto(mix)")
 
 pareto_compare$data <- factor(pareto_compare$data, levels = c("mix", "pareto(mix)"), ordered = TRUE)
-pareto_compare$mean <- log(pareto_compare$mean)
+#pareto_compare$mean <- log(pareto_compare$mean)
 ggplot(pareto_compare, aes(x = var, fill = data)) + geom_density(alpha = 0.5)
 ggplot(pareto_compare, aes(x = mean, y = var, color = data)) + geom_point(alpha = 0.5)
 ```
 
 #### Figure 5 - Pareto Scaling
 
-Fig. 5 Pareto scaling applied to mixed error model data. All mean values have been log-transformed. A) Largest difference vs the mean. B) Standard deviation (sd) vs the mean. C) Relative standard deviation (rsd) vs the mean. D) Relative standard deviation of mixed error data before (mix) and after (pareto(mix)) pareto scaling.
+Fig. 5 Pareto scaling applied to mixed error model data. A) Largest difference vs the mean. B) Standard deviation (sd) vs the mean. C) Relative standard deviation (rsd) vs the mean. D) Relative standard deviation of mixed error data before (mix) and after (pareto(mix)) pareto scaling.
 
 In contrast to autoscaling, pareto scaling modifies the values by the square root of the variance. As shown in Figure 5, this changes the absolute values of the standard deviations, but does not change the distribution, or the relationship of the variance to the mean. In fact, the maximum of the RSD is virtually unchanged, it is only the range of the mean that changes.
 
 ```{r pareto_save_plots}
 me_ps_rsd_oomp <- ggplot(pareto_compare, aes(x = mean, y = var, color = data)) + geom_point(alpha = 0.5) + 
-  xlab("log(mean)") + ylab("rsd") + theme(legend.position = c(0.5, 0.8), legend.title = element_text(size = 0))
+  xlab("mean") + ylab("rsd") + theme(legend.position = c(0.5, 0.8), legend.title = element_text(size = 0))
 pareto_summary_graph <- plot_grid(me_ps_diff, me_ps_sd, me_ps_rsd, 
                                   nrow = 1, labels = LETTERS[1:3])
 pareto_compare_graph <- plot_grid(me_ps_rsd_oomp, nrow = 1, labels = LETTERS[4])
@@ -611,13 +611,13 @@ log_mix_summary
 log_mix_compare
 ggsave(file.path(save_plot_loc, "log_mix_summary.png"), plot = log_mix_summary, dpi = 300,
        width = 12, height = 5)
-ggsave(file.path(save_plot_loc, "log_mix_compare.png"), plot = log_mix_comapre, dpi = 300,
+ggsave(file.path(save_plot_loc, "log_mix_compare.png"), plot = log_mix_compare, dpi = 300,
        width = 8, height = 5)
 ```
 
 #### Figure 7 - Log Transform
 
-Fig 7. Log transform applied to mixed error model data. A) Largest difference vs the mean. B) Standard deviation (sd) vs the mean. C) Relative standard deviation (rsd) vs the mean. D) Relative standard deviation of mixed error data (rsd(mix)) and standard deviation of log transformed mixed error data (sd(log(mix))) vs the mean and  E) Relative standard deviation of mixed error data before (mix) and after (log(mix)) log transformation.
+Fig 7. Log transform applied to mixed error model data. A) Largest difference vs the mean. B) Standard deviation (sd) vs the mean. C) Relative standard deviation (rsd) vs the mean. D) Relative standard deviation of mixed error data (rsd(mix)) and standard deviation of log transformed mixed error data (sd(log(mix))) vs the mean and  E) Relative standard deviation of mixed error data before (mix) and after (log(mix)) log transformation. Note that in D) and E), the log(mean) of the original mixed error is used to put the points on a comparable scale.
 
 The log transform completely changes how the standard deviation depends on the mean. Most notably, the variance becomes constant at higher mean values, much like the standard deviation in the additive error case. As shown in Figure 7D, the standard deviation of the log transform actually looks almost exactly like the relative standard deviation of the un-transformed data. Although it also appears that in the log-transformed data the low values have more error than the high values, Figure 7E shows that overall the relative error has decreased for the data.
 
@@ -764,7 +764,7 @@ ggsave(file.path(save_plot_loc, "mix_asinh_compare.png"), plot = mix_asinh_compa
 
 #### Figure 8 - Arcsinh
 
-Fig 8. Arcsinh transform applied to the mixed error model data. A) Largest difference vs the mean. B) Standard deviation (sd) vs the mean. C) Relative standard deviation (rsd) vs the mean. D) Relative standard deviation of mixed error data (rsd(mix)) and standard deviation of arcsinh transformed mixed error data (sd(asinh(mix))) vs the mean and  E) Relative standard deviation of mixed error data before (mix) and after (asinh(mix)) arcsinh transformation. Note that in D and E the log(mean) is calculated on the mixed error data.
+Fig 8. Arcsinh transform applied to the mixed error model data. A) Largest difference vs the mean. B) Standard deviation (sd) vs the mean. C) Relative standard deviation (rsd) vs the mean. D) Relative standard deviation of mixed error data (rsd(mix)) and standard deviation of arcsinh transformed mixed error data (sd(asinh(mix))) vs the mean and  E) Relative standard deviation of mixed error data before (mix) and after (asinh(mix)) arcsinh transformation. Note that in D) and E), the log(mean) of the original mixed error is used to put the points on a comparable scale.
 
 Like the log transform, the arcsinh transform completely changes how the standard deviation depends on the mean. Most notably, the variance becomes constant at higher mean values, much like the standard deviation in the additive error case. As shown in Figure 8D, the standard deviation of the arcsinh transform actually looks very much like the relative standard deviation of the un-transformed data. In contrast to the relative variance in the mixed error data, it is much decreased. In addition, the arcsinh transform is able to handle a wider range of values than the log transform.
 
