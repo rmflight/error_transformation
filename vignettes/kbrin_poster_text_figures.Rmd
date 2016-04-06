@@ -16,13 +16,13 @@ library(errorTransformation)
 save_plot_loc <- "~/Documents/posters/dataTransformationsError/figures/"
 ```
 
-# Problem & Goal
+# Problem & Goal (Abstract)
 
-In many omics analyses, a primary step in the data analysis is the application of a transformation to the data.  Transformations are generally employed to convert proportional error (variance) to additive error, which most statistical methods appropriately handle. However, omics data frequently contain error sources that result in both additive and proportional errors. To our knowledge, there has not been a systematic study on detecting the presence of proportional error in omics data, or the effect of transformations on the error structure.
+In many omics data analyses, a primary step is the application of a transformation to the data.  Transformations are generally employed to convert proportional error (variance) to additive error, which most statistical methods appropriately handle. However, omics data frequently contain error sources that result in both additive and proportional errors [1 - 5]. To our knowledge, there has not been a systematic study on detecting the presence of proportional error in omics data, or the effect of transformations on the error structure.
 
 In this work, we demonstrate a set of three simple graphs which facilitate the detection of proportional and mixed error in omics data when multiple replicates are available. The three graphs illustrate proportional and mixed error in a visually compelling manner that is both straight-forward to recognize and to communicate. The graphs plot the 1) absolute difference in the range, 2) standard deviation and 3) relative standard deviation against the mean signal across replicates (Fig. 1 C-E). In addition to showing the presence of different types of error, these graphs readily demonstrate the effect of various transformations on the error structure as well.
 
-We have developed a straight-forward set of graphs that effectively summarize major types of error present in high replicate datasets.Using these graphical summaries we find that the log and hyperbolic inverse sin transforms are the most effective method of the common methods employed for removing proportional error.
+Using these graphical summaries we find that the log and hyperbolic inverse sin transforms are the most effective method of the common methods employed for removing proportional error.
 
 
 # Data & Transformations
@@ -89,7 +89,7 @@ mix_minone <- filter_features(mix_error, 1)
 
 ## Figure 1 -  Additive Error
 
-Fig 1. Additive error only. A) Two replicates plotted in "original" space B) Same two replicates rotated using MA plot, where M "minus" (rep1 - rep2) and A is average of rep1 and rep2. C) Difference between largest value and smallest value vs the mean E) Standard deviation (sd) across replicates vs the mean F) Relative standard deviation vs the mean. Red line indicates the amount of additive error added.
+Fig 1. Additive error only. A) Two replicates plotted in "original" space B) Same two replicates rotated using MA plot, where M is "minus" (rep1 - rep2) and A is average of rep1 and rep2. C) Difference between largest value and smallest value vs the mean E) Standard deviation (sd) across replicates vs the mean F) Relative standard deviation (rsd) vs the mean. Red line indicates the amount of additive error added.
 
 ```{r buildup_plots}
 pair_frame <- data.frame(rep1 = add_error[,1], rep2 = add_error[,2])
@@ -131,7 +131,7 @@ ggsave(filename = file.path(save_plot_loc, "add_summary_plot.png"), plot = add_s
 
 ## Figure 2: Proportional Error
 
-Fig 2. Proportional error only. A) Two replicates plotted in "original" space B) Same two replicates rotated using MA plot, where M "minus" (rep1 - rep2) and A is average of rep1 and rep2. C) Difference between largest value and smallest value vs the mean E) Standard deviation (sd) across replicates vs the mean F) Relative standard deviation vs the mean. Red line indicates the amount of proportional error added.
+Fig 2. Proportional error only. A) Two replicates plotted in "original" space B) Same two replicates rotated using MA plot, where M is "minus" (rep1 - rep2) and A is average of rep1 and rep2. C) Difference between largest value and smallest value vs the mean E) Standard deviation (sd) across replicates vs the mean F) Relative standard deviation (rsd) vs the mean. Red line indicates the amount of proportional error added.
 
 ```{r prop_buildup_plots}
 pair_frame <- data.frame(rep1 = prop_error[,1], rep2 = prop_error[,2])
@@ -175,7 +175,7 @@ ggsave(filename = file.path(save_plot_loc, "prop_summary_plot.png"), plot = prop
 
 ## Figure 3 -  Mixed Error
 
-Fig 3. Additive and proportional error. A) Two replicates plotted in "original" space B) Same two replicates rotated using MA plot, where M "minus" (rep1 - rep2) and A is average of rep1 and rep2. C) Difference between largest value and smallest value vs the mean E) Standard deviation (sd) across replicates vs the mean F) Relative standard deviation vs the mean.
+Fig 3. Additive and proportional (mixed) error. A) Two replicates plotted in "original" space B) Same two replicates rotated using MA plot, where M is "minus" (rep1 - rep2) and A is average of rep1 and rep2. C) Difference between largest value and smallest value vs the mean E) Standard deviation (sd) across replicates vs the mean F) Relative standard deviation (rsd) vs the mean.
 
 
 ```{r mix_buildup_plots}
@@ -292,7 +292,7 @@ ggsave(file.path(save_plot_loc, "mix_auto_compare.png"), plot = mix_auto_compare
 
 ### Figure 4 - Autoscaling
 
-Fig 4. Autoscaling. A) Maximum difference vs the log(mean). B) Standard deviation vs the log(mean). C) Relative standard deviation vs the log(mean). D) Maximum difference of original and autoscaled data vs the log(mean).
+Fig 4. Autoscaling applied to mixed error model data. A) Maximum difference vs the log(mean). B) Standard deviation (sd) vs the log(mean). C) Relative standard deviation (rsd) vs the log(mean). D) Maximum difference of original and autoscaled data vs the log(mean).
 
 
 Applying a variance or autoscaling to the data results in the removal of the additive error to a completely identical standard deviation of 1 across all samples at all abundances. This applies across all of the different error types. Although the standard deviation becomes identical and constant, the maximum relative variance is the same, and the distribution of the rsd values is identical, while the range of the mean is completely changed, as well as it's relationship to the differences.
@@ -344,19 +344,24 @@ ggplot(pareto_compare, aes(x = mean, y = var, color = data)) + geom_point(alpha 
 
 #### Figure 5 - Pareto Scaling
 
-Fig. 5 Application of pareto scaling to mixed error model data. All mean values have been log-transformed. A) Largest difference vs the mean. B) Standard deviation vs the mean. C) Relative standard deviation vs the mean. D) Relative standard deviation of mixed error data before (mix) and after (pareto(mix)) pareto scaling.
+Fig. 5 Pareto scaling applied to mixed error model data. All mean values have been log-transformed. A) Largest difference vs the mean. B) Standard deviation (sd) vs the mean. C) Relative standard deviation (rsd) vs the mean. D) Relative standard deviation of mixed error data before (mix) and after (pareto(mix)) pareto scaling.
 
 In contrast to autoscaling, pareto scaling modifies the values by the square root of the variance. As shown in Figure 5, this changes the absolute values of the standard deviations, but does not change the distribution, or the relationship of the variance to the mean. In fact, the maximum of the RSD is virtually unchanged, it is only the range of the mean that changes.
 
 ```{r pareto_save_plots}
 me_ps_rsd_oomp <- ggplot(pareto_compare, aes(x = mean, y = var, color = data)) + geom_point(alpha = 0.5) + 
   xlab("log(mean)") + ylab("rsd") + theme(legend.position = c(0.5, 0.8), legend.title = element_text(size = 0))
-pareto_out_graph <- plot_grid(me_ps_diff, me_ps_sd, me_ps_rsd, me_ps_rsd_oomp, nrow = 1, labels = LETTERS[1:4])
+pareto_summary_graph <- plot_grid(me_ps_diff, me_ps_sd, me_ps_rsd, 
+                                  nrow = 1, labels = LETTERS[1:3])
+pareto_compare_graph <- plot_grid(me_ps_rsd_oomp, nrow = 1, labels = LETTERS[4])
 
-pareto_out_graph
+pareto_summary_graph
+pareto_compare_graph
 
-ggsave(file.path(save_plot_loc, "mix_pareto.png"), plot = pareto_out_graph, dpi = 300,
-       width = 16, height = 5)
+ggsave(file.path(save_plot_loc, "mix_pareto_summary.png"), plot = pareto_summary_graph, dpi = 300,
+       width = 12, height = 5)
+ggsave(file.path(save_plot_loc, "mix_pareto_compare.png"), plot = pareto_compare_graph, dpi = 300,
+       width = 4, height = 5)
 ```
 
 ## Root Transform
@@ -451,15 +456,22 @@ plot_grid(hist_comp_rt_me_rr, point_comp_rt_me_rr, nrow = 1, labels = LETTERS[1:
 
 
 ```{r save_root_mix}
-out_rt_mix <- plot_grid(me_rt_diff, me_rt_sd, me_rt_rsd, point_comp_rt_me_rr, 
-                         nrow = 1, labels = LETTERS[1:4])
-ggsave(file.path(save_plot_loc, "mix_root.png"), plot = out_rt_mix, dpi = 300,
-       width = 16, height = 5)
+mix_root_summary <- plot_grid(me_rt_diff, me_rt_sd, me_rt_rsd, nrow = 1,
+                              labels = LETTERS[1:3])
+mix_root_compare <- plot_grid(point_comp_rt_me_rr, 
+                         nrow = 1, labels = LETTERS[4])
+mix_root_summary
+mix_root_compare
+
+ggsave(file.path(save_plot_loc, "mix_root_summary.png"), plot = mix_root_summary, dpi = 300,
+       width = 12, height = 5)
+ggsave(file.path(save_plot_loc, "mix_root_compare.png"), plot = mix_root_compare, dpi = 300,
+       width = 4, height = 5)
 ```
 
 #### Figure 6 - Root Transform
 
-Fig 6. Application of root (2nd and 5th) transform to mixed error model data. A) Largest difference vs the mean. B) Standard deviation vs the mean. C) Relative standard deviation vs the mean. D) Relative standard deviation of mixed error data before (mix) and after (root(mix)) root transformation.
+Fig 6. Root (2nd and 5th) transform applied to mixed error model data. A) Largest difference vs the mean. B) Standard deviation (sd) vs the mean. C) Relative standard deviation (rsd) vs the mean. D) Relative standard deviation (rsd) of mixed error data before (mix) and after (root(mix)) root transformation.
 
 Although the root transform changes the overall amount of variance compared to the mean, as with pareto scaling, the overall relationship of variance to the mean is maintained, as all the plots show. The variance is still dependent on the mean value, and the proportional error is still present in the data.
 
@@ -591,15 +603,21 @@ plot_grid(hist_comp_lt_me_rr, point_comp_lt_me_rr, nrow = 1, labels = LETTERS[1:
 
 
 ```{r save_log_mix}
-out_log_mix <- plot_grid(me_lt_diff, me_lt_sd, me_lt_rsd, point_comp_lt_me_rs, 
-                         point_comp_lt_me_rr, nrow = 1, labels = LETTERS[1:5])
-ggsave(file.path(save_plot_loc, "mix_log.png"), plot = out_log_mix, dpi = 300,
-       width = 20, height = 5)
+log_mix_summary <- plot_grid(me_lt_diff, me_lt_sd, me_lt_rsd, nrow = 1,
+                             labels = LETTERS[1:3])
+log_mix_compare <- plot_grid(point_comp_lt_me_rs, point_comp_lt_me_rr, 
+                             nrow = 1, labels = LETTERS[4:5])
+log_mix_summary
+log_mix_compare
+ggsave(file.path(save_plot_loc, "log_mix_summary.png"), plot = log_mix_summary, dpi = 300,
+       width = 12, height = 5)
+ggsave(file.path(save_plot_loc, "log_mix_compare.png"), plot = log_mix_comapre, dpi = 300,
+       width = 8, height = 5)
 ```
 
 #### Figure 7 - Log Transform
 
-Fig 7. Application of log transform to mixed error model data. A) Largest difference vs the mean. B) Standard deviation vs the mean. C) Relative standard deviation vs the mean. D) Relative standard deviation of mixed error data (rsd(mix)) and standard deviation of log transformed mixed error data (sd(log(mix))) vs the mean and  E) Relative standard deviation of mixed error data before (mix) and after (log(mix)) log transformation.
+Fig 7. Log transform applied to mixed error model data. A) Largest difference vs the mean. B) Standard deviation (sd) vs the mean. C) Relative standard deviation (rsd) vs the mean. D) Relative standard deviation of mixed error data (rsd(mix)) and standard deviation of log transformed mixed error data (sd(log(mix))) vs the mean and  E) Relative standard deviation of mixed error data before (mix) and after (log(mix)) log transformation.
 
 The log transform completely changes how the standard deviation depends on the mean. Most notably, the variance becomes constant at higher mean values, much like the standard deviation in the additive error case. As shown in Figure 7D, the standard deviation of the log transform actually looks almost exactly like the relative standard deviation of the un-transformed data. Although it also appears that in the log-transformed data the low values have more error than the high values, Figure 7E shows that overall the relative error has decreased for the data.
 
@@ -731,16 +749,22 @@ plot_grid(hist_comp_ah_me_rr, point_comp_ah_me_rr, nrow = 1, labels = LETTERS[1:
 
 
 ```{r save_asinh_mix}
-out_asinh_mix <- plot_grid(me_ah_diff, me_ah_sd, me_ah_rsd, point_comp_ah_me_rs, 
-                         point_comp_ah_me_rr, nrow = 1, labels = LETTERS[1:5])
-ggsave(file.path(save_plot_loc, "mix_asinh.png"), plot = out_asinh_mix, dpi = 300,
-       width = 20, height = 5)
+mix_asinh_summary <- plot_grid(me_ah_diff, me_ah_sd, me_ah_rsd, nrow = 1, labels = LETTERS[1:3])
+mix_asinh_compare <- plot_grid(point_comp_ah_me_rs, point_comp_ah_me_rr, nrow = 1, labels = LETTERS[4:5])
+
+mix_asinh_summary
+mix_asinh_compare
+
+ggsave(file.path(save_plot_loc, "mix_asinh_summary.png"), plot = mix_asinh_summary, dpi = 300,
+       width = 12, height = 5)
+ggsave(file.path(save_plot_loc, "mix_asinh_compare.png"), plot = mix_asinh_compare, dpi = 300,
+       width = 8, height = 5)
 ```
 
 
 #### Figure 8 - Arcsinh
 
-Fig 8. Application of arcsinh transform to the mixed error model data. A) Largest difference vs the mean. B) Standard deviation vs the mean. C) Relative standard deviation vs the mean. D) Relative standard deviation of mixed error data (rsd(mix)) and standard deviation of arcsinh transformed mixed error data (sd(asinh(mix))) vs the mean and  E) Relative standard deviation of mixed error data before (mix) and after (asinh(mix)) arcsinh transformation. Note that in D and E the log(mean) is calculated on the mixed error data.
+Fig 8. Arcsinh transform applied to the mixed error model data. A) Largest difference vs the mean. B) Standard deviation (sd) vs the mean. C) Relative standard deviation (rsd) vs the mean. D) Relative standard deviation of mixed error data (rsd(mix)) and standard deviation of arcsinh transformed mixed error data (sd(asinh(mix))) vs the mean and  E) Relative standard deviation of mixed error data before (mix) and after (asinh(mix)) arcsinh transformation. Note that in D and E the log(mean) is calculated on the mixed error data.
 
 Like the log transform, the arcsinh transform completely changes how the standard deviation depends on the mean. Most notably, the variance becomes constant at higher mean values, much like the standard deviation in the additive error case. As shown in Figure 8D, the standard deviation of the arcsinh transform actually looks very much like the relative standard deviation of the un-transformed data. In contrast to the relative variance in the mixed error data, it is much decreased. In addition, the arcsinh transform is able to handle a wider range of values than the log transform.
 
@@ -749,4 +773,4 @@ Like the log transform, the arcsinh transform completely changes how the standar
 
 Applying scalings and transformations to simulated replicate data with defined error models allows the investigation of the effects of the scaling and transformation on the error itself. Plotting the maximum difference, standard deviation, and relative standard deviation vs the mean illustrates how the error models differ, as well as how the error changes after applying a given scaling or transformation.
   
-Interestingly, only autoscaling, log and arcsinh affect the proportional variance in the mixed error model. Pareto scaling and the root transform do not adjust the proportional variance in any meaningful fashion, but rather seem to only affect the overal scale of the data. Autoscaling, however, modifies the variance in a way that in many cases would be non-optimal, in that all of the variances become equal. The log and arcsinh transforms, in contrast, appear to mostly remove the proportional component of the error, moving it to the additive component. This preserves the error, while making the variance appropriate for use in the most commonly used statistical methods.
+Interestingly, only autoscaling, log and arcsinh affect the proportional variance in the mixed error model. Pareto scaling and the root transform do not adjust the proportional variance in any meaningful fashion, but rather seem to only affect the overal scale of the data. Autoscaling, however, modifies the variance in a way that in many cases would be non-optimal, in that all of the variances become equal. The log and arcsinh transforms, in contrast, appear to mostly remove the proportional component of the error, moving it to the additive component. This preserves the error, while making the variance appropriate for use in the most commonly used statistical methods. Arcsinh has the advantage over the log transform in that it can be easily applied to negative values.
