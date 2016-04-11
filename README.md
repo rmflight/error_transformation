@@ -14,7 +14,7 @@ There is a slide deck
 ## Poster
 
 There is a variety of figures that are used in the posters that were displayed
-at the KBRIN Bioinformatics Summit, and (hopefully) the Great Lakes Bioinformatics
+at the KBRIN Bioinformatics Summit ([source](https://github.com/rmflight/error_transformation/blob/master/vignettes/kbrin_poster_text_figures.Rmd), [output poster](https://figshare.com/articles/Visualizing_the_Effects_of_Data_Transformations_on_Errors/3168775)), and (hopefully) the Great Lakes Bioinformatics
 Conference in 2016.
 
 ## Other Requirements
