@@ -299,29 +299,6 @@ mix_summary_plot
 
 ## Auto-Scaling
 
-## Auto-Scaling
-
-### Additive
-
-```{r auto_additive}
-ae_as <- auto_scale(add_error)
-ae_as_summary <- summarize_data(t(ae_as))
-ae_as_diff <- plot_diff(ae_as, log_mean = log, use_title = NULL)
-ae_as_sd <- plot_sd(ae_as, log_mean = log, use_title = NULL)
-ae_as_rsd <- plot_sd(ae_as, sd_type = "rsd", log_mean = log, use_title = NULL)
-plot_grid(ae_as_diff, ae_as_sd, ae_as_rsd, nrow = 1, labels = LETTERS[1:3])
-```
-
-### Proportional
-
-```{r auto_proportional}
-pe_as <- auto_scale(prop_error)
-pe_as_diff <- plot_diff(pe_as, log_mean = log, use_title = NULL)
-pe_as_sd <- plot_sd(pe_as, log_mean = log, use_title = NULL)
-pe_as_rsd <- plot_sd(pe_as, sd_type = "rsd", log_mean = log, use_title = NULL)
-plot_grid(pe_as_diff, pe_as_sd, pe_as_rsd, nrow = 1, labels = LETTERS[1:3])
-```
-
 ### Mixed
 
 ```{r auto_mixed}
@@ -346,8 +323,6 @@ auto_compare <- summarize_two(mix_error, me_as, sd_type = "diff", name1 = "mix",
 
 # set up the factors properly
 auto_compare$data <- factor(auto_compare$data, levels = c("mix", "autoscale(mix)"), ordered = TRUE)
-ggplot(auto_compare, aes(x = var, fill = data)) + geom_density(alpha = 0.5)
-ggplot(auto_compare, aes(x = mean, y = var, color = data)) + geom_point(alpha = 0.5)
 ```
 
 ```{r save_plot}
@@ -371,27 +346,6 @@ the *rsd* values is identical.
 
 ## Pareto Scaling
 
-## Pareto Scaling
-
-### Additive
-
-```{r pareto_add}
-ae_ps <- pareto_scale(add_error)
-ae_ps_diff <- plot_diff(ae_ps, log_mean = log, use_title = NULL)
-ae_ps_sd <- plot_sd(ae_ps, log_mean = log, use_title = NULL)
-ae_ps_rsd <- plot_sd(ae_ps, sd_type = "rsd", log_mean = log, use_title = NULL)
-plot_grid(ae_ps_diff, ae_ps_sd, ae_ps_rsd, nrow = 1, labels = LETTERS[1:3])
-```
-
-### Proportional
-
-```{r pareto_prop}
-pe_ps <- pareto_scale(prop_error)
-pe_ps_diff <- plot_diff(pe_ps, log_mean = NULL, use_title = NULL)
-pe_ps_sd <- plot_sd(pe_ps, log_mean = NULL, use_title = NULL)
-pe_ps_rsd <- plot_sd(pe_ps, sd_type = "rsd", log_mean = NULL, use_title = NULL)
-plot_grid(pe_ps_diff, pe_ps_sd, pe_ps_rsd, nrow = 1, labels = LETTERS[1:3])
-```
 
 ### Mixed
 
@@ -400,7 +354,6 @@ me_ps <- pareto_scale(mix_error)
 me_ps_diff <- plot_diff(me_ps, log_mean = NULL, use_title = NULL)
 me_ps_sd <- plot_sd(me_ps, log_mean = NULL, use_title = NULL)
 me_ps_rsd <- plot_sd(me_ps, sd_type = "rsd", log_mean = NULL, use_title = NULL)
-plot_grid(me_ps_diff, me_ps_sd, me_ps_rsd, nrow = 1, labels = LETTERS[1:3])
 ```
 
 ```{r pareto_check_rsd_ranges}
@@ -412,8 +365,6 @@ pareto_compare <- summarize_two(mix_error, me_ps, sd_type = "rsd", name1 = "mix"
 
 pareto_compare$data <- factor(pareto_compare$data, levels = c("mix", "pareto(mix)"), ordered = TRUE)
 #pareto_compare$mean <- log(pareto_compare$mean)
-ggplot(pareto_compare, aes(x = var, fill = data)) + geom_density(alpha = 0.5)
-ggplot(pareto_compare, aes(x = mean, y = var, color = data)) + geom_point(alpha = 0.5)
 ```
 
 In contrast to autoscaling, pareto scaling modifies the values by the square root of the variance. As shown in Figure 5, this changes the absolute values of the standard deviations, but does not change the distribution, or the relationship of the variance to the mean. In fact, the maximum of the RSD is virtually unchanged, it is only the range of the mean that changes.
@@ -432,44 +383,6 @@ pareto_compare_graph
 ## Root Transform
 
 
-### Additive Error
-
-```{r root_add_plot}
-root_add <- root_transform(add_error)
-root_add2 <- root_transform(add_error, 5)
-
-root_add_comb <- cbind(root_add, root_add2)
-root_class <- rep(c("2", "5"), each = 100)
-root_summary <- summarize_data(t(root_add_comb), root_class)
-
-ae_rt_diff <- filter(root_summary, type == "diff") %>%
-  ggplot(., aes(x = mean, y = var, color = class)) + geom_point()
-ae_rt_sd <- filter(root_summary, type == "sd") %>%
-  ggplot(., aes(x = mean, y = var, color = class)) + geom_point()
-ae_rt_rsd <- filter(root_summary, type == "rsd") %>%
-  ggplot(., aes(x = mean, y = var, color = class)) + geom_point()
-plot_grid(ae_rt_diff, ae_rt_sd, ae_rt_rsd, nrow = 1, labels = LETTERS[1:3])
-```
-
-### Proportional Error
-
-```{r root_prop_plot}
-root_prop1 <- root_transform(prop_error)
-root_prop2 <- root_transform(prop_error, root = 5)
-root_prop_comb <- cbind(root_prop1, root_prop2)
-
-root_pe_summary <- summarize_data(t(root_prop_comb), root_class)
-
-root_pe_diff <- filter(root_pe_summary, type == "diff") %>%
-  ggplot(., aes(x = mean, y = var, color = class)) + geom_point()
-root_pe_sd <- filter(root_pe_summary, type == "sd") %>%
-  ggplot(., aes(x = mean, y = var, color = class)) + geom_point()
-root_pe_rsd <- filter(root_pe_summary, type == "rsd") %>%
-  ggplot(., aes(x = mean, y = var, color = class)) + geom_point()
-
-plot_grid(root_pe_diff, root_pe_sd, root_pe_rsd, nrow = 1, labels = LETTERS[1:3])
-```
-
 ### Mixed Error
 
 ```{r root_mixed_plot}
@@ -485,8 +398,6 @@ me_rt_sd <- filter(me_rt_summary, type == "sd") %>%
   ggplot(., aes(x = mean, y = var)) + geom_point()
 me_rt_rsd <- filter(me_rt_summary, type == "rsd") %>%
   ggplot(., aes(x = mean, y = var)) + geom_point()
-
-plot_grid(me_rt_diff, me_rt_sd, me_rt_rsd, nrow = 1, labels = LETTERS[1:3])
 ```
 
 
@@ -516,7 +427,6 @@ hist_comp_rt_me_rr <- ggplot(compare_rt_me_rr, aes(x = var, fill = data)) +
 point_comp_rt_me_rr <- ggplot(compare_rt_me_rr, aes(x = mean, y = var, color = data)) +
   geom_point(alpha = 0.5) + theme(legend.position = c(0.5, 0.8), legend.title = element_text(size = 0)) +
   ylab("rsd")
-plot_grid(hist_comp_rt_me_rr, point_comp_rt_me_rr, nrow = 1, labels = LETTERS[1:2])
 ```
 
 
@@ -533,26 +443,6 @@ Although the root transform changes the overall amount of variance compared to t
 
 ## Log Transformation
 
-### Additive Error
-
-```{r log_add_error}
-log_add <- log(add_error)
-ae_lt_diff <- plot_diff(log_add, log_mean = FALSE)
-ae_lt_sd <- plot_sd(log_add, log_mean = FALSE)
-ae_lt_rsd <- plot_sd(log_add, log_mean = FALSE, sd_type = "rsd")
-plot_grid(ae_lt_diff, ae_lt_sd, ae_lt_rsd, nrow = 1, labels = LETTERS[1:3])
-```
-
-### Proportional Error
-
-```{r log_prop_error}
-log_prop <- log(prop_error)
-
-pe_lt_diff <- plot_diff(log_prop, log_mean = FALSE, use_title = NULL)
-pe_lt_sd <- plot_sd(log_prop, log_mean = FALSE, use_title = NULL)
-pe_lt_rsd <- plot_sd(log_prop, log_mean = FALSE, sd_type = "rsd", use_title = NULL)
-plot_grid(pe_lt_diff, pe_lt_sd, pe_lt_rsd, nrow = 1, labels = LETTERS[1:3])
-```
 
 ### Mixed Error
 
@@ -562,66 +452,10 @@ log_mix <- log(mix_error)
 me_lt_diff <- plot_diff(log_mix, log_mean = FALSE, use_title = NULL)
 me_lt_sd <- plot_sd(log_mix, log_mean = FALSE, use_title = NULL)
 me_lt_rsd <- plot_sd(log_mix, log_mean = FALSE, sd_type = "rsd", use_title = NULL)
-plot_grid(me_lt_diff, me_lt_sd, me_lt_rsd, nrow = 1, labels = LETTERS[1:3])
 ```
 
 
-### Compare Add Error
 
-```{r check_log_transforms_add}
-compare_lt_ae_sr <- rbind(
-  summarize_data(t(add_error)) %>% filter(., type == "rsd") %>% mutate(., data = "add") %>% transform(., mean = log(mean)),
-  summarize_data(t(log_add)) %>% filter(., type == "sd") %>% mutate(., data = "log"))
-
-hist_compare_lt_ae_sr <- ggplot(compare_lt_ae_sr, aes(x = var, fill = data)) + geom_density(alpha = 0.5)
-point_compare_lt_ae_sr <- ggplot(compare_lt_ae_sr, aes(x = mean, y = var, color = data)) + 
-  geom_point(alpha = 0.5)
-
-plot_grid(hist_compare_lt_ae_sr, point_compare_lt_ae_sr, nrow = 1, labels = LETTERS[1:2])
-
-compare_lt_ae_rr <- rbind(
-  summarize_data(t(add_error)) %>% filter(., type == "rsd") %>% mutate(., data = "add") %>% transform(., mean = log(mean)),
-  summarize_data(t(log_add)) %>% filter(., type == "rsd") %>% mutate(., data = "log")
-)
-hist_compare_lt_ae_rr <- ggplot(compare_lt_ae_rr, aes(x = var, fill = data)) + 
-  geom_density(alpha = 0.5)
-point_compare_lt_ae_rr <- ggplot(compare_lt_ae_rr, aes(x = mean, y = var, color = data)) +
-  geom_point(alpha = 0.5)
-plot_grid(hist_compare_lt_ae_rr, point_compare_lt_ae_rr, nrow = 1, labels = LETTERS[1:2])
-```
-
-
-```{r check_lt_pe}
-compare_lt_pe_rs <- rbind(
-  summarize_data(t(prop_error)) %>% filter(., type == "rsd") %>% 
-    mutate(., data = "prop") %>% transform(., mean = log(mean)),
-  summarize_data(t(log_prop)) %>% filter(., type == "sd") %>%
-    mutate(., data = "prop_log")
-)
-
-hist_comp_lt_pe_rs <- ggplot(compare_lt_pe_rs, aes(x = var, fill = data)) + 
-  geom_density(alpha = 0.5)
-point_comp_lt_pe_rs <- ggplot(compare_lt_pe_rs, aes(x = mean, y = var, color = data)) +
-  geom_point(alpha = 0.5)
-
-plot_grid(hist_comp_lt_pe_rs, point_comp_lt_pe_rs, nrow = 1, labels = LETTERS[1:2])
-
-compare_lt_pe_rr <- rbind(
-  summarize_data(t(prop_error)) %>% filter(., type == "rsd") %>% 
-    mutate(., data = "prop") %>% transform(., mean = log(mean)),
-  summarize_data(t(log_prop)) %>% filter(., type == "rsd") %>%
-    mutate(., data = "prop_log")
-)
-
-hist_comp_lt_pe_rr <- ggplot(compare_lt_pe_rr, aes(x = var, fill = data)) + 
-  geom_density(alpha = 0.5)
-point_comp_lt_pe_rr <- ggplot(compare_lt_pe_rr, aes(x = mean, y = var, color = data)) +
-  geom_point(alpha = 0.5)
-plot_grid(hist_comp_lt_pe_rr, point_comp_lt_pe_rr, nrow = 1, labels = LETTERS[1:2])
-```
-
-
-\
 ```{r check_lt_me}
 compare_lt_me_rs <- rbind(
   summarize_data(t(mix_error)) %>% filter(., type == "rsd") %>%
@@ -654,7 +488,6 @@ hist_comp_lt_me_rr <- ggplot(compare_lt_me_rr, aes(x = var, fill = data)) +
 point_comp_lt_me_rr <- ggplot(compare_lt_me_rr, aes(x = mean, y = var, color = data)) +
   geom_point(alpha = 0.5) + theme(legend.position = c(0.5, 0.8), legend.title = element_text(size = 0)) +
   ylab("rsd")
-plot_grid(hist_comp_lt_me_rr, point_comp_lt_me_rr, nrow = 1, labels = LETTERS[1:2])
 ```
 
 
@@ -671,93 +504,6 @@ The log transform completely changes how the standard deviation depends on the m
 
 
 ## Arcsinh Transformation
-
-### Additive Error
-
-```{r ah_add_error}
-asinh_add <- arcsinh_transform(add_error)
-ae_ah_diff <- plot_diff(asinh_add, log_mean = FALSE)
-ae_ah_sd <- plot_sd(asinh_add, log_mean = FALSE)
-ae_ah_rsd <- plot_sd(asinh_add, log_mean = FALSE, sd_type = "rsd")
-plot_grid(ae_ah_diff, ae_ah_sd, ae_ah_rsd, nrow = 1, labels = LETTERS[1:3])
-```
-
-### Proportional Error
-
-```{r ah_prop_error}
-asinh_prop <- arcsinh_transform(prop_error)
-
-pe_ah_diff <- plot_diff(asinh_prop, log_mean = FALSE, use_title = NULL)
-pe_ah_sd <- plot_sd(asinh_prop, log_mean = FALSE, use_title = NULL)
-pe_ah_rsd <- plot_sd(asinh_prop, log_mean = FALSE, sd_type = "rsd", use_title = NULL)
-plot_grid(pe_ah_diff, pe_ah_sd, pe_ah_rsd, nrow = 1, labels = LETTERS[1:3])
-```
-
-### Mixed Error
-
-```{r ah_mix_error}
-asinh_mix <- arcsinh_transform(mix_error)
-
-me_ah_diff <- plot_diff(asinh_mix, log_mean = FALSE, use_title = NULL)
-me_ah_sd <- plot_sd(asinh_mix, log_mean = FALSE, use_title = NULL)
-me_ah_rsd <- plot_sd(asinh_mix, log_mean = FALSE, sd_type = "rsd", use_title = NULL)
-plot_grid(me_ah_diff, me_ah_sd, me_ah_rsd, nrow = 1, labels = LETTERS[1:3])
-```
-
-
-### Compare Add Error
-
-```{r check_ah_add}
-compare_ah_ae_sr <- rbind(
-  summarize_data(t(add_error)) %>% filter(., type == "rsd") %>% mutate(., data = "add") %>% transform(., mean = log(mean)),
-  summarize_data(t(asinh_add)) %>% filter(., type == "sd") %>% mutate(., data = "asinh"))
-
-hist_compare_ah_ae_sr <- ggplot(compare_ah_ae_sr, aes(x = var, fill = data)) + geom_density(alpha = 0.5)
-point_compare_ah_ae_sr <- ggplot(compare_ah_ae_sr, aes(x = mean, y = var, color = data)) + 
-  geom_point(alpha = 0.5)
-
-plot_grid(hist_compare_ah_ae_sr, point_compare_ah_ae_sr, nrow = 1, labels = LETTERS[1:2])
-
-compare_ah_ae_rr <- rbind(
-  summarize_data(t(add_error)) %>% filter(., type == "rsd") %>% mutate(., data = "add") %>% transform(., mean = log(mean)),
-  summarize_data(t(asinh_add)) %>% filter(., type == "rsd") %>% mutate(., data = "asinh")
-)
-hist_compare_ah_ae_rr <- ggplot(compare_ah_ae_rr, aes(x = var, fill = data)) + 
-  geom_density(alpha = 0.5)
-point_compare_ah_ae_rr <- ggplot(compare_ah_ae_rr, aes(x = mean, y = var, color = data)) +
-  geom_point(alpha = 0.5)
-plot_grid(hist_compare_ah_ae_rr, point_compare_ah_ae_rr, nrow = 1, labels = LETTERS[1:2])
-```
-
-
-```{r check_ah_pe}
-compare_ah_pe_rs <- rbind(
-  summarize_data(t(prop_error)) %>% filter(., type == "rsd") %>% 
-    mutate(., data = "rsd(prop)") %>% transform(., mean = log(mean)),
-  summarize_data(t(asinh_prop)) %>% filter(., type == "sd") %>%
-    mutate(., data = "sd(asinh(prop))")
-)
-
-hist_comp_ah_pe_rs <- ggplot(compare_ah_pe_rs, aes(x = var, fill = data)) + 
-  geom_density(alpha = 0.5)
-point_comp_ah_pe_rs <- ggplot(compare_ah_pe_rs, aes(x = mean, y = var, color = data)) +
-  geom_point(alpha = 0.5)
-
-plot_grid(hist_comp_ah_pe_rs, point_comp_ah_pe_rs, nrow = 1, labels = LETTERS[1:2])
-
-compare_ah_pe_rr <- rbind(
-  summarize_data(t(prop_error)) %>% filter(., type == "rsd") %>% 
-    mutate(., data = "rsd(prop)") %>% transform(., mean = log(mean)),
-  summarize_data(t(log_prop)) %>% filter(., type == "rsd") %>%
-    mutate(., data = "rsd(asinh(prop))")
-)
-
-hist_comp_ah_pe_rr <- ggplot(compare_ah_pe_rr, aes(x = var, fill = data)) + 
-  geom_density(alpha = 0.5)
-point_comp_ah_pe_rr <- ggplot(compare_ah_pe_rr, aes(x = mean, y = var, color = data)) +
-  geom_point(alpha = 0.5)
-plot_grid(hist_comp_ah_pe_rr, point_comp_ah_pe_rr, nrow = 1, labels = LETTERS[1:2])
-```
 
 
 
@@ -793,7 +539,6 @@ hist_comp_ah_me_rr <- ggplot(compare_ah_me_rr, aes(x = var, fill = data)) +
 point_comp_ah_me_rr <- ggplot(compare_ah_me_rr, aes(x = mean, y = var, color = data)) +
   geom_point(alpha = 0.5) + theme(legend.position = c(0.5, 0.8), legend.title = element_text(size = 0)) +
   ylab("rsd")
-plot_grid(hist_comp_ah_me_rr, point_comp_ah_me_rr, nrow = 1, labels = LETTERS[1:2])
 ```
 
 
