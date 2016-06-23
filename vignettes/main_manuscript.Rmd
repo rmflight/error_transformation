@@ -527,11 +527,6 @@ mix_root_compare <- plot_grid(point_comp_rt_me_rr,
                          nrow = 1, labels = LETTERS[4])
 mix_root_summary
 mix_root_compare
-
-ggsave(file.path(save_plot_loc, "mix_root_summary.png"), plot = mix_root_summary, dpi = 300,
-       width = 12, height = 5)
-ggsave(file.path(save_plot_loc, "mix_root_compare.png"), plot = mix_root_compare, dpi = 300,
-       width = 4, height = 5)
 ```
 
 Although the root transform changes the overall amount of variance compared to the mean, as with pareto scaling, the overall relationship of variance to the mean is maintained, as all the plots show. The variance is still dependent on the mean value, and the proportional error is still present in the data.
