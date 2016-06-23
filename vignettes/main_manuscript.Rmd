@@ -178,6 +178,13 @@ present. Adding a plot of the *relative standard deviation* (RSD, SD / mean) *vs
 mean* as well as *sd vs mean*  makes it possible to discern the presence of
 additive, proportional, or mixed error ( see Figures X-Y for examples).
 
+**Question: What is the best way to organize these plots? In the poster we could
+easily divide the original and the error summary plots while keeping them on the
+same line to make the link explicit with the other plots shown later, but we
+don't really have that option in the paper. So, should the first two figures
+be figure of original spaces (for all three error models), and then a figure
+of the error summaries?**
+
 ```{r buildup_plots}
 pair_frame <- data.frame(rep1 = add_error[,1], rep2 = add_error[,2])
 add_pair_plot <- ggplot(pair_frame, aes(x = rep1, y = rep2)) + geom_point()
