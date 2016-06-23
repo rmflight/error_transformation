@@ -146,10 +146,6 @@ plot of two replicates is shown in Figure X.
 
 ```{r mix_error}
 mix_error <- add_prop_uniform(n_rep, simulated_data, add_sd, prop_sd)
-mix_error[(mix_error < 0)] <- 0
-
-mix_nozero <- filter_features(mix_error, 1e-16)
-mix_minone <- filter_features(mix_error, 1)
 ```
 
 A mixture of additive and proportional errors was added using standard deviations
