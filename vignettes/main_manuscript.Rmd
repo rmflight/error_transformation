@@ -13,6 +13,8 @@ library(visualizationQualityControl)
 library(cowplot)
 library(dplyr)
 library(errorTransformation)
+
+poster_figure_loc <- "/home/rmflight/Documents/posters/dataTransformationsError/"
 ```
 
 # Abstract
@@ -33,8 +35,8 @@ In this work, we demonstrate a set of three simple graphs which facilitate the
 detection of proportional and mixed error in omics data when multiple replicates
 are available. The three graphs illustrate proportional and mixed error in a 
 visually compelling manner that is both straight-forward to recognize and to 
-communicate. The graphs plot the 1) absolute difference in the range, 2)
-standard deviation and 3) relative standard deviation against the mean signal
+communicate. The graphs plot the 1) mean, 2) absolute difference in the range, 3)
+standard deviation and 4) relative standard deviation against the mean signal
 across replicates (Figure 1). In addition to showing the presence of different types of
 error, these graphs readily demonstrate the effect of various transformations on
 the error structure as well.
