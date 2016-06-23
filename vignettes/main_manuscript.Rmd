@@ -408,7 +408,7 @@ me_ps_summ <- summarize_data(t(me_ps))
 max_me_ps <- filter(me_ps_summ, type == "rsd") %>% select(., var) %>% max()
 all.equal(max_me_nt, max_me_ps)
 
-pareto_compare <- summarize_two(mix_nozero, me_ps, sd_type = "rsd", name1 = "mix", name2 = "pareto(mix)")
+pareto_compare <- summarize_two(mix_error, me_ps, sd_type = "rsd", name1 = "mix", name2 = "pareto(mix)")
 
 pareto_compare$data <- factor(pareto_compare$data, levels = c("mix", "pareto(mix)"), ordered = TRUE)
 #pareto_compare$mean <- log(pareto_compare$mean)
@@ -505,7 +505,7 @@ point_comp_rt_me_rs <- ggplot(compare_rt_me_rs, aes(x = mean, y = var)) +
 plot_grid(hist_comp_rt_me_rs, point_comp_rt_me_rs, nrow = 1, labels = LETTERS[1:2])
 
 compare_rt_me_rr <- rbind(
-  summarize_data(t(mix_nozero)) %>% filter(., type == "rsd") %>%
+  summarize_data(t(mix_error)) %>% filter(., type == "rsd") %>%
     mutate(., data = "rsd(mix)") %>% transform(., mean = log(mean)),
   me_rt_summary %>% filter(., type == "rsd") %>%
     mutate(., data = "rsd(root(mix))")
@@ -585,7 +585,7 @@ point_compare_lt_ae_sr <- ggplot(compare_lt_ae_sr, aes(x = mean, y = var, color 
 plot_grid(hist_compare_lt_ae_sr, point_compare_lt_ae_sr, nrow = 1, labels = LETTERS[1:2])
 
 compare_lt_ae_rr <- rbind(
-  summarize_data(t(add_nozero)) %>% filter(., type == "rsd") %>% mutate(., data = "add") %>% transform(., mean = log(mean)),
+  summarize_data(t(add_error)) %>% filter(., type == "rsd") %>% mutate(., data = "add") %>% transform(., mean = log(mean)),
   summarize_data(t(log_add)) %>% filter(., type == "rsd") %>% mutate(., data = "log")
 )
 hist_compare_lt_ae_rr <- ggplot(compare_lt_ae_rr, aes(x = var, fill = data)) + 
@@ -645,7 +645,7 @@ point_comp_lt_me_rs <- ggplot(compare_lt_me_rs, aes(x = mean, y = var, color = d
 plot_grid(hist_comp_lt_me_rs, point_comp_lt_me_rs, nrow = 1, labels = LETTERS[1:2])
 
 compare_lt_me_rr <- rbind(
-  summarize_data(t(mix_nozero)) %>% filter(., type == "rsd") %>%
+  summarize_data(t(mix_error)) %>% filter(., type == "rsd") %>%
     mutate(., data = "mix") %>% transform(., mean = log(mean)),
   summarize_data(t(log_mix)) %>% filter(., type == "rsd") %>%
     mutate(., data = "log(mix)")
@@ -784,7 +784,7 @@ point_comp_ah_me_rs <- ggplot(compare_ah_me_rs, aes(x = mean, y = var, color = d
 plot_grid(hist_comp_ah_me_rs, point_comp_ah_me_rs, nrow = 1, labels = LETTERS[1:2])
 
 compare_ah_me_rr <- rbind(
-  summarize_data(t(mix_nozero)) %>% filter(., type == "rsd") %>%
+  summarize_data(t(mix_error)) %>% filter(., type == "rsd") %>%
     mutate(., data = "mix") %>% transform(., mean = log(mean)),
   summarize_data(t(asinh_mix)) %>% filter(., type == "rsd") %>%
     mutate(., data = "asinh(mix)")
