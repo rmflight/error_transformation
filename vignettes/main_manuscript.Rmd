@@ -182,8 +182,9 @@ additive, proportional, or mixed error ( see Figures X-Y for examples).
 easily divide the original and the error summary plots while keeping them on the
 same line to make the link explicit with the other plots shown later, but we
 don't really have that option in the paper. So, should the first two figures
-be figure of original spaces (for all three error models), and then a figure
-of the error summaries?**
+be figure of original spaces (for all three error models, so 3 rows and 2 columns), 
+and then a figure of the error summaries (3 rows and 3 columns), or ONE 
+ginormous figure with 3 rows and 5 columns of plots?**
 
 ```{r buildup_plots}
 pair_frame <- data.frame(rep1 = add_error[,1], rep2 = add_error[,2])
