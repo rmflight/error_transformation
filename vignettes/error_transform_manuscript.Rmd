@@ -219,6 +219,8 @@ add_rsd_plot <- filter(add_error_summ, type == "rsd") %>%
 
 ```
 
+## Additive
+
 ```{r add_plot_sets}
 add_rep_ma <- plot_grid(add_pair_plot, add_ma_plot, nrow = 1, labels = LETTERS[1:2])
 add_summary_plot <- plot_grid(add_diff_plot, add_sd_plot, add_rsd_plot, nrow = 1,
@@ -306,8 +308,6 @@ me_as <- auto_scale(mix_error)
 me_as_diff <- plot_diff(me_as, log_mean = NULL, use_title = NULL)
 me_as_sd <- plot_sd(me_as, log_mean = NULL, use_title = NULL)
 me_as_rsd <- plot_sd(me_as, sd_type = "rsd", log_mean = NULL, use_title = NULL)
-mix_auto <- plot_grid(me_as_diff, me_as_sd, me_as_rsd, nrow = 1, labels = LETTERS[1:3])
-mix_auto
 ```
 
 ```{r autoscale_check}
