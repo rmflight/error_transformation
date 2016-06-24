@@ -505,7 +505,13 @@ The log transform completely changes how the standard deviation depends on the m
 
 ## Arcsinh Transformation
 
+```{r ah_mix_error}
+asinh_mix <- arcsinh_transform(mix_error)
 
+me_ah_diff <- plot_diff(asinh_mix, log_mean = FALSE, use_title = NULL)
+me_ah_sd <- plot_sd(asinh_mix, log_mean = FALSE, use_title = NULL)
+me_ah_rsd <- plot_sd(asinh_mix, log_mean = FALSE, sd_type = "rsd", use_title = NULL)
+```
 
 ```{r check_ah_me}
 compare_ah_me_rs <- rbind(
